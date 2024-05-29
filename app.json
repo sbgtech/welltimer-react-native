@@ -2,6 +2,35 @@
   "expo": {
     "name": "expo-bare",
     "slug": "expo-bare",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "android": {
+      "package": "com.sbgdev.expobare",
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.sbgdev.expobare"
+    },
+    "plugins": [
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": [
+            "peripheral",
+            "central"
+          ],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ea8faba7-1479-4e9d-ac7a-16f6f40b16fa"
+      }
+    }
   }
 }
