@@ -355,6 +355,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = expobare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Welltimer;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -387,6 +388,7 @@
 				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_TEAM = WV5PC84BKL;
 				INFOPLIST_FILE = expobare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Welltimer;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

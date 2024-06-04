@@ -2,11 +2,11 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ButtonUI from "./ButtonUI";
 
-const Item = ({ name, onPress }) => {
+const Item = ({ name, onPress, title }) => {
   return (
     <View style={styles.itemView}>
       <Text style={styles.itemText}>{name ? name : "Unknown"}</Text>
-      <ButtonUI onPress={onPress} title={"Connect"} />
+      <ButtonUI onPress={onPress} title={title} />
     </View>
   );
 };
