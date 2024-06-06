@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,24 +8,56 @@ import {
   Alert,
 } from "react-native";
 import ButtonUI from "../ButtonUI";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import Toast from "react-native-toast-message";
 
 const SecondRoute = () => {
-  const [value, setValue] = useState("");
+  const [hourValue, setHourValue] = useState("00");
+  const [minValue, setMinValue] = useState("00");
+  const [secValue, setSecValue] = useState("00");
+  const [totalSec, setTotalSec] = useState(0);
 
-  const handleChangeText = (text) => {
-    const numericValue = parseInt(text);
-    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 59) {
-      setValue(numericValue);
-      console.log("true ", numericValue);
-      //   setValue(numericValue.toString());
-      //   console.log("true", value);
+  const handleChangeHour = (text) => {
+    const hour = parseInt(text);
+    setHourValue(hour);
+  };
+
+  const handleChangeMin = (text) => {
+    const minute = parseInt(text);
+    if (minute >= 0 && minute <= 59) {
+      setMinValue(minute);
+      console.log("true minute", minute);
     } else {
-      //   Alert.alert("Warning", "Hour must be required and entre 01 & 24");
-      console.log("false");
-      setValue();
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "Minutes must be entre 01 & 59",
+        visibilityTime: 3000,
+      });
+      setMinValue("");
     }
   };
+
+  const handleChangeSec = (text) => {
+    const second = parseInt(text);
+    if (second >= 0 && second <= 59) {
+      setSecValue(second);
+      console.log("true minute", second);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "Seconds must be entre 01 & 59",
+        visibilityTime: 3000,
+      });
+      setSecValue("");
+    }
+  };
+
+  useEffect(() => {
+    const result =
+      Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
+    setTotalSec(result);
+  }, [hourValue, minValue, secValue]);
 
   return (
     <ScrollView>
@@ -46,33 +78,37 @@ const SecondRoute = () => {
               <TextInput
                 style={styles.inputRange}
                 keyboardType="numeric"
-                value={value}
-                onChangeText={handleChangeText}
+                value={hourValue.toString()}
+                onChangeText={handleChangeHour}
                 maxLength={2}
               />
               <TextInput
                 style={styles.inputRange}
                 keyboardType="numeric"
-                // value={value}
-                // onChangeText={handleChangeText}
+                value={minValue.toString()}
+                onChangeText={handleChangeMin}
                 maxLength={2}
               />
+
               <TextInput
                 style={styles.inputRange}
                 keyboardType="numeric"
-                // value={value}
-                // onChangeText={handleChangeText}
+                value={secValue.toString()}
+                onChangeText={handleChangeSec}
                 maxLength={2}
               />
             </View>
             <View style={styles.containerRange}>
               <ButtonUI
                 onPress={() => console.log("min")}
-                title={"Save"}
+                title={"Send"}
                 btnStyle={styles.btnSend}
               />
             </View>
-            <Text>{value}</Text>
+            <Text>Hours:{hourValue}</Text>
+            <Text>Minutes:{minValue}</Text>
+            <Text>Seconds:{secValue}</Text>
+            <Text>Total seconds : {totalSec}</Text>
           </View>
         </View>
       </View>

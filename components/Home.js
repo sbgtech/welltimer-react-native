@@ -6,7 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   PermissionsAndroid,
-  Alert,
+  Platform,
 } from "react-native";
 import Item from "./Item";
 import { BleManager } from "react-native-ble-plx";
@@ -20,90 +20,51 @@ const bleManager = new BleManager();
 export default function Home({ navigation }) {
   const [scanning, setScanning] = useState(false);
   const [devices, setDevices] = useState([]);
-  const [isConnected, setIsConnected] = useState(false);
-  const [connectedDevices, setConnectedDevices] = useState([]);
-
-  const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+  const discoveredDevices = new Set();
 
   // Request Bluetooth permissions
-  async function requestBluetoothPermissions() {
-    try {
-      // Request permissions for Android
-      if (Platform.OS === "android") {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, // permission for location
-          {
-            title: "Bluetooth Permission",
-            message:
-              "This app requires access to your device's Bluetooth services.",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK",
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          // if bluetooth activate
-          console.log("Bluetooth permissions granted");
-          // Start scanning for BLE devices
-          // bleManager
-          //   .connectedDevices(UART_SERVICE_UUID)
-          //   .then((peripheralsArray) => {
-          //     setIsConnected(false);
-          //     setConnectedDevices(
-          //       peripheralsArray.map((peripheral) => peripheral.id)
-          //     );
-          //   });
-          if (scanning) {
-            scanForDevices();
-          } else {
-            bleManager.stopDeviceScan();
-          }
-        } else {
-          console.log("Bluetooth permissions denied");
-          // Handle permission denied
-          Alert.alert(
-            "Permission Denied",
-            "Bluetooth permission is required to use this app."
-          );
-        }
-        // Request permissions for iOS (no need for explicit permission request)
-      } else if (Platform.OS === "ios") {
-        // Check if Bluetooth is enabled
-        bleManager
-          .state()
-          .then((state) => {
-            if (state === "PoweredOn") {
-              console.log("Bluetooth is enabled");
-              // Start scanning for BLE devices
-              if (scanning) {
-                scanForDevices();
-              } else {
-                bleManager.stopDeviceScan();
-              }
-            } else {
-              console.log("Bluetooth is disabled");
-              Alert.alert(
-                "Bluetooth Required",
-                "Please enable Bluetooth to use this app."
-              );
-            }
-          })
-          .catch((error) => {
-            // error for bluetooth state
-            console.error("Error checking Bluetooth state:", error);
-          });
-      }
-    } catch (error) {
-      // error for bluetooth requesting permissions
-      console.error("Error requesting Bluetooth permissions:", error);
+  const requestBluetoothPermission = async () => {
+    if (Platform.OS === "ios") {
+      return true;
     }
-  }
+    if (
+      Platform.OS === "android" &&
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    ) {
+      const apiLevel = parseInt(Platform.Version.toString(), 10);
+      if (apiLevel < 31) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+      if (
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN &&
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT
+      ) {
+        const result = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        ]);
+        return (
+          result["android.permission.BLUETOOTH_CONNECT"] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          result["android.permission.BLUETOOTH_SCAN"] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          result["android.permission.ACCESS_FINE_LOCATION"] ===
+            PermissionsAndroid.RESULTS.GRANTED
+        );
+      }
+    }
+    this.showErrorToast("Permission have not been granted");
+    return false;
+  };
 
   useEffect(() => {
     // when page refreshed call requestBluetoothPermissions function
-    requestBluetoothPermissions();
+    requestBluetoothPermission();
+    scanForDevices();
 
     // Cleanup function to stop scanning when component unmounts
     return () => {
@@ -113,45 +74,28 @@ export default function Home({ navigation }) {
 
   // function to scan devices
   const scanForDevices = () => {
-    setDevices([]); // empty array
-    bleManager.startDeviceScan(
-      null,
-      { allowDuplicates: false },
-      (error, scannedDevice) => {
-        if (error) {
-          // if error when scanning
-          console.error("Error scanning for devices:", error);
-          return;
-        }
-        // If the device is new, add it to the scanned devices list
-        if (!devices.includes(scannedDevice.id)) {
-          if (scannedDevice.name) {
-            // eliminate unknowed devices
-            setDevices((prevDevices) => [...prevDevices, scannedDevice]); // push to array any device scanned
+    if (scanning) {
+      setDevices([]); // empty array
+      bleManager.startDeviceScan(
+        null,
+        { allowDuplicates: false },
+        (error, scannedDevice) => {
+          if (error) {
+            // if error when scanning
+            console.error("Error scanning for devices:", error);
+            return;
+          }
+          // If the device is new, add it to the scanned devices list
+          if (scannedDevice && !discoveredDevices.has(scannedDevice.id)) {
+            if (scannedDevice.name) {
+              discoveredDevices.add(scannedDevice.id);
+              setDevices((prevDevices) => [...prevDevices, scannedDevice]);
+            }
           }
         }
-      }
-    );
+      );
+    }
   };
-
-  // const handleButtonPress = (device) => {
-  //   if (connectedDevices.includes(device.id)) {
-  //     bleManager
-  //       .cancelDeviceConnection(device.id)
-  //       .then(() => {
-  //         setConnectedDevices(
-  //           connectedDevices.filter((id) => id !== device.id)
-  //         );
-  //         console.log("Disconnected from device", device.name);
-  //       })
-  //       .catch((error) => {
-  //         console.log("Disconnect error:", error);
-  //       });
-  //   } else {
-  //     connectToDevice(device);
-  //     setConnectedDevices([...connectedDevices, device.id]);
-  //   }
-  // };
 
   // function allow user to connect to device
   const connectToDevice = async (selectedDevice) => {
@@ -171,13 +115,7 @@ export default function Home({ navigation }) {
             text2: "Connected to " + device.name,
             visibilityTime: 3000,
           });
-          setIsConnected(true); // change the state of isConnceted varibale to true (exist a conection to device)
-          // receiveData(device); // ready to receive data from the device
           navigation.navigate("DevicePage"); // navigate to device settings page
-          // sendData(
-          //   device,
-          //   "{ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFG}\n"
-          // );
         });
     } catch (error) {
       // error connecting to device
@@ -191,41 +129,6 @@ export default function Home({ navigation }) {
       });
     }
   };
-
-  // finction for sending data
-  // const sendData = (device, data) => {
-  //   const buffer = Buffer.from(data, "utf-8");
-  //   device
-  //     .writeCharacteristicWithResponseForService(
-  //       UART_SERVICE_UUID,
-  //       UART_TX_CHARACTERISTIC_UUID,
-  //       buffer.toString("base64")
-  //     )
-  //     .then((characteristic) => {
-  //       console.log("Data sent");
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
-  // function to receive data from device
-  // const receiveData = (device) => {
-  //   device.monitorCharacteristicForService(
-  //     UART_SERVICE_UUID,
-  //     UART_RX_CHARACTERISTIC_UUID,
-  //     (error, characteristic) => {
-  //       if (error) {
-  //         console.error(error);
-  //         return;
-  //       }
-  //       const data = Buffer.from(characteristic.value, "base64").toString(
-  //         "utf-8"
-  //       );
-  //       console.log("Received data:", data);
-  //     }
-  //   );
-  // };
 
   const renderItem = ({ item }) => (
     <Item
@@ -247,7 +150,6 @@ export default function Home({ navigation }) {
         <Text style={styles.HomeTitle}>Available devices </Text>
         {scanning && <ActivityIndicator size="small" color="#35374B" />}
       </View>
-      <Text>{connectedDevices}</Text>
       <FlatList
         data={devices}
         renderItem={renderItem}
