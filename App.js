@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="DevicePage">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
         <Stack.Screen name="DevicePage" component={DevicePage} />

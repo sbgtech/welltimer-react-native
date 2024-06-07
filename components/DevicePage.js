@@ -13,21 +13,19 @@ const initialLayout = { width: Dimensions.get("window").width };
 const bleManager = new BleManager();
 
 export default function DevicePage() {
+  const [connectedDevice, setConnectedDevice] = useState([]);
+  const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
   const First = () => <FirstRoute />;
-
-  const Second = () => <SecondRoute />;
-
+  const Second = () => (
+    <SecondRoute sendData={sendData} connectedDevice={connectedDevice[0]} />
+  );
   const ThirdRoute = () => (
     <View style={{ flex: 1, backgroundColor: "#fff" }} />
   );
-
-  const TestMode = () => (
-    <TestTab
-      dataArray={dataArray}
-      sendData={sendData}
-      connectedDevice={connectedDevice}
-    />
-  );
+  const TestMode = () => <TestTab />;
 
   const [state, setState] = useState({
     index: 0,
@@ -38,12 +36,6 @@ export default function DevicePage() {
       { key: "test", title: "Test" },
     ],
   });
-
-  const [connectedDevice, setConnectedDevice] = useState([]);
-  const [dataArray, setDataArray] = useState([]);
-  const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
   useEffect(() => {
     console.log("enter page");
@@ -65,13 +57,6 @@ export default function DevicePage() {
     };
   }, []);
 
-  const addObject = (data, type) => {
-    // Create a new object
-    const newObj = { date: Date.now(), data: data, type: type };
-    // Update state by creating a new array with the previous contents plus the new object
-    setDataArray((prevArray) => [...prevArray, newObj]);
-  };
-
   // function for receiving data
   const receiveData = (device) => {
     device?.monitorCharacteristicForService(
@@ -86,7 +71,6 @@ export default function DevicePage() {
           "utf-8"
         );
         console.log("Received data:", msg);
-        addObject(msg, "RX"); // Adding a new object to the array
       }
     );
   };
@@ -102,7 +86,6 @@ export default function DevicePage() {
       )
       .then((characteristic) => {
         console.log("Sent data: ", data);
-        addObject(data, "TX");
         Toast.show({
           type: "success",
           text1: "Success",

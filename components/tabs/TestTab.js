@@ -16,9 +16,20 @@ import Animated, {
 import ButtonUI from "../ButtonUI";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Moment from "moment";
+import { BleManager } from "react-native-ble-plx";
+import { Buffer } from "buffer";
+import Toast from "react-native-toast-message";
 
-const TestTab = (props) => {
+const bleManager = new BleManager();
+
+const TestTab = () => {
   const [message, setMessage] = useState("");
+
+  const [connectedDevice, setConnectedDevice] = useState([]);
+  const [dataArray, setDataArray] = useState([]);
+  const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+  const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+  const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
   const colorScheme = useColorScheme();
   const keyboard = useAnimatedKeyboard();
@@ -33,7 +44,7 @@ const TestTab = (props) => {
 
   const onSendMessageSubmit = async () => {
     if (message !== "") {
-      props.sendData(props.connectedDevice[0], message + "\n");
+      sendData(connectedDevice[0], message + "\n");
       setMessage("");
     } else {
       Alert.alert("Warning", "Data required");
@@ -42,7 +53,73 @@ const TestTab = (props) => {
 
   useEffect(() => {
     // when page refreshed
+    const checkDeviceConnection = async () => {
+      const connectedDevices = await bleManager.connectedDevices([
+        UART_SERVICE_UUID,
+      ]);
+      if (connectedDevices.length > 0) {
+        setConnectedDevice(connectedDevices);
+        console.log("ready to receive data from test mode");
+        receiveData(connectedDevices[0]);
+      }
+    };
+    checkDeviceConnection();
   }, []);
+
+  const addObject = (data, type) => {
+    // Create a new object
+    const newObj = { date: Date.now(), data: data, type: type };
+    // Update state by creating a new array with the previous contents plus the new object
+    setDataArray((prevArray) => [...prevArray, newObj]);
+  };
+  // function for receiving data
+  const receiveData = (device) => {
+    device?.monitorCharacteristicForService(
+      UART_SERVICE_UUID,
+      UART_RX_CHARACTERISTIC_UUID,
+      (error, characteristic) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        const msg = Buffer.from(characteristic.value, "base64").toString(
+          "utf-8"
+        );
+        console.log("Received data from test mode :", msg);
+        addObject(msg, "RX"); // Adding a new object to the array
+      }
+    );
+  };
+
+  // function for sending data
+  const sendData = (device, data) => {
+    const buffer = Buffer.from(data, "utf-8");
+    device
+      ?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      )
+      .then((characteristic) => {
+        console.log("Sent data from test mode : ", data);
+        addObject(data, "TX");
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent to " + connectedDevice[0].name,
+          visibilityTime: 3000,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Error to send data to " + connectedDevice[0].name,
+          visibilityTime: 3000,
+        });
+      });
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.itemViewContainer}>
@@ -85,8 +162,8 @@ const TestTab = (props) => {
           <Text style={styles.testTitle}>Test mode :</Text>
           <View style={styles.deviceBlog}>
             <Text style={styles.deviceTitle}>Connected Devices:</Text>
-            {props.connectedDevice.length > 0 ? (
-              props.connectedDevice.map((device) => (
+            {connectedDevice.length > 0 ? (
+              connectedDevice.map((device) => (
                 <View key={device.id}>
                   <Text style={styles.deviceInfo}>Name: {device.name}</Text>
                   <Text style={styles.deviceInfo}>ID: {device.id}</Text>
@@ -105,7 +182,7 @@ const TestTab = (props) => {
             marginVertical: 12,
             borderRadius: 9,
           }}
-          data={props.dataArray}
+          data={dataArray}
           renderItem={renderItem}
           ListEmptyComponent={handleEmpty}
           keyExtractor={(item, index) => index}
