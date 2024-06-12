@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import FirstRoute from "./tabs/FirstRoute";
-import SecondRoute from "./tabs/SecondRoute";
+import TimerTab from "./tabs/TimerTab";
 import TestTab from "./tabs/TestTab";
 import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
@@ -19,8 +19,8 @@ export default function DevicePage() {
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
   const First = () => <FirstRoute />;
-  const Second = () => (
-    <SecondRoute sendData={sendData} connectedDevice={connectedDevice[0]} />
+  const Timers = () => (
+    <TimerTab sendData={sendData} connectedDevice={connectedDevice[0]} />
   );
   const ThirdRoute = () => (
     <View style={{ flex: 1, backgroundColor: "#fff" }} />
@@ -31,7 +31,7 @@ export default function DevicePage() {
     index: 0,
     routes: [
       { key: "first", title: "First" },
-      { key: "second", title: "Second" },
+      { key: "timer", title: "Timers" },
       { key: "third", title: "Third" },
       { key: "test", title: "Test" },
     ],
@@ -114,7 +114,7 @@ export default function DevicePage() {
         navigationState={state}
         renderScene={SceneMap({
           first: First,
-          second: Second,
+          timer: Timers,
           third: ThirdRoute,
           test: TestMode,
         })}

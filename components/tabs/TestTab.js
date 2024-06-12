@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   Alert,
+  Dimensions,
 } from "react-native";
 import Animated, {
   useAnimatedKeyboard,
@@ -31,6 +32,8 @@ const TestTab = () => {
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
+  const { width, height } = Dimensions.get("window");
+  const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
   const colorScheme = useColorScheme();
   const keyboard = useAnimatedKeyboard();
   const animatedStyles = useAnimatedStyle(() => ({
@@ -154,7 +157,8 @@ const TestTab = () => {
       style={[
         styles.container,
         animatedStyles,
-        { backgroundColor: colorScheme === "light" ? "#fff" : "#000" },
+        { backgroundColor: colorScheme === "light" ? "#fff" : "#fff" },
+        { marginBottom: marginBottom },
       ]}
     >
       <View style={styles.box}>
@@ -233,8 +237,8 @@ const styles = StyleSheet.create({
   testInput: {
     backgroundColor: "#ddd",
     paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderWidth: 0.5,
     borderRadius: 9,
     width: "80%",
     maxWidth: "80%",

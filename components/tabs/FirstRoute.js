@@ -4,12 +4,21 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
-import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import Switch from "react-native-switch-toggles";
 import ButtonUI from "../ButtonUI";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const FirstRoute = () => {
+  const { width, height } = Dimensions.get("window");
+  const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
   const [isEnabledValveA, setIsEnabledValveA] = useState(false);
   const [isEnabledValveB, setIsEnabledValveB] = useState(false);
   const [selectedOptionLine, setSelectedOptionLine] = useState("voltage");
@@ -28,7 +37,7 @@ const FirstRoute = () => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View style={[styles.container, { marginBottom: marginBottom }]}>
         <View style={styles.statusWrapper}>
           <Text style={styles.valveTitle}>Valve A</Text>
           <View style={styles.onOffStatus}>
