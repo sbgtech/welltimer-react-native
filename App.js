@@ -15,7 +15,11 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
-        <Stack.Screen name="DevicePage" component={DevicePage} />
+        <Stack.Screen
+          name="DevicePage"
+          component={DevicePage}
+          options={{ title: "Device settings" }}
+        />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

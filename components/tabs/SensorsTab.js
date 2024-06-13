@@ -15,12 +15,13 @@ import {
 import Switch from "react-native-switch-toggles";
 import ButtonUI from "../ButtonUI";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Arrival from "./blocs/Arrival";
 
-const FirstRoute = () => {
+const SensorsTab = () => {
   const { width, height } = Dimensions.get("window");
   const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
   const [isEnabledValveA, setIsEnabledValveA] = useState(false);
-  const [isEnabledValveB, setIsEnabledValveB] = useState(false);
+  // const [isEnabledValveB, setIsEnabledValveB] = useState(false);
   const [selectedOptionLine, setSelectedOptionLine] = useState("voltage");
   const [selectedOptionTubing, setSelectedOptionTubing] = useState("current");
   const [selectedOptionCasing, setSelectedOptionCasing] = useState("current");
@@ -66,7 +67,7 @@ const FirstRoute = () => {
             />
           </View>
         </View>
-        <View style={styles.statusWrapper}>
+        {/* <View style={styles.statusWrapper}>
           <Text style={styles.valveTitle}>Valve B</Text>
           <View style={styles.onOffStatus}>
             <Text style={styles.valveStatus}>
@@ -93,7 +94,7 @@ const FirstRoute = () => {
               )}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.statusWrapper}>
           <View
             style={{
@@ -400,6 +401,28 @@ const FirstRoute = () => {
             )}
           </View>
         </View>
+        <View style={styles.arrivalWrapper}>
+          <Arrival name={"Arrival 1"} value={"02:40:34"} />
+          <Arrival name={"Arrival 2"} value={"01:56"} />
+          <Arrival name={"Arrival 3"} value={"02:40:34"} />
+          <Arrival name={"Arrival 4"} value={"49:04"} />
+          <Arrival name={"Arrival 5"} value={"01:56"} />
+          <Arrival name={"Arrival 6"} value={"49:04"} />
+          <Arrival name={"Arrival 7"} value={"01:56"} />
+          <Arrival name={"Arrival 8"} value={"49:04"} />
+          <Arrival name={"Arrival 9"} value={"13:00"} />
+          <Arrival name={"Arrival 10"} value={"01:56"} />
+          <Arrival name={"Arrival 11"} value={"02:40:34"} />
+          <Arrival name={"Arrival 12"} value={"49:04"} />
+          <Arrival name={"Arrival 13"} value={"13:00"} />
+          <Arrival name={"Arrival 14"} value={"13:00"} />
+          <Arrival name={"Arrival 15"} value={"02:40:34"} />
+          <Arrival name={"Arrival 16"} value={"49:04"} />
+          <Arrival name={"Arrival 17"} value={"01:56"} />
+          <Arrival name={"Arrival 18"} value={"13:00"} />
+          <Arrival name={"Arrival 19"} value={"02:40:34"} />
+          <Arrival name={"Arrival 20"} value={"13:00"} />
+        </View>
       </View>
     </ScrollView>
   );
@@ -484,6 +507,16 @@ const styles = StyleSheet.create({
   btnSend: {
     width: 38,
   },
+  arrivalWrapper: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 26,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 14,
+    backgroundColor: "#eeeeee",
+  },
 });
 
-export default FirstRoute;
+export default SensorsTab;
