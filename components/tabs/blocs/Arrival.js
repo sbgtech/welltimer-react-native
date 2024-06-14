@@ -13,9 +13,7 @@ const Arrival = (props) => {
   const cardWidth = (Dimensions.get("window").width - cardGap * 6) / 2;
 
   return (
-    <View
-      style={[styles.arrivalWrapper, { height: cardWidth, width: cardWidth }]}
-    >
+    <View style={[styles.arrivalWrapper, { width: cardWidth }]}>
       <Text style={styles.arrivalName}>{props.name}</Text>
       <Text style={styles.arrivalValue}>{props.value}</Text>
     </View>
@@ -30,6 +28,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     justifyContent: "center",
     alignItems: "center",
+    height: 70,
+    maxHeight: 100,
   },
   arrivalName: {
     fontSize: 20,
