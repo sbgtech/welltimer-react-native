@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 6,
     backgroundColor: "#35374B",
-    borderRadius: 9,
   },
   textStyle: {
     color: "#fff",

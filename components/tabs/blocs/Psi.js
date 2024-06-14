@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import RadioForm, {
@@ -9,6 +9,8 @@ import RadioForm, {
 } from "react-native-simple-radio-button";
 
 const Psi = (props) => {
+  const { width, height } = Dimensions.get("window");
+  const scale = width / 400;
   const [minRangeValue, setMinRangeValue] = useState(7);
   const [maxRangeValue, setMaxRangeValue] = useState(13);
   const [minVoltageValue, setMinVoltageValue] = useState(3);
@@ -45,36 +47,70 @@ const Psi = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <Text style={styles.valveTitle}>{props.title}</Text>
-        <Text style={styles.valveTitle}>{props.value}</Text>
+        <Text style={[styles.valveTitle, { fontSize: 28 * scale }]}>
+          {props.title}
+        </Text>
+        <Text style={[styles.valveTitle, { fontSize: 28 * scale }]}>
+          {props.value}
+        </Text>
       </View>
 
       <View style={styles.rangeWrapper}>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Range :</Text>
+        <Text style={{ fontSize: 22 * scale, fontWeight: "bold" }}>
+          Range :
+        </Text>
         <View style={styles.containerRange}>
-          <Text style={styles.labelRange}>Min :</Text>
+          <Text style={[styles.labelRange, { fontSize: 18 * scale }]}>
+            Min :
+          </Text>
           <TextInput
-            style={styles.inputRange}
+            style={[
+              styles.inputRange,
+              {
+                fontSize: 14 * scale,
+                width: 150 * scale,
+                height: 40 * scale,
+                borderRadius: 6 * scale,
+              },
+            ]}
             value={minRangeValue.toString()}
             onChangeText={handleChangeMinRangeValue}
           />
           <ButtonUI
             onPress={() => console.log(props.title, minRangeValue)}
-            title={<Ionicons name="send" size={20} color="white" />}
-            btnStyle={styles.btnSend}
+            title={<Ionicons name="send" size={20 * scale} color="white" />}
+            btnStyle={{
+              width: 40 * scale,
+              height: 40 * scale,
+              borderRadius: 6 * scale,
+            }}
           />
         </View>
         <View style={styles.containerRange}>
-          <Text style={styles.labelRange}>Max :</Text>
+          <Text style={[styles.labelRange, { fontSize: 18 * scale }]}>
+            Max :
+          </Text>
           <TextInput
-            style={styles.inputRange}
+            style={[
+              styles.inputRange,
+              {
+                fontSize: 14 * scale,
+                width: 150 * scale,
+                height: 40 * scale,
+                borderRadius: 6 * scale,
+              },
+            ]}
             value={maxRangeValue.toString()}
             onChangeText={handleChangeMaxRangeValue}
           />
           <ButtonUI
             onPress={() => console.log(props.title, maxRangeValue)}
-            title={<Ionicons name="send" size={20} color="white" />}
-            btnStyle={styles.btnSend}
+            title={<Ionicons name="send" size={20 * scale} color="white" />}
+            btnStyle={{
+              width: 40 * scale,
+              height: 40 * scale,
+              borderRadius: 6 * scale,
+            }}
           />
         </View>
       </View>
@@ -125,29 +161,57 @@ const Psi = (props) => {
         {selectedOption === "voltage" && (
           <View>
             <View style={styles.inputContainerMin}>
-              <Text style={styles.labelInput}>Min voltage :</Text>
+              <Text style={[styles.labelInput, { fontSize: 16 * scale }]}>
+                Min voltage :
+              </Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    fontSize: 14 * scale,
+                    width: 90 * scale,
+                    height: 40 * scale,
+                    borderRadius: 6 * scale,
+                  },
+                ]}
                 value={minVoltageValue.toString()}
                 onChangeText={handleChangeMinVoltageValue}
               />
               <ButtonUI
                 onPress={() => console.log(props.title, minVoltageValue)}
-                title={<Ionicons name="send" size={20} color="white" />}
-                btnStyle={styles.btnSend}
+                title={<Ionicons name="send" size={20 * scale} color="white" />}
+                btnStyle={{
+                  width: 40 * scale,
+                  height: 40 * scale,
+                  borderRadius: 6 * scale,
+                }}
               />
             </View>
             <View style={styles.inputContainerMax}>
-              <Text style={styles.labelInput}>Max voltage :</Text>
+              <Text style={[styles.labelInput, { fontSize: 16 * scale }]}>
+                Max voltage :
+              </Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  {
+                    fontSize: 14 * scale,
+                    width: 90 * scale,
+                    height: 40 * scale,
+                    borderRadius: 6 * scale,
+                  },
+                ]}
                 value={maxVoltageValue.toString()}
                 onChangeText={handleChangeMaxVoltageValue}
               />
               <ButtonUI
                 onPress={() => console.log(props.title, maxVoltageValue)}
-                title={<Ionicons name="send" size={20} color="white" />}
-                btnStyle={styles.btnSend}
+                title={<Ionicons name="send" size={20 * scale} color="white" />}
+                btnStyle={{
+                  width: 40 * scale,
+                  height: 40 * scale,
+                  borderRadius: 6 * scale,
+                }}
               />
             </View>
           </View>
@@ -166,7 +230,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#eeeeee",
   },
   valveTitle: {
-    fontSize: 28,
+    // fontSize: 28,
     fontWeight: "bold",
     fontStyle: "italic",
     marginBottom: 10,
@@ -185,7 +249,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   labelRange: {
-    fontSize: 16,
+    // fontSize: 16,
     fontWeight: "bold",
   },
   inputRange: {
@@ -193,10 +257,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderRadius: 6,
-    width: "50%",
-    maxWidth: "50%",
-    height: 40,
+    // borderRadius: 6,
+    // width: "50%",
+    // maxWidth: "50%",
+    // height: 40,
   },
   inputContainerMin: {
     flexDirection: "row",
@@ -210,7 +274,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   labelInput: {
-    fontSize: 14,
+    // fontSize: 14,
     fontWeight: "bold",
   },
   input: {
@@ -219,7 +283,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderWidth: 1,
     borderRadius: 6,
-    width: "40%",
+    width: "30%",
     maxWidth: "50%",
     height: 40,
   },
