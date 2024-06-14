@@ -10,7 +10,7 @@ import RadioForm, {
 
 const Psi = (props) => {
   const { width, height } = Dimensions.get("window");
-  const scale = width / 400;
+  const scale = width / 450;
   const [minRangeValue, setMinRangeValue] = useState(7);
   const [maxRangeValue, setMaxRangeValue] = useState(13);
   const [minVoltageValue, setMinVoltageValue] = useState(3);
@@ -116,9 +116,23 @@ const Psi = (props) => {
       </View>
 
       <View style={styles.modeWrapper}>
-        <RadioForm formHorizontal={false} animation={true}>
+        <RadioForm
+          formHorizontal={false}
+          animation={true}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {options.map((obj) => (
-            <RadioButton labelHorizontal={true} key={obj.value}>
+            <RadioButton
+              labelHorizontal={true}
+              key={obj.value}
+              style={{
+                alignItems: "center",
+              }}
+            >
               <RadioButtonInput
                 obj={obj}
                 index={obj.value}
@@ -132,12 +146,10 @@ const Psi = (props) => {
                 buttonOuterColor={
                   selectedOption === obj.value ? "#000" : "#828282"
                 }
-                buttonSize={18}
-                buttonOuterSize={30}
+                buttonSize={14 * scale}
+                buttonOuterSize={26 * scale}
                 buttonStyle={{}}
-                buttonWrapStyle={{
-                  marginBottom: 2,
-                }}
+                buttonWrapStyle={{}}
               />
               <RadioButtonLabel
                 obj={obj}
@@ -147,12 +159,16 @@ const Psi = (props) => {
                   setSelectedOption(value);
                   console.log(value);
                 }}
-                labelStyle={
+                labelStyle={[
+                  { fontSize: 16 * scale, padding: 10 },
                   selectedOption === obj.value
-                    ? { color: "#000", fontSize: 18 }
-                    : { color: "#828282", fontSize: 18 }
-                }
-                labelWrapStyle={{}}
+                    ? {
+                        color: "#000",
+                      }
+                    : {
+                        color: "#828282",
+                      },
+                ]}
               />
             </RadioButton>
           ))}

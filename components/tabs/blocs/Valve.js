@@ -4,7 +4,7 @@ import Switch from "react-native-switch-toggles";
 
 const Valve = (props) => {
   const { width, height } = Dimensions.get("window");
-  const scale = width / 400;
+  const scale = width / 450;
   const [isEnabledValve, setIsEnabledValve] = useState(false);
   return (
     <View style={styles.statusWrapper}>
@@ -16,17 +16,29 @@ const Valve = (props) => {
           Status : {isEnabledValve ? <Text>ON</Text> : <Text>OFF</Text>}
         </Text>
         <Switch
-          size={30}
+          size={30 * scale}
           value={isEnabledValve}
           onChange={(value) => setIsEnabledValve(value)}
           activeTrackColor={"#45D058"}
           renderOffIndicator={() => (
-            <Text style={{ fontSize: 10, fontWeight: "bold", color: "white" }}>
+            <Text
+              style={{
+                fontSize: 10 * scale,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
               OFF
             </Text>
           )}
           renderOnIndicator={() => (
-            <Text style={{ fontSize: 10, fontWeight: "bold", color: "white" }}>
+            <Text
+              style={{
+                fontSize: 10 * scale,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
               ON
             </Text>
           )}
