@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, Dimensions } from "react-native";
+import { styles } from "../style/styles";
 
 const Arrival = (props) => {
   const cardGap = 20;
-
   const cardWidth = (Dimensions.get("window").width - cardGap * 6) / 2;
 
   return (
@@ -19,26 +13,5 @@ const Arrival = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  arrivalWrapper: {
-    marginBottom: 12,
-    backgroundColor: "white",
-    borderRadius: 16,
-    shadowOpacity: 0.2,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 70,
-    maxHeight: 100,
-  },
-  arrivalName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    fontStyle: "italic",
-  },
-  arrivalValue: {
-    fontSize: 14,
-  },
-});
 
 export default Arrival;

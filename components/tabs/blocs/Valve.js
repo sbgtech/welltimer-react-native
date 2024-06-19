@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import Switch from "react-native-switch-toggles";
+import { styles } from "../style/styles";
 
 const Valve = (props) => {
-  const { width, height } = Dimensions.get("window");
+  const { width } = Dimensions.get("window");
   const scale = width / 450;
   const [isEnabledValve, setIsEnabledValve] = useState(false);
   return (
-    <View style={styles.statusWrapper}>
-      <Text style={[styles.valveTitle, { fontSize: 28 * scale }]}>
-        {props.title}
-      </Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.valveTitle}>{props.title}</Text>
       <View style={styles.onOffStatus}>
-        <Text style={{ fontSize: 16 * scale }}>
+        <Text style={styles.onOffText}>
           Status : {isEnabledValve ? <Text>ON</Text> : <Text>OFF</Text>}
         </Text>
         <Switch
@@ -47,26 +46,5 @@ const Valve = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  statusWrapper: {
-    marginHorizontal: 26,
-    marginTop: 16,
-    padding: 20,
-    borderRadius: 14,
-    backgroundColor: "#eeeeee",
-  },
-  valveTitle: {
-    // fontSize: 28,
-    fontWeight: "bold",
-    fontStyle: "italic",
-    marginBottom: 10,
-  },
-  onOffStatus: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
 
 export default Valve;

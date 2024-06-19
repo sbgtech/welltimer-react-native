@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { Text, View, TextInput } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Toast from "react-native-toast-message";
+import { styles } from "../style/styles";
 
 const Timer = (props) => {
   const [hourValue, setHourValue] = useState("00");
@@ -61,7 +62,7 @@ const Timer = (props) => {
     setTotalSec(result);
   }, [hourValue, minValue, secValue]);
   return (
-    <View style={styles.statusWrapper}>
+    <View style={styles.wrapper}>
       <View
         style={{
           flexDirection: "row",
@@ -75,7 +76,7 @@ const Timer = (props) => {
       <View style={styles.rangeWrapper}>
         <View style={styles.containerRange}>
           <TextInput
-            style={styles.inputRange}
+            style={styles.inputTimer}
             keyboardType="numeric"
             value={hourValue}
             onChangeText={handleChangeHour}
@@ -83,7 +84,7 @@ const Timer = (props) => {
           />
           <Text style={styles.dotTimer}>:</Text>
           <TextInput
-            style={styles.inputRange}
+            style={styles.inputTimer}
             keyboardType="numeric"
             value={minValue}
             onChangeText={handleChangeMin}
@@ -91,18 +92,18 @@ const Timer = (props) => {
           />
           <Text style={styles.dotTimer}>:</Text>
           <TextInput
-            style={styles.inputRange}
+            style={styles.inputTimer}
             keyboardType="numeric"
             value={secValue}
             onChangeText={handleChangeSec}
             maxLength={2}
           />
         </View>
-        <View style={styles.containerRange}>
+        <View style={styles.containerBtnText}>
           <ButtonUI
             onPress={() => handleSendTimer()}
             title={"Send"}
-            btnStyle={styles.btnSend}
+            btnStyle={styles.btnSendText}
           />
         </View>
         <Text>Hours:{hourValue}</Text>
@@ -113,52 +114,5 @@ const Timer = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  statusWrapper: {
-    marginHorizontal: 26,
-    marginTop: 16,
-    padding: 20,
-    borderRadius: 14,
-    backgroundColor: "#eeeeee",
-  },
-  valveTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    fontStyle: "italic",
-    marginBottom: 10,
-  },
-  rangeWrapper: {
-    backgroundColor: "#ddd",
-    padding: 14,
-    borderRadius: 14,
-  },
-  containerRange: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingVertical: 10,
-  },
-  dotTimer: {
-    fontSize: 20,
-  },
-  inputRange: {
-    backgroundColor: "#fff",
-    textAlign: "center",
-    borderWidth: 1,
-    borderColor: "grey",
-    fontWeight: "bold",
-    color: "#7d7d7d",
-    fontSize: 16,
-    borderRadius: 9,
-    width: 55,
-    maxWidth: 90,
-    height: 55,
-    maxHeight: 90,
-  },
-  btnSend: {
-    width: 90,
-  },
-});
 
 export default Timer;

@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
 import Arrival from "./blocs/Arrival";
 import Psi from "./blocs/Psi";
 import Valve from "./blocs/Valve";
+import { styles } from "./style/styles";
 
 const SensorsTab = () => {
   const { width, height } = Dimensions.get("window");
@@ -15,7 +16,7 @@ const SensorsTab = () => {
         <Psi title={"Line (PSI)"} value={2000} />
         <Psi title={"Tubing (PSI)"} value={1700} />
         <Psi title={"Casing (PSI)"} value={1200} />
-        <View style={styles.arrivalWrapper}>
+        <View style={styles.arrivalContainer}>
           <Arrival name={"Arrival 1"} value={"02:40:34"} />
           <Arrival name={"Arrival 2"} value={"01:56"} />
           <Arrival name={"Arrival 3"} value={"02:40:34"} />
@@ -41,23 +42,5 @@ const SensorsTab = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#fff",
-  },
-  arrivalWrapper: {
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 26,
-    marginTop: 16,
-    padding: 20,
-    borderRadius: 14,
-    backgroundColor: "#eeeeee",
-  },
-});
 
 export default SensorsTab;

@@ -7,6 +7,7 @@ import TestTab from "./tabs/TestTab";
 import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
+import { styles } from "./tabs/style/styles";
 
 const initialLayout = { width: Dimensions.get("window").width };
 
@@ -17,6 +18,9 @@ export default function DevicePage() {
   const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+  const { width } = Dimensions.get("window");
+  const scale = width / 450;
 
   const Sensors = () => <SensorsTab />;
   const Timers = () => (
@@ -127,32 +131,16 @@ export default function DevicePage() {
           <TabBar
             {...props}
             indicatorStyle={{ backgroundColor: "#fff" }}
-            tabStyle={{ width: 100 }}
+            tabStyle={{ width: 100 * scale, height: 52 * scale }}
             scrollEnabled={true}
             style={{ backgroundColor: "#35374B" }}
             activeColor="#fff"
             inactiveColor="#b0b0b0"
             pressColor="#fff"
+            labelStyle={{ fontSize: 14 * scale }}
           />
         )}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  statusWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 15,
-    marginVertical: 10,
-  },
-  statusText: {
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-});
