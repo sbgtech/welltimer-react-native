@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   FlatList,
@@ -10,10 +9,9 @@ import {
 } from "react-native";
 import Item from "./Item";
 import { BleManager } from "react-native-ble-plx";
-import { Buffer } from "buffer";
 import ButtonUI from "./ButtonUI";
 import Toast from "react-native-toast-message";
-import TestTab from "./tabs/TestTab";
+import { styles } from "./tabs/style/styles";
 
 const bleManager = new BleManager();
 
@@ -160,17 +158,3 @@ export default function Home({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  HomeView: {
-    flex: 1,
-    backgroundColor: "#eeeeee",
-    padding: 10,
-  },
-  HomeTitle: {
-    fontSize: 26,
-    fontWeight: "bold",
-    marginHorizontal: 4,
-    marginBottom: 10,
-  },
-});

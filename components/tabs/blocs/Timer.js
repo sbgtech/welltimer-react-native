@@ -104,6 +104,7 @@ const Timer = (props) => {
             onPress={() => handleSendTimer()}
             title={"Send"}
             btnStyle={styles.btnSendText}
+            txtStyle={styles.TextSendStyle}
           />
         </View>
         <Text>Hours:{hourValue}</Text>

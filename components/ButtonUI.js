@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, Pressable } from "react-native";
 
 export default function ButtonUI(props) {
-  const { onPress, title, btnStyle, children } = props;
+  const { onPress, title, btnStyle, children, txtStyle } = props;
   return (
     <Pressable
       style={({ pressed }) => [
@@ -14,7 +14,11 @@ export default function ButtonUI(props) {
       ]}
       onPress={onPress}
     >
-      {children ? children : <Text style={styles.textStyle}>{title}</Text>}
+      {children ? (
+        children
+      ) : (
+        <Text style={[styles.textStyle, txtStyle]}>{title}</Text>
+      )}
     </Pressable>
   );
 }
@@ -25,6 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 6,
     backgroundColor: "#35374B",
+    borderRadius: 6,
   },
   textStyle: {
     color: "#fff",

@@ -65,6 +65,7 @@ const Psi = (props) => {
             onPress={() => console.log(props.title, minRangeValue)}
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSendIcon}
+            txtStyle={styles.TextSendStyle}
           />
         </View>
         <View style={styles.containerRange}>
@@ -78,6 +79,7 @@ const Psi = (props) => {
             onPress={() => console.log(props.title, maxRangeValue)}
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSendIcon}
+            txtStyle={styles.TextSendStyle}
           />
         </View>
       </View>
@@ -154,6 +156,7 @@ const Psi = (props) => {
                 onPress={() => console.log(props.title, minVoltageValue)}
                 title={<Ionicons name="send" size={20 * scale} color="white" />}
                 btnStyle={styles.btnSendIcon}
+                txtStyle={styles.TextSendStyle}
               />
             </View>
             <View style={styles.inputContainerMax}>
@@ -167,6 +170,7 @@ const Psi = (props) => {
                 onPress={() => console.log(props.title, maxVoltageValue)}
                 title={<Ionicons name="send" size={20 * scale} color="white" />}
                 btnStyle={styles.btnSendIcon}
+                txtStyle={styles.TextSendStyle}
               />
             </View>
           </View>

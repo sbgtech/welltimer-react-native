@@ -4,6 +4,112 @@ const { width } = Dimensions.get("window");
 const scale = width / 450;
 
 export const styles = StyleSheet.create({
+  // home.js
+  HomeView: {
+    flex: 1,
+    backgroundColor: "#eeeeee",
+    padding: 10,
+  },
+  HomeTitle: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginHorizontal: 4,
+    marginBottom: 10,
+  },
+  //item.js
+  itemView: {
+    backgroundColor: "#fff",
+    margin: 2,
+    padding: 8,
+    borderRadius: 9,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  itemText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    maxWidth: "70%",
+  },
+  // testtab.js
+  containerTestTab: {
+    flex: 1,
+    padding: 15,
+  },
+  box: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  testTitle: {
+    fontSize: 28 * scale,
+    fontWeight: "bold",
+  },
+  deviceBlog: {
+    marginHorizontal: 5,
+  },
+  deviceTitle: { color: "#7d7d7d", fontWeight: "bold", fontSize: 16 * scale },
+  deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
+  itemsList: {
+    backgroundColor: "#ddd",
+    padding: 6,
+    marginHorizontal: 5,
+    marginVertical: 12,
+    borderRadius: 9,
+    borderWidth: 0.5,
+  },
+  testContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 4,
+  },
+  testInput: {
+    backgroundColor: "#ddd",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderWidth: 0.5,
+    borderRadius: 9,
+    width: "80%",
+    maxWidth: "80%",
+    height: 40,
+  },
+  btnSend: {
+    width: 45,
+  },
+  msgViewContainer: {
+    margin: 2,
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    padding: 4,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    textAlign: "center",
+  },
+  msgView: {
+    justifyContent: "center",
+  },
+  itemDate: { color: "#7d7d7d", fontSize: 14 * scale },
+  itemType: {
+    fontSize: 16 * scale,
+    fontWeight: "bold",
+    color: "#7d7d7d",
+  },
+  itemText: {
+    fontSize: 18 * scale,
+    fontWeight: "bold",
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 22 * scale,
+    fontWeight: "bold",
+    color: "#35374B",
+  },
+  //
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -132,7 +238,7 @@ export const styles = StyleSheet.create({
     fontSize: 14 * scale,
   },
   dotTimer: {
-    fontSize: 20,
+    fontSize: 20 * scale,
   },
   inputTimer: {
     backgroundColor: "#fff",
@@ -151,5 +257,9 @@ export const styles = StyleSheet.create({
   btnSendText: {
     width: 90 * scale,
     borderRadius: 6 * scale,
+  },
+  TextSendStyle: {
+    fontSize: 14 * scale,
+    padding: 4 * scale,
   },
 });

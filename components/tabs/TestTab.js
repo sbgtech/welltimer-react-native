@@ -20,6 +20,7 @@ import Moment from "moment";
 import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
+import { styles } from "./style/styles";
 
 const bleManager = new BleManager();
 
@@ -125,14 +126,14 @@ const TestTab = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemViewContainer}>
-      <View style={styles.itemView}>
+    <View style={styles.msgViewContainer}>
+      <View style={styles.msgView}>
         <Text style={styles.itemType}>{item.type} :</Text>
       </View>
-      <View style={styles.itemView}>
+      <View style={styles.msgView}>
         <Text style={styles.itemText}>{item.data}</Text>
       </View>
-      <View style={styles.itemView}>
+      <View style={styles.msgView}>
         <Text style={styles.itemDate}>{Moment(item.date).format("lll")}</Text>
       </View>
     </View>
@@ -155,7 +156,7 @@ const TestTab = () => {
   return (
     <Animated.View
       style={[
-        styles.container,
+        styles.containerTestTab,
         animatedStyles,
         { backgroundColor: colorScheme === "light" ? "#fff" : "#fff" },
         { marginBottom: marginBottom },
@@ -174,18 +175,12 @@ const TestTab = () => {
                 </View>
               ))
             ) : (
-              <Text>No connected devices</Text>
+              <Text style={styles.deviceInfo}>No connected devices</Text>
             )}
           </View>
         </View>
         <FlatList
-          style={{
-            backgroundColor: "#ddd",
-            padding: 6,
-            marginHorizontal: 5,
-            marginVertical: 12,
-            borderRadius: 9,
-          }}
+          style={styles.itemsList}
           data={dataArray}
           renderItem={renderItem}
           ListEmptyComponent={handleEmpty}
@@ -202,83 +197,12 @@ const TestTab = () => {
             onPress={() => onSendMessageSubmit()}
             title={<Ionicons name="send" size={20} color="white" />}
             btnStyle={styles.btnSend}
+            txtStyle={styles.TextSendStyle}
           />
         </View>
       </View>
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-  },
-  box: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  testTitle: {
-    fontSize: 26,
-    fontWeight: "bold",
-  },
-  deviceBlog: {
-    marginHorizontal: 5,
-  },
-  deviceTitle: { color: "#7d7d7d", fontWeight: "bold" },
-  deviceInfo: { fontSize: 12, color: "#7d7d7d" },
-  testContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 3,
-  },
-  testInput: {
-    backgroundColor: "#ddd",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderWidth: 0.5,
-    borderRadius: 9,
-    width: "80%",
-    maxWidth: "80%",
-    height: 40,
-  },
-  btnSend: {
-    width: 45,
-  },
-  itemViewContainer: {
-    margin: 2,
-    backgroundColor: "#fff",
-    borderRadius: 9,
-    padding: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    textAlign: "center",
-  },
-  itemView: {
-    justifyContent: "center",
-  },
-  itemDate: { color: "#7d7d7d", fontSize: 12 },
-  itemType: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#7d7d7d",
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#35374B",
-  },
-});
 
 export default TestTab;
