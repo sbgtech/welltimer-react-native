@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemText: {
-    fontSize: 18,
+    fontSize: 20 * scale,
     fontWeight: "bold",
     maxWidth: "70%",
   },
@@ -66,16 +66,17 @@ export const styles = StyleSheet.create({
   },
   testInput: {
     backgroundColor: "#ddd",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 8 * scale,
+    paddingHorizontal: 10 * scale,
     borderWidth: 0.5,
     borderRadius: 9,
-    width: "80%",
-    maxWidth: "80%",
-    height: 40,
+    width: "85%",
+    maxWidth: "85%",
+    height: 40 * scale,
   },
   btnSend: {
-    width: 45,
+    width: 40 * scale,
+    height: 40 * scale,
   },
   msgViewContainer: {
     margin: 2,
@@ -95,7 +96,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#7d7d7d",
   },
-  itemText: {
+  itemData: {
     fontSize: 18 * scale,
     fontWeight: "bold",
   },
@@ -109,15 +110,24 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#35374B",
   },
+  // table.js
+  tableContainer: { flex: 1, backgroundColor: "#fff" },
+  tableRow: { flexDirection: "row", borderColor: "#ccc" },
+  tableCell: { flex: 1, padding: 10, borderWidth: 1, fontSize: 16 * scale },
+  tableHeader: { backgroundColor: "#35374B" },
+  tableHeaderText: {
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
   //
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  arrivalContainer: {
-    flexWrap: "wrap",
-    flexDirection: "row",
-    justifyContent: "space-between",
+  telemetryDataContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
     marginHorizontal: 26,
     marginTop: 16,
     padding: 20,
@@ -219,15 +229,30 @@ export const styles = StyleSheet.create({
     height: 40 * scale,
     borderRadius: 6 * scale,
   },
+  //
+  arrivalContainer: {
+    marginHorizontal: 26,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 14,
+    backgroundColor: "#eeeeee",
+  },
   arrivalWrapper: {
-    marginBottom: 12,
+    // marginBottom: 12,
     backgroundColor: "white",
-    borderRadius: 16,
-    shadowOpacity: 0.1,
-    justifyContent: "center",
+    borderRadius: 16 * scale,
+    padding: 2 * scale,
+    // height: 100 * scale,
+    maxHeight: 400 * scale,
+  },
+  arrivalItems: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    height: 70 * scale,
-    maxHeight: 110,
+    padding: 12 * scale,
+    marginBottom: 4 * scale,
+    borderRadius: 12 * scale,
+    backgroundColor: "#f7f7f7",
   },
   arrivalName: {
     fontWeight: "bold",

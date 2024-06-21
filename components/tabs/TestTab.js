@@ -34,6 +34,7 @@ const TestTab = () => {
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
   const { width, height } = Dimensions.get("window");
+  const scale = width / 450;
   const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
   const colorScheme = useColorScheme();
   const keyboard = useAnimatedKeyboard();
@@ -131,7 +132,7 @@ const TestTab = () => {
         <Text style={styles.itemType}>{item.type} :</Text>
       </View>
       <View style={styles.msgView}>
-        <Text style={styles.itemText}>{item.data}</Text>
+        <Text style={styles.itemData}>{item.data}</Text>
       </View>
       <View style={styles.msgView}>
         <Text style={styles.itemDate}>{Moment(item.date).format("lll")}</Text>
@@ -195,7 +196,7 @@ const TestTab = () => {
           />
           <ButtonUI
             onPress={() => onSendMessageSubmit()}
-            title={<Ionicons name="send" size={20} color="white" />}
+            title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
           />
