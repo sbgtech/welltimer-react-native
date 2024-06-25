@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import "react-native-gesture-handler";
 import "react-native-reanimated";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -12,13 +12,22 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <StatusBar backgroundColor={"#35374B"} />
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: { backgroundColor: "#35374B" },
+          headerTintColor: "#fff",
+        }}
+      >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
         <Stack.Screen
           name="DevicePage"
           component={DevicePage}
-          options={{ title: "Device settings" }}
+          options={{
+            title: "Device settings",
+          }}
         />
       </Stack.Navigator>
       <Toast />
