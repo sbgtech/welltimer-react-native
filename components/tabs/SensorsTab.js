@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, Dimensions } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import Arrival from "./blocs/Arrival";
 import Psi from "./blocs/Psi";
 import Valve from "./blocs/Valve";
@@ -20,12 +20,14 @@ const SensorsTab = () => {
       column2: "00:01:12",
     },
   ];
-  const { height } = Dimensions.get("window");
-  const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
 
   return (
     <ScrollView>
-      <View style={[styles.container, { marginBottom: marginBottom }]}>
+      <View style={[styles.container, styles.marginBottomContainer]}>
+        <View style={styles.statusWrapper}>
+          <Text style={styles.statusText}>Status</Text>
+          <Text style={styles.statusValue}>05:02:22</Text>
+        </View>
         <Valve title={"Valve A"} />
         <Psi title={"Line (PSI)"} value={2000} />
         <Psi title={"Tubing (PSI)"} value={1700} />

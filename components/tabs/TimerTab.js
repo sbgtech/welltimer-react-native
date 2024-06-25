@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
-import { View, Dimensions, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import Timer from "./blocs/Timer";
-import { useAnimatedKeyboard, useAnimatedStyle } from "react-native-reanimated";
 import { styles } from "./style/styles";
 
 const TimerTab = (props) => {
-  const { width, height } = Dimensions.get("window");
-  const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
-  const keyboard = useAnimatedKeyboard();
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: -keyboard.height.value }],
-  }));
-
   useEffect(() => {}, []);
 
   return (
     <ScrollView>
-      <View style={[styles.container, { marginBottom: marginBottom }]}>
+      <View style={[styles.container, styles.marginBottomContainer]}>
         <Timer
           sendData={props.sendData}
           connectedDevice={props.connectedDevice}

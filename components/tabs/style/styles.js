@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
 const scale = width / 450;
 
 export const styles = StyleSheet.create({
@@ -45,8 +46,14 @@ export const styles = StyleSheet.create({
     fontSize: 28 * scale,
     fontWeight: "bold",
   },
-  deviceBlog: {
-    marginHorizontal: 5,
+  deviceBloc: {
+    marginHorizontal: 15,
+    marginVertical: 10,
+  },
+  deviceTitleBtnBloc: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   deviceTitle: { color: "#7d7d7d", fontWeight: "bold", fontSize: 16 * scale },
   deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
@@ -120,7 +127,78 @@ export const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
-  //
+  //button.js
+  buttonStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 6,
+    backgroundColor: "#35374B",
+    borderRadius: 6,
+  },
+  buttonTextStyle: {
+    color: "#fff",
+    fontSize: 16,
+    padding: 4,
+  },
+  // settingsTab.js
+  titleSettings: {
+    fontSize: 16 * scale,
+    fontWeight: "bold",
+    margin: 4 * scale,
+  },
+  inputSettings: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 10 * scale,
+    margin: 2 * scale,
+    borderWidth: 0.5,
+    borderRadius: 9 * scale,
+    width: "100%",
+    maxWidth: "100%",
+    height: 40 * scale,
+  },
+  settingsSection: { marginBottom: 20 },
+  // dropdown.js
+  dropdownButtonStyle: {
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    borderWidth: 0.5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    width: "100%",
+    maxWidth: "100%",
+    height: 30,
+  },
+  dropdownButtonTxtStyle: {
+    flex: 1,
+    fontSize: 16,
+  },
+  dropdownButtonArrowStyle: {
+    fontSize: 20,
+  },
+  dropdownMenuStyle: {
+    backgroundColor: "#eeeeee",
+    borderRadius: 9,
+  },
+  dropdownItemStyle: {
+    width: "100%",
+    flexDirection: "row",
+    paddingHorizontal: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  dropdownItemTxtStyle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#151E26",
+  },
+  //sensorsTab.js
+  marginBottomContainer: {
+    marginBottom: marginBottom,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -135,13 +213,19 @@ export const styles = StyleSheet.create({
     backgroundColor: "#eeeeee",
   },
   statusWrapper: {
+    marginHorizontal: 26,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 14,
+    backgroundColor: "#eeeeee",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 15,
-    marginVertical: 10,
   },
   statusText: {
     fontWeight: "bold",
+    fontSize: 18 * scale,
+  },
+  statusValue: {
     fontSize: 18 * scale,
   },
   wrapper: {
@@ -165,7 +249,11 @@ export const styles = StyleSheet.create({
   onOffText: {
     fontSize: 16 * scale,
   },
-  rangeWrapper: { backgroundColor: "#ddd", padding: 10, borderRadius: 14 },
+  rangeWrapper: {
+    backgroundColor: "#ddd",
+    padding: 10,
+    borderRadius: 14,
+  },
   rangeText: { fontSize: 22 * scale, fontWeight: "bold" },
   modeWrapper: {
     backgroundColor: "#ddd",
@@ -228,6 +316,10 @@ export const styles = StyleSheet.create({
     width: 40 * scale,
     height: 40 * scale,
     borderRadius: 6 * scale,
+  },
+  activityIndicator: {
+    width: 40 * scale,
+    height: 40 * scale,
   },
   //
   arrivalContainer: {

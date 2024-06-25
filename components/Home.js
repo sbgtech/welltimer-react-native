@@ -143,6 +143,7 @@ export default function Home({ navigation }) {
           setScanning(!scanning);
         }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
+        loading={false}
       />
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.HomeTitle}>Available devices </Text>

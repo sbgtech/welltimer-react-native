@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Text, Dimensions, Alert } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import SensorsTab from "./tabs/SensorsTab";
 import TimerTab from "./tabs/TimerTab";
@@ -8,12 +8,14 @@ import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
+import SettingsTab from "./tabs/SettingsTab";
+import ButtonUI from "./ButtonUI";
 
 const initialLayout = { width: Dimensions.get("window").width };
 
 const bleManager = new BleManager();
 
-export default function DevicePage() {
+export default function DevicePage({ navigation }) {
   const [connectedDevice, setConnectedDevice] = useState([]);
   const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
@@ -26,17 +28,15 @@ export default function DevicePage() {
   const Timers = () => (
     <TimerTab sendData={sendData} connectedDevice={connectedDevice[0]} />
   );
-  const ThirdRoute = () => (
-    <View style={{ flex: 1, backgroundColor: "#fff" }} />
-  );
-  const TestMode = () => <TestTab />;
+  const Settings = () => <SettingsTab />;
+  const TestMode = () => <TestTab connectedDevice={connectedDevice[0]} />;
 
   const [state, setState] = useState({
     index: 0,
     routes: [
       { key: "sensor", title: "Sensors" },
       { key: "timer", title: "Timers" },
-      { key: "third", title: "Third" },
+      { key: "settings", title: "Settings" },
       { key: "test", title: "Test" },
     ],
   });
@@ -108,18 +108,70 @@ export default function DevicePage() {
       });
   };
 
+  const disconnectFromDevice = async () => {
+    try {
+      if (connectedDevice[0]) {
+        await connectedDevice[0].cancelConnection();
+        setConnectedDevice([]);
+        console.log("Disconnected from device:", connectedDevice[0].name);
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      if (error.message === "Operation was cancelled") {
+        // Handle cancellation gracefully (optional)
+        console.log("Disconnect operation was cancelled.");
+      } else {
+        console.error("Error disconnecting from device:", error);
+      }
+    }
+  };
+
+  const handleDisconnect = () => {
+    Alert.alert(
+      "Disconnect",
+      "Are you sure you want to disconnect from the device?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel disconnect"),
+          style: "cancel",
+        },
+        { text: "Disconnect", onPress: () => disconnectFromDevice() },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.statusWrapper}>
-        <Text style={styles.statusText}>Status</Text>
-        <Text style={styles.statusText}>05:02:22</Text>
+      <View style={styles.deviceBloc}>
+        <View style={styles.deviceTitleBtnBloc}>
+          <Text style={styles.deviceTitle}>Connected Devices:</Text>
+          <ButtonUI
+            onPress={() => handleDisconnect()}
+            title={"Disconnect"}
+            btnStyle={styles.btnSendText}
+            txtStyle={styles.TextSendStyle}
+            loading={false}
+          />
+        </View>
+        {connectedDevice.length > 0 ? (
+          <View key={connectedDevice[0].id}>
+            <Text style={styles.deviceInfo}>
+              Name: {connectedDevice[0].name}
+            </Text>
+            <Text style={styles.deviceInfo}>ID: {connectedDevice[0].id}</Text>
+          </View>
+        ) : (
+          <Text style={styles.deviceInfo}>No connected devices</Text>
+        )}
       </View>
       <TabView
         navigationState={state}
         renderScene={SceneMap({
           sensor: Sensors,
           timer: Timers,
-          third: ThirdRoute,
+          settings: Settings,
           test: TestMode,
         })}
         onIndexChange={(index) => setState({ ...state, index })}

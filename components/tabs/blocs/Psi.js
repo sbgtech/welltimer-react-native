@@ -66,6 +66,7 @@ const Psi = (props) => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSendIcon}
             txtStyle={styles.TextSendStyle}
+            loading={true}
           />
         </View>
         <View style={styles.containerRange}>
@@ -80,6 +81,7 @@ const Psi = (props) => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSendIcon}
             txtStyle={styles.TextSendStyle}
+            loading={true}
           />
         </View>
       </View>
@@ -157,6 +159,7 @@ const Psi = (props) => {
                 title={<Ionicons name="send" size={20 * scale} color="white" />}
                 btnStyle={styles.btnSendIcon}
                 txtStyle={styles.TextSendStyle}
+                loading={true}
               />
             </View>
             <View style={styles.inputContainerMax}>
@@ -171,6 +174,7 @@ const Psi = (props) => {
                 title={<Ionicons name="send" size={20 * scale} color="white" />}
                 btnStyle={styles.btnSendIcon}
                 txtStyle={styles.TextSendStyle}
+                loading={true}
               />
             </View>
           </View>

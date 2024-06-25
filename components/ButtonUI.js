@@ -1,39 +1,41 @@
-import React from "react";
-import { Text, StyleSheet, Pressable } from "react-native";
+import React, { useState } from "react";
+import { Text, Pressable, View, ActivityIndicator } from "react-native";
+import { styles } from "./tabs/style/styles";
 
 export default function ButtonUI(props) {
-  const { onPress, title, btnStyle, children, txtStyle } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const { onPress, title, btnStyle, children, txtStyle, loading } = props;
+  const handleSubmit = () => {
+    setIsLoading(true);
+    onPress();
+    setTimeout(() => {
+      setIsLoading(false); // Set loading to false after operation completes
+    }, 3000); // Simulate 2 seconds of loading
+  };
   return (
-    <Pressable
-      style={({ pressed }) => [
-        {
-          opacity: pressed ? 0.5 : 1,
-        },
-        styles.button,
-        btnStyle,
-      ]}
-      onPress={onPress}
-    >
-      {children ? (
-        children
+    <View>
+      {isLoading ? (
+        <View style={styles.activityIndicator}>
+          <ActivityIndicator color={"#000"} size={"small"} />
+        </View>
       ) : (
-        <Text style={[styles.textStyle, txtStyle]}>{title}</Text>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.5 : 1,
+            },
+            styles.buttonStyle,
+            btnStyle,
+          ]}
+          onPress={loading ? handleSubmit : onPress}
+        >
+          {children ? (
+            children
+          ) : (
+            <Text style={[styles.buttonTextStyle, txtStyle]}>{title}</Text>
+          )}
+        </Pressable>
       )}
-    </Pressable>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 6,
-    backgroundColor: "#35374B",
-    borderRadius: 6,
-  },
-  textStyle: {
-    color: "#fff",
-    fontSize: 16,
-    padding: 4,
-  },
-});

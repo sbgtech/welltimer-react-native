@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   TextInput,
@@ -17,25 +16,20 @@ import Animated, {
 import ButtonUI from "../ButtonUI";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Moment from "moment";
-import { BleManager } from "react-native-ble-plx";
 import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
 import { styles } from "./style/styles";
 
-const bleManager = new BleManager();
-
-const TestTab = () => {
+const TestTab = (props) => {
   const [message, setMessage] = useState("");
-
-  const [connectedDevice, setConnectedDevice] = useState([]);
   const [dataArray, setDataArray] = useState([]);
   const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
 
-  const { width, height } = Dimensions.get("window");
+  const { width } = Dimensions.get("window");
   const scale = width / 450;
-  const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
+
   const colorScheme = useColorScheme();
   const keyboard = useAnimatedKeyboard();
   const animatedStyles = useAnimatedStyle(() => ({
@@ -49,7 +43,7 @@ const TestTab = () => {
 
   const onSendMessageSubmit = async () => {
     if (message !== "") {
-      sendData(connectedDevice[0], message + "\n");
+      sendData(props.connectedDevice, message + "\n");
       setMessage("");
     } else {
       Alert.alert("Warning", "Data required");
@@ -57,18 +51,7 @@ const TestTab = () => {
   };
 
   useEffect(() => {
-    // when page refreshed
-    const checkDeviceConnection = async () => {
-      const connectedDevices = await bleManager.connectedDevices([
-        UART_SERVICE_UUID,
-      ]);
-      if (connectedDevices.length > 0) {
-        setConnectedDevice(connectedDevices);
-        console.log("ready to receive data from test mode");
-        receiveData(connectedDevices[0]);
-      }
-    };
-    checkDeviceConnection();
+    receiveData(props.connectedDevice);
   }, []);
 
   const addObject = (data, type) => {
@@ -77,7 +60,7 @@ const TestTab = () => {
     // Update state by creating a new array with the previous contents plus the new object
     setDataArray((prevArray) => [...prevArray, newObj]);
   };
-  // function for receiving data
+  // function for receiving data only for testing mode
   const receiveData = (device) => {
     device?.monitorCharacteristicForService(
       UART_SERVICE_UUID,
@@ -96,7 +79,7 @@ const TestTab = () => {
     );
   };
 
-  // function for sending data
+  // function for sending data only for testing mode
   const sendData = (device, data) => {
     const buffer = Buffer.from(data, "utf-8");
     device
@@ -111,7 +94,7 @@ const TestTab = () => {
         Toast.show({
           type: "success",
           text1: "Success",
-          text2: "Data sent to " + connectedDevice[0].name,
+          text2: "Data sent to " + props.connectedDevice.name,
           visibilityTime: 3000,
         });
       })
@@ -120,7 +103,7 @@ const TestTab = () => {
         Toast.show({
           type: "error",
           text1: "Error",
-          text2: "Error to send data to " + connectedDevice[0].name,
+          text2: "Error to send data to " + props.connectedDevice.name,
           visibilityTime: 3000,
         });
       });
@@ -160,25 +143,12 @@ const TestTab = () => {
         styles.containerTestTab,
         animatedStyles,
         { backgroundColor: colorScheme === "light" ? "#fff" : "#fff" },
-        { marginBottom: marginBottom },
+        styles.marginBottomContainer,
       ]}
     >
       <View style={styles.box}>
         <View>
           <Text style={styles.testTitle}>Test mode :</Text>
-          <View style={styles.deviceBlog}>
-            <Text style={styles.deviceTitle}>Connected Devices:</Text>
-            {connectedDevice.length > 0 ? (
-              connectedDevice.map((device) => (
-                <View key={device.id}>
-                  <Text style={styles.deviceInfo}>Name: {device.name}</Text>
-                  <Text style={styles.deviceInfo}>ID: {device.id}</Text>
-                </View>
-              ))
-            ) : (
-              <Text style={styles.deviceInfo}>No connected devices</Text>
-            )}
-          </View>
         </View>
         <FlatList
           style={styles.itemsList}
@@ -199,6 +169,7 @@ const TestTab = () => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
+            loading={true}
           />
         </View>
       </View>
