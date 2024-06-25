@@ -169,7 +169,7 @@ const TestTab = (props) => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
-            loading={true}
+            loading={false}
           />
         </View>
       </View>

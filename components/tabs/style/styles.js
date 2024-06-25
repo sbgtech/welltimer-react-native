@@ -1,7 +1,8 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width, height } = Dimensions.get("window");
-const marginBottom = height * 0.05; // Adjust 0.05 as needed for your layout
+const marginBottomAndroid = height * 0.09; // Adjust 0.05 as needed for your layout
+const marginBottomIOS = height * 0.05; // Adjust 0.05 as needed for your layout
 const scale = width / 450;
 
 export const styles = StyleSheet.create({
@@ -58,18 +59,18 @@ export const styles = StyleSheet.create({
   deviceTitle: { color: "#7d7d7d", fontWeight: "bold", fontSize: 16 * scale },
   deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
   itemsList: {
-    backgroundColor: "#ddd",
-    padding: 6,
-    marginHorizontal: 5,
-    marginVertical: 12,
-    borderRadius: 9,
+    backgroundColor: "#fff",
+    paddingVertical: 4 * scale,
+    marginHorizontal: 5 * scale,
+    marginVertical: 16 * scale,
+    borderRadius: 9 * scale,
     borderWidth: 0.5,
   },
   testContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 4,
+    padding: 4 * scale,
   },
   testInput: {
     backgroundColor: "#ddd",
@@ -86,10 +87,11 @@ export const styles = StyleSheet.create({
     height: 40 * scale,
   },
   msgViewContainer: {
-    margin: 2,
-    backgroundColor: "#fff",
-    borderRadius: 9,
-    padding: 4,
+    marginBottom: 10 * scale,
+    marginHorizontal: 6 * scale,
+    backgroundColor: "#f7f7f7",
+    borderRadius: 9 * scale,
+    padding: 4 * scale,
     flexDirection: "row",
     justifyContent: "space-between",
     textAlign: "center",
@@ -114,6 +116,12 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 22 * scale,
+    fontWeight: "bold",
+    color: "#35374B",
+  },
+  emptyTextHome: {
+    fontSize: 20 * scale,
+    fontStyle: "italic",
     fontWeight: "bold",
     color: "#35374B",
   },
@@ -197,7 +205,8 @@ export const styles = StyleSheet.create({
   },
   //sensorsTab.js
   marginBottomContainer: {
-    marginBottom: marginBottom,
+    marginBottom:
+      Platform.OS === "android" ? marginBottomAndroid : marginBottomIOS,
   },
   container: {
     flex: 1,
@@ -264,7 +273,7 @@ export const styles = StyleSheet.create({
   containerRange: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     paddingVertical: 10,
   },
   containerBtnText: {

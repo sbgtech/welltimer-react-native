@@ -147,13 +147,15 @@ export default function DevicePage({ navigation }) {
       <View style={styles.deviceBloc}>
         <View style={styles.deviceTitleBtnBloc}>
           <Text style={styles.deviceTitle}>Connected Devices:</Text>
-          <ButtonUI
-            onPress={() => handleDisconnect()}
-            title={"Disconnect"}
-            btnStyle={styles.btnSendText}
-            txtStyle={styles.TextSendStyle}
-            loading={false}
-          />
+          {connectedDevice.length > 0 && (
+            <ButtonUI
+              onPress={() => handleDisconnect()}
+              title={"Disconnect"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={false}
+            />
+          )}
         </View>
         {connectedDevice.length > 0 ? (
           <View key={connectedDevice[0].id}>

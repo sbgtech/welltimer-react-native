@@ -26,7 +26,7 @@ const Arrival = () => {
     { name: "Arrival 20", value: "00:09:56" },
   ];
   return (
-    <ScrollView style={styles.arrivalWrapper}>
+    <ScrollView style={styles.arrivalWrapper} nestedScrollEnabled={true}>
       {dataArray.map((data, index) => (
         <View key={index} style={styles.arrivalItems}>
           <Text style={styles.arrivalName}>{data.name} :</Text>
