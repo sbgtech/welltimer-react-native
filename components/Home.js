@@ -139,12 +139,6 @@ export default function Home({ navigation }) {
   const handleEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
-        {/* <Image
-          alt="App Logo"
-          resizeMode="contain"
-          style={{ width: 300, height: 300, opacity: 0.3 }}
-          source={require("../assets/ble-scan.png")}
-        /> */}
         <Text style={styles.emptyTextHome}> No available devices yet!</Text>
       </View>
     );
@@ -160,7 +154,8 @@ export default function Home({ navigation }) {
         loading={false}
       />
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.HomeTitle}>Available devices </Text>
+        <Text style={styles.HomeTitle}>Available devices</Text>
+        <Text style={styles.HomeCountDevices}>({devices.length})</Text>
         {scanning && <ActivityIndicator size="small" color="#35374B" />}
       </View>
       <FlatList

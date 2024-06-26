@@ -38,6 +38,15 @@ const SettingsTab = () => {
           />
           <Text style={styles.titleSettings}>Well depth :</Text>
           <TextInput style={styles.inputSettings} value="0" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>Afterflow time (hrs) :</Text>
@@ -46,6 +55,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1" />
           <Text style={styles.titleSettings}>Afterflow time (sec) :</Text>
           <TextInput style={styles.inputSettings} value="6" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>Open Time (hrs) :</Text>
@@ -54,6 +72,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="10" />
           <Text style={styles.titleSettings}>Open Time (sec) :</Text>
           <TextInput style={styles.inputSettings} value="12" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>Shutin Time (hrs) :</Text>
@@ -62,6 +89,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1" />
           <Text style={styles.titleSettings}>Shutin Time (sec) :</Text>
           <TextInput style={styles.inputSettings} value="12" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>Mandatory Time (hrs) :</Text>
@@ -70,6 +106,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1" />
           <Text style={styles.titleSettings}>Mandatory Time (sec) :</Text>
           <TextInput style={styles.inputSettings} value="15" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>HiLo mode enable :</Text>
@@ -81,6 +126,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="500" />
           <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
           <TextInput style={styles.inputSettings} value="0" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>LP Sensor type :</Text>
@@ -89,6 +143,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1000" />
           <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
           <TextInput style={styles.inputSettings} value="0" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>CP Sensor type :</Text>
@@ -97,6 +160,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1000" />
           <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
           <TextInput style={styles.inputSettings} value="0" />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
           <Text style={styles.titleSettings}>TP Sensor type :</Text>
@@ -105,15 +177,15 @@ const SettingsTab = () => {
           <TextInput style={styles.inputSettings} value="1000" />
           <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
           <TextInput style={styles.inputSettings} value="0" />
-        </View>
-        <View style={styles.containerBtnText}>
-          <ButtonUI
-            onPress={() => handleSendSettings()}
-            title={"Send"}
-            btnStyle={styles.btnSendText}
-            txtStyle={styles.TextSendStyle}
-            loading={true}
-          />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleSendSettings()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+              loading={true}
+            />
+          </View>
         </View>
       </View>
     </ScrollView>

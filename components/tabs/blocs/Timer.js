@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, ActivityIndicator } from "react-native";
+import { Text, View, TextInput, Modal } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "../style/styles";
@@ -105,7 +105,7 @@ const Timer = (props) => {
             title={"Send"}
             btnStyle={styles.btnSendText}
             txtStyle={styles.TextSendStyle}
-            loading={true}
+            loading={false}
           />
         </View>
         <Text>Hours:{hourValue}</Text>

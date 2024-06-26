@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Dimensions, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Dimensions,
+  Alert,
+  ActivityIndicator,
+  Modal,
+} from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import SensorsTab from "./tabs/SensorsTab";
 import TimerTab from "./tabs/TimerTab";
@@ -17,6 +24,7 @@ const bleManager = new BleManager();
 
 export default function DevicePage({ navigation }) {
   const [connectedDevice, setConnectedDevice] = useState([]);
+  const [loading, setLoading] = useState(false);
   const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
@@ -75,6 +83,7 @@ export default function DevicePage({ navigation }) {
           "utf-8"
         );
         console.log("Received data:", msg);
+        setLoading(false);
       }
     );
   };
@@ -96,6 +105,7 @@ export default function DevicePage({ navigation }) {
           text2: "Data sent to " + connectedDevice[0].name,
           visibilityTime: 3000,
         });
+        setLoading(true);
       })
       .catch((error) => {
         console.error(error);
@@ -195,6 +205,14 @@ export default function DevicePage({ navigation }) {
           />
         )}
       />
+      <Modal animationType="slide" transparent={true} visible={loading}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.waitingMsg}>Wait</Text>
+            <ActivityIndicator color={"#35374B"} size={"large"} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

@@ -8,6 +8,8 @@ import {
   Image,
   Alert,
   Dimensions,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
 import Animated, {
   useAnimatedKeyboard,
@@ -22,6 +24,7 @@ import { styles } from "./style/styles";
 
 const TestTab = (props) => {
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [dataArray, setDataArray] = useState([]);
   const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
   const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
@@ -45,6 +48,7 @@ const TestTab = (props) => {
     if (message !== "") {
       sendData(props.connectedDevice, message + "\n");
       setMessage("");
+      setLoading(true);
     } else {
       Alert.alert("Warning", "Data required");
     }
@@ -75,6 +79,7 @@ const TestTab = (props) => {
         );
         console.log("Received data from test mode :", msg);
         addObject(msg, "RX"); // Adding a new object to the array
+        setLoading(false);
       }
     );
   };
@@ -172,6 +177,14 @@ const TestTab = (props) => {
             loading={false}
           />
         </View>
+        <Modal animationType="slide" transparent={true} visible={loading}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.waitingMsg}>Wait</Text>
+              <ActivityIndicator color={"#35374B"} size={"large"} />
+            </View>
+          </View>
+        </Modal>
       </View>
     </Animated.View>
   );

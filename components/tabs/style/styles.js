@@ -18,6 +18,9 @@ export const styles = StyleSheet.create({
     marginHorizontal: 4,
     marginBottom: 10,
   },
+  HomeCountDevices: {
+    fontSize: 16 * scale,
+  },
   //item.js
   itemView: {
     backgroundColor: "#fff",
@@ -123,7 +126,7 @@ export const styles = StyleSheet.create({
     fontSize: 20 * scale,
     fontStyle: "italic",
     fontWeight: "bold",
-    color: "#35374B",
+    color: "#b5b5b5",
   },
   // table.js
   tableContainer: { flex: 1, backgroundColor: "#fff" },
@@ -147,6 +150,23 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     padding: 4,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent background
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 34 * scale,
+    borderRadius: 9 * scale,
+    alignItems: "center",
+  },
+  waitingMsg: {
+    fontSize: 20 * scale,
+    fontWeight: "bold",
+    color: "#35374B",
   },
   // settingsTab.js
   titleSettings: {
@@ -326,10 +346,7 @@ export const styles = StyleSheet.create({
     height: 40 * scale,
     borderRadius: 6 * scale,
   },
-  activityIndicator: {
-    width: 40 * scale,
-    height: 40 * scale,
-  },
+
   //
   arrivalContainer: {
     marginHorizontal: 26,
