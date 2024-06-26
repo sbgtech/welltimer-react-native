@@ -17,6 +17,11 @@ import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
 import SettingsTab from "./tabs/SettingsTab";
 import ButtonUI from "./ButtonUI";
+import {
+  UART_SERVICE_UUID,
+  UART_TX_CHARACTERISTIC_UUID,
+  UART_RX_CHARACTERISTIC_UUID,
+} from "./Utils/Constants";
 
 const initialLayout = { width: Dimensions.get("window").width };
 
@@ -25,10 +30,6 @@ const bleManager = new BleManager();
 export default function DevicePage({ navigation }) {
   const [connectedDevice, setConnectedDevice] = useState([]);
   const [loading, setLoading] = useState(false);
-  const UART_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_TX_CHARACTERISTIC_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
-  const UART_RX_CHARACTERISTIC_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
-
   const { width } = Dimensions.get("window");
   const scale = width / 450;
 
