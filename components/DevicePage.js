@@ -30,93 +30,78 @@ const bleManager = new BleManager();
 export default function DevicePage({ navigation }) {
   const [connectedDevice, setConnectedDevice] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dataReceived, setDataReceived] = useState(false);
+  const [dataArray, setDataArray] = useState([]);
   const { width } = Dimensions.get("window");
   const scale = width / 450;
 
   const Sensors = () => <SensorsTab />;
   const Timers = () => (
-    <TimerTab sendData={sendData} connectedDevice={connectedDevice[0]} />
+    <TimerTab
+      // sendData={sendData}
+      connectedDevice={connectedDevice[0]}
+    />
   );
   const Settings = () => <SettingsTab />;
-  const TestMode = () => <TestTab connectedDevice={connectedDevice[0]} />;
+  const TestMode = () => (
+    <TestTab
+      dataArray={dataArray}
+      // sendData={sendData}
+      connectedDevice={connectedDevice[0]}
+    />
+  );
 
-  const [state, setState] = useState({
-    index: 0,
-    routes: [
-      { key: "sensor", title: "Sensors" },
-      { key: "timer", title: "Timers" },
-      { key: "settings", title: "Settings" },
-      { key: "test", title: "Test" },
-    ],
-  });
+  const [index, setIndex] = useState(0);
+  const routes = [
+    { key: "sensor", title: "Sensors" },
+    { key: "timer", title: "Timers" },
+    { key: "settings", title: "Settings" },
+    { key: "test", title: "Test" },
+  ];
+
+  const handleIndexChange = (newIndex) => {
+    setIndex(newIndex); // Update state with new index
+  };
 
   useEffect(() => {
-    console.log("enter page");
-    // when page refreshed
+    console.log("page number ", index);
     const checkDeviceConnection = async () => {
       const connectedDevices = await bleManager.connectedDevices([
         UART_SERVICE_UUID,
       ]);
       if (connectedDevices.length > 0) {
         setConnectedDevice(connectedDevices);
-        console.log("ready to receive data");
-        receiveData(connectedDevices[0]);
+        sendReq();
       }
     };
-    checkDeviceConnection();
-    // Cleanup function to stop scanning when component unmounts
-    return () => {
-      console.log("leaving page");
-    };
-  }, []);
 
-  // function for receiving data
-  const receiveData = (device) => {
-    device?.monitorCharacteristicForService(
-      UART_SERVICE_UUID,
-      UART_RX_CHARACTERISTIC_UUID,
-      (error, characteristic) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
-        const msg = Buffer.from(characteristic.value, "base64").toString(
-          "utf-8"
-        );
-        console.log("Received data:", msg);
-        setLoading(false);
-      }
-    );
+    checkDeviceConnection();
+  }, [loading, dataReceived, index]);
+
+  const addObject = (data, type) => {
+    const newObj = { date: Date.now(), data: data, type: type };
+    setDataArray((prevArray) => [...prevArray, newObj]);
   };
 
+  // function for receiving data
+  const receiveData = async (device) => {};
+
   // function for sending data
-  const sendData = (device, data) => {
+  const sendReq = () => {
+    const data = "0x0" + index + " \n";
     const buffer = Buffer.from(data, "utf-8");
-    device
-      ?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      )
-      .then((characteristic) => {
-        console.log("Sent data: ", data);
-        Toast.show({
-          type: "success",
-          text1: "Success",
-          text2: "Data sent to " + connectedDevice[0].name,
-          visibilityTime: 3000,
-        });
-        setLoading(true);
-      })
-      .catch((error) => {
-        console.error(error);
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: "Error to send data to " + connectedDevice[0].name,
-          visibilityTime: 3000,
-        });
-      });
+    connectedDevice[0]?.writeCharacteristicWithResponseForService(
+      UART_SERVICE_UUID,
+      UART_TX_CHARACTERISTIC_UUID,
+      buffer.toString("base64")
+    );
+    Toast.show({
+      type: "info",
+      text1: "Info",
+      text2: "Data sent " + data,
+      visibilityTime: 3000,
+    });
+    console.log("data sent : ", data);
   };
 
   const disconnectFromDevice = async () => {
@@ -156,17 +141,8 @@ export default function DevicePage({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.deviceBloc}>
-        <View style={styles.deviceTitleBtnBloc}>
+        <View>
           <Text style={styles.deviceTitle}>Connected Devices:</Text>
-          {connectedDevice.length > 0 && (
-            <ButtonUI
-              onPress={() => handleDisconnect()}
-              title={"Disconnect"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-              loading={false}
-            />
-          )}
         </View>
         {connectedDevice.length > 0 ? (
           <View key={connectedDevice[0].id}>
@@ -178,16 +154,37 @@ export default function DevicePage({ navigation }) {
         ) : (
           <Text style={styles.deviceInfo}>No connected devices</Text>
         )}
+        {connectedDevice.length > 0 && (
+          <View style={styles.deviceBtnsBloc}>
+            <ButtonUI
+              onPress={() => navigation.navigate("TestMode")}
+              title={"Test mode"}
+              btnStyle={styles.deviceBtns}
+              txtStyle={styles.TextSendStyle}
+              loading={false}
+            />
+            <ButtonUI
+              onPress={() => handleDisconnect()}
+              title={"Disconnect"}
+              btnStyle={styles.deviceBtns}
+              txtStyle={styles.TextSendStyle}
+              loading={false}
+            />
+            <Text>
+              {dataReceived ? "Data received!" : "Waiting for data..."}
+            </Text>
+          </View>
+        )}
       </View>
       <TabView
-        navigationState={state}
+        navigationState={{ index, routes }}
         renderScene={SceneMap({
           sensor: Sensors,
           timer: Timers,
           settings: Settings,
           test: TestMode,
         })}
-        onIndexChange={(index) => setState({ ...state, index })}
+        onIndexChange={handleIndexChange}
         initialLayout={initialLayout}
         scrollEnabled={true}
         swipeEnabled={true}

@@ -7,6 +7,7 @@ import Item from "./components/Item";
 import Home from "./components/Home";
 import DevicePage from "./components/DevicePage";
 import Toast from "react-native-toast-message";
+import TestMode from "./components/TestMode";
 
 const Stack = createStackNavigator();
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
+        <Stack.Screen name="TestMode" component={TestMode} />
         <Stack.Screen
           name="DevicePage"
           component={DevicePage}

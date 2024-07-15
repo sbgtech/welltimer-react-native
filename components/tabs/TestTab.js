@@ -30,7 +30,10 @@ import {
 const TestTab = (props) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  //   const [received, setReceived] = useState(false);
   const [dataArray, setDataArray] = useState([]);
+  const [connectedDevice, setConnectedDevice] = useState([]);
+  const [dataSent, setDataSent] = useState(false);
   const { width } = Dimensions.get("window");
   const scale = width / 450;
 
@@ -47,72 +50,72 @@ const TestTab = (props) => {
 
   const onSendMessageSubmit = async () => {
     if (message !== "") {
-      sendData(props.connectedDevice, message + "\n");
+      await props.sendData(message + "\n");
       setMessage("");
-      setLoading(true);
     } else {
       Alert.alert("Warning", "Data required");
     }
   };
 
-  useEffect(() => {
-    receiveData(props.connectedDevice);
-  }, []);
+  useEffect(() => {}, []);
 
   const addObject = (data, type) => {
-    // Create a new object
     const newObj = { date: Date.now(), data: data, type: type };
-    // Update state by creating a new array with the previous contents plus the new object
     setDataArray((prevArray) => [...prevArray, newObj]);
   };
+
   // function for receiving data only for testing mode
   const receiveData = (device) => {
-    device?.monitorCharacteristicForService(
-      UART_SERVICE_UUID,
-      UART_RX_CHARACTERISTIC_UUID,
-      (error, characteristic) => {
-        if (error) {
-          console.error(error);
-          return;
+    try {
+      device?.monitorCharacteristicForService(
+        UART_SERVICE_UUID,
+        UART_RX_CHARACTERISTIC_UUID,
+        async (error, characteristic) => {
+          if (error) {
+            console.error(error);
+            return false;
+          }
+          const msg = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          console.log("Received data from test mode :", msg);
+          setLoading(false);
+          setReceived(true);
+          addObject(msg, "RX");
+          Toast.show({
+            type: "info",
+            text1: "Success",
+            text2: "Received data : " + msg,
+            visibilityTime: 3000,
+          });
+          return true;
         }
-        const msg = Buffer.from(characteristic.value, "base64").toString(
-          "utf-8"
-        );
-        console.log("Received data from test mode :", msg);
-        addObject(msg, "RX"); // Adding a new object to the array
-        setLoading(false);
-      }
-    );
+      );
+    } catch (error) {
+      console.error("Error receiving data from device:", error.message);
+      return false;
+    }
   };
 
-  // function for sending data only for testing mode
-  const sendData = (device, data) => {
-    const buffer = Buffer.from(data, "utf-8");
-    device
-      ?.writeCharacteristicWithResponseForService(
+  //   function for sending data only for testing mode
+  const sendData = async (device, data) => {
+    try {
+      const buffer = Buffer.from(data, "utf-8");
+      await device?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
-      )
-      .then((characteristic) => {
-        console.log("Sent data from test mode : ", data);
-        addObject(data, "TX");
-        Toast.show({
-          type: "success",
-          text1: "Success",
-          text2: "Data sent to " + props.connectedDevice.name,
-          visibilityTime: 3000,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: "Error to send data to " + props.connectedDevice.name,
-          visibilityTime: 3000,
-        });
+      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent to " + device.name,
+        visibilityTime: 3000,
       });
+      addObject(data, "TX");
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -158,10 +161,10 @@ const TestTab = (props) => {
         </View>
         <FlatList
           style={styles.itemsList}
-          data={dataArray}
+          data={props.dataArray}
           renderItem={renderItem}
           ListEmptyComponent={handleEmpty}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index.toString()}
         />
         <View style={styles.testContainer}>
           <TextInput
@@ -171,7 +174,7 @@ const TestTab = (props) => {
             placeholder="Message..."
           />
           <ButtonUI
-            onPress={() => onSendMessageSubmit()}
+            onPress={async () => await onSendMessageSubmit()}
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}

@@ -54,10 +54,17 @@ export const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 10,
   },
-  deviceTitleBtnBloc: {
+  deviceBtnsBloc: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
+    marginRight: 6 * scale,
+  },
+  deviceBtns: {
+    paddingHorizontal: 12 * scale,
+    borderRadius: 6 * scale,
+    marginRight: 10 * scale,
+    marginTop: 6 * scale,
   },
   deviceTitle: { color: "#7d7d7d", fontWeight: "bold", fontSize: 16 * scale },
   deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
@@ -398,7 +405,7 @@ export const styles = StyleSheet.create({
     maxHeight: 90,
   },
   btnSendText: {
-    width: 90 * scale,
+    paddingHorizontal: 12 * scale,
     borderRadius: 6 * scale,
   },
   TextSendStyle: {
