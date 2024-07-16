@@ -31,7 +31,7 @@ const TimerTab = (props) => {
             return false;
           }
           const msg = Buffer.from(characteristic.value, "base64");
-          console.log("Received data from timer tab :", msg);
+          console.log("Received data from timer tab v2 :", msg);
           Toast.show({
             type: "info",
             text1: "Success",
