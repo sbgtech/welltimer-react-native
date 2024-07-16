@@ -3,15 +3,19 @@ import { Text, View, TextInput, Modal } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "../style/styles";
+import { Buffer } from "buffer";
+import {
+  UART_SERVICE_UUID,
+  UART_TX_CHARACTERISTIC_UUID,
+  UART_RX_CHARACTERISTIC_UUID,
+} from "../../Utils/Constants";
 
 const Timer = (props) => {
-  const [hourValue, setHourValue] = useState("00");
-  const [minValue, setMinValue] = useState("00");
-  const [secValue, setSecValue] = useState("00");
-  const [totalSec, setTotalSec] = useState(0);
+  const [hourValue, setHourValue] = useState("");
+  const [minValue, setMinValue] = useState("");
+  const [secValue, setSecValue] = useState("");
 
   const handleChangeHour = (text) => {
-    // const hour = parseInt(text);
     if (text) {
       setHourValue(text);
     } else {
@@ -20,10 +24,8 @@ const Timer = (props) => {
   };
 
   const handleChangeMin = (text) => {
-    // const minute = parseInt(text);
     if (text >= 0 && text <= 59) {
       setMinValue(text);
-      console.log("true minute", text);
     } else {
       Toast.show({
         type: "error",
@@ -36,10 +38,8 @@ const Timer = (props) => {
   };
 
   const handleChangeSec = (text) => {
-    // const second = parseInt(text);
     if (text >= 0 && text <= 59) {
       setSecValue(text);
-      console.log("true minute", text);
     } else {
       Toast.show({
         type: "error",
@@ -52,15 +52,40 @@ const Timer = (props) => {
   };
 
   const handleSendTimer = () => {
-    const arr = JSON.stringify([props.address, totalSec]);
-    props.sendData(props.connectedDevice, arr + "\n");
+    const totalSeconds =
+      Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
+    const arr = JSON.stringify([props.address, totalSeconds]);
+    // const hexData = arr.map((num) => num.toString(16)).join("");
+    console.log(arr);
+    // console.log(hexData);
+    props.sendData(arr + "\n");
+    // const buffer = Buffer.from(hexData, "utf-8");
+    // props.connectedDevice?.writeCharacteristicWithResponseForService(
+    //   UART_SERVICE_UUID,
+    //   UART_TX_CHARACTERISTIC_UUID,
+    //   buffer.toString("base64")
+    // );
+    // Toast.show({
+    //   type: "success",
+    //   text1: "Success",
+    //   text2: "Data sent to " + props.connectedDevice.name,
+    //   visibilityTime: 3000,
+    // });
+  };
+
+  const convertToHMS = (totalSeconds) => {
+    let hours = Math.floor(totalSeconds / 3600);
+    let remainingSecondsAfterHours = totalSeconds % 3600;
+    let minutes = Math.floor(remainingSecondsAfterHours / 60);
+    let seconds = remainingSecondsAfterHours % 60;
+    setHourValue(hours);
+    setMinValue(minutes);
+    setSecValue(seconds);
   };
 
   useEffect(() => {
-    const result =
-      Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
-    setTotalSec(result);
-  }, [hourValue, minValue, secValue]);
+    convertToHMS(props.totalSec);
+  }, [props.totalSec]);
   return (
     <View style={styles.wrapper}>
       <View
@@ -78,7 +103,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={hourValue}
+            value={hourValue.toString()}
             onChangeText={handleChangeHour}
             maxLength={2}
           />
@@ -86,7 +111,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={minValue}
+            value={minValue.toString()}
             onChangeText={handleChangeMin}
             maxLength={2}
           />
@@ -94,7 +119,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={secValue}
+            value={secValue.toString()}
             onChangeText={handleChangeSec}
             maxLength={2}
           />
@@ -111,7 +136,7 @@ const Timer = (props) => {
         <Text>Hours:{hourValue}</Text>
         <Text>Minutes:{minValue}</Text>
         <Text>Seconds:{secValue}</Text>
-        <Text>Total seconds : {totalSec}</Text>
+        <Text>Total seconds : {props.totalSec}</Text>
       </View>
     </View>
   );

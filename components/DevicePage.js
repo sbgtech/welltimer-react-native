@@ -37,15 +37,12 @@ export default function DevicePage({ navigation }) {
 
   const Sensors = () => <SensorsTab />;
   const Timers = () => (
-    <TimerTab
-      // sendData={sendData}
-      connectedDevice={connectedDevice[0]}
-    />
+    <TimerTab sendData={sendData} connectedDevice={connectedDevice[0]} />
   );
   const Settings = () => <SettingsTab />;
   const TestMode = () => (
     <TestTab
-      dataArray={dataArray}
+      // dataArray={dataArray}
       // sendData={sendData}
       connectedDevice={connectedDevice[0]}
     />
@@ -86,6 +83,25 @@ export default function DevicePage({ navigation }) {
   // function for receiving data
   const receiveData = async (device) => {};
 
+  const sendData = async (data) => {
+    try {
+      const buffer = Buffer.from(data, "utf-8");
+      await connectedDevice[0]?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent to " + connectedDevice[0].name,
+        visibilityTime: 3000,
+      });
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
   // function for sending data
   const sendReq = () => {
     const data = "0x0" + index + " \n";
@@ -95,12 +111,12 @@ export default function DevicePage({ navigation }) {
       UART_TX_CHARACTERISTIC_UUID,
       buffer.toString("base64")
     );
-    Toast.show({
-      type: "info",
-      text1: "Info",
-      text2: "Data sent " + data,
-      visibilityTime: 3000,
-    });
+    // Toast.show({
+    //   type: "info",
+    //   text1: "Info",
+    //   text2: "Data sent " + data,
+    //   visibilityTime: 3000,
+    // });
     console.log("data sent : ", data);
   };
 
@@ -170,9 +186,6 @@ export default function DevicePage({ navigation }) {
               txtStyle={styles.TextSendStyle}
               loading={false}
             />
-            <Text>
-              {dataReceived ? "Data received!" : "Waiting for data..."}
-            </Text>
           </View>
         )}
       </View>

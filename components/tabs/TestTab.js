@@ -30,10 +30,7 @@ import {
 const TestTab = (props) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  //   const [received, setReceived] = useState(false);
   const [dataArray, setDataArray] = useState([]);
-  const [connectedDevice, setConnectedDevice] = useState([]);
-  const [dataSent, setDataSent] = useState(false);
   const { width } = Dimensions.get("window");
   const scale = width / 450;
 
@@ -50,14 +47,16 @@ const TestTab = (props) => {
 
   const onSendMessageSubmit = async () => {
     if (message !== "") {
-      await props.sendData(message + "\n");
+      await sendData(props.connectedDevice, message + "\n");
       setMessage("");
     } else {
       Alert.alert("Warning", "Data required");
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    receiveData(props.connectedDevice);
+  }, []);
 
   const addObject = (data, type) => {
     const newObj = { date: Date.now(), data: data, type: type };
@@ -70,7 +69,7 @@ const TestTab = (props) => {
       device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,
-        async (error, characteristic) => {
+        (error, characteristic) => {
           if (error) {
             console.error(error);
             return false;
@@ -78,9 +77,8 @@ const TestTab = (props) => {
           const msg = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log("Received data from test mode :", msg);
+          console.log("Received data from test tab :", msg);
           setLoading(false);
-          setReceived(true);
           addObject(msg, "RX");
           Toast.show({
             type: "info",
@@ -100,6 +98,7 @@ const TestTab = (props) => {
   //   function for sending data only for testing mode
   const sendData = async (device, data) => {
     try {
+      setLoading(true);
       const buffer = Buffer.from(data, "utf-8");
       await device?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
@@ -161,7 +160,7 @@ const TestTab = (props) => {
         </View>
         <FlatList
           style={styles.itemsList}
-          data={props.dataArray}
+          data={dataArray}
           renderItem={renderItem}
           ListEmptyComponent={handleEmpty}
           keyExtractor={(item, index) => index.toString()}
