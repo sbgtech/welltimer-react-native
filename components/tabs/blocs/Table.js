@@ -6,9 +6,9 @@ const Table = ({ header, data }) => {
   return (
     <View style={styles.tableContainer}>
       {/* Table Header */}
-      <View style={[styles.tableRow, styles.tableHeader]}>
+      <View style={styles.tableHeader}>
         {header.map((headerTitle, index) => (
-          <Text key={index} style={[styles.tableCell, styles.tableHeaderText]}>
+          <Text key={index} style={styles.tableHeaderText}>
             {headerTitle.name}
           </Text>
         ))}

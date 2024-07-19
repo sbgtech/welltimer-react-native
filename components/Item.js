@@ -7,7 +7,7 @@ const Item = ({ name, onPress, title }) => {
   return (
     <View style={styles.itemView}>
       <Text style={styles.itemText}>{name ? name : "Unknown"}</Text>
-      <ButtonUI onPress={onPress} title={title} loading={false} />
+      <ButtonUI onPress={onPress} title={title} />
     </View>
   );
 };

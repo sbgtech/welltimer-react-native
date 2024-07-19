@@ -1,0 +1,20 @@
+import React from "react";
+import { Text, View, Modal, ActivityIndicator } from "react-native";
+import { styles } from "../style/styles";
+
+const Loading = (props) => {
+  return (
+    <View>
+      <Modal animationType="slide" transparent={true} visible={props.loading}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.waitingMsg}>Wait</Text>
+            <ActivityIndicator color={"#35374B"} size={"large"} />
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+export default Loading;

@@ -29,7 +29,7 @@ const Arrival = () => {
     <ScrollView style={styles.arrivalWrapper} nestedScrollEnabled={true}>
       {dataArray.map((data, index) => (
         <View key={index} style={styles.arrivalItems}>
-          <Text style={styles.arrivalName}>{data.name} :</Text>
+          <Text style={styles.arrivalName}>{data.name}</Text>
           <Text style={styles.arrivalValue}>{data.value}</Text>
         </View>
       ))}

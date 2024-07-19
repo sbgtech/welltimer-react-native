@@ -113,7 +113,7 @@ export default function Home({ navigation }) {
             text2: "Connected to " + device.name,
             visibilityTime: 3000,
           });
-          navigation.navigate("DevicePage"); // navigate to device settings page
+          navigation.navigate("DeviceSettings"); // navigate to device settings page
         });
     } catch (error) {
       // error connecting to device
@@ -151,7 +151,6 @@ export default function Home({ navigation }) {
           setScanning(!scanning);
         }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
-        loading={false}
       />
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.HomeTitle}>Available devices</Text>

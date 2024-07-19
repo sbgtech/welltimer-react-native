@@ -52,25 +52,26 @@ const Timer = (props) => {
   };
 
   const handleSendTimer = () => {
-    const totalSeconds =
-      Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
-    const arr = JSON.stringify([props.address, totalSeconds]);
-    // const hexData = arr.map((num) => num.toString(16)).join("");
-    console.log(arr);
-    // console.log(hexData);
-    props.sendData(arr + "\n");
-    // const buffer = Buffer.from(hexData, "utf-8");
-    // props.connectedDevice?.writeCharacteristicWithResponseForService(
-    //   UART_SERVICE_UUID,
-    //   UART_TX_CHARACTERISTIC_UUID,
-    //   buffer.toString("base64")
-    // );
-    // Toast.show({
-    //   type: "success",
-    //   text1: "Success",
-    //   text2: "Data sent to " + props.connectedDevice.name,
-    //   visibilityTime: 3000,
-    // });
+    try {
+      const totalSeconds =
+        Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
+      const arr = JSON.stringify([props.address, totalSeconds]);
+      console.log(arr);
+      const buffer = Buffer.from(arr + "\n", "utf-8");
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent to " + props.connectedDevice.name,
+        visibilityTime: 3000,
+      });
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
 
   const convertToHMS = (totalSeconds) => {
@@ -123,20 +124,14 @@ const Timer = (props) => {
             onChangeText={handleChangeSec}
             maxLength={2}
           />
-        </View>
-        <View style={styles.containerBtnText}>
           <ButtonUI
             onPress={() => handleSendTimer()}
             title={"Send"}
             btnStyle={styles.btnSendText}
             txtStyle={styles.TextSendStyle}
-            loading={false}
           />
         </View>
-        <Text>Hours:{hourValue}</Text>
-        <Text>Minutes:{minValue}</Text>
-        <Text>Seconds:{secValue}</Text>
-        <Text>Total seconds : {props.totalSec}</Text>
+        {/* <Text>Total seconds : {props.totalSec}</Text> */}
       </View>
     </View>
   );

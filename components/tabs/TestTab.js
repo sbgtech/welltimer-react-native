@@ -26,10 +26,12 @@ import {
   UART_TX_CHARACTERISTIC_UUID,
   UART_RX_CHARACTERISTIC_UUID,
 } from "../Utils/Constants";
+import { Receive } from "../Utils/Receive";
 
 const TestTab = (props) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [dataReceived, setDataReceived] = useState(false);
   const [dataArray, setDataArray] = useState([]);
   const { width } = Dimensions.get("window");
   const scale = width / 450;
@@ -55,7 +57,25 @@ const TestTab = (props) => {
   };
 
   useEffect(() => {
-    receiveData(props.connectedDevice);
+    //   if (loading) {
+    //     const timer = setTimeout(() => {
+    //       if (!dataReceived) {
+    //         Toast.show({
+    //           type: "error",
+    //           text1: "Warning",
+    //           text2: "No data received within 5 seconds",
+    //           visibilityTime: 3000,
+    //         });
+    //         setLoading(false);
+    //       }
+    //     }, 5000);
+    //     return () => clearTimeout(timer);
+    //   }
+    // receiveData(props.connectedDevice);
+    Receive.TestReceivedData(props.connectedDevice, {
+      setLoading,
+      setDataArray,
+    });
   }, []);
 
   const addObject = (data, type) => {
@@ -64,53 +84,54 @@ const TestTab = (props) => {
   };
 
   // function for receiving data only for testing mode
-  const receiveData = (device) => {
-    try {
-      device?.monitorCharacteristicForService(
-        UART_SERVICE_UUID,
-        UART_RX_CHARACTERISTIC_UUID,
-        (error, characteristic) => {
-          if (error) {
-            console.error(error);
-            return false;
-          }
-          const msg = Buffer.from(characteristic.value, "base64").toString(
-            "utf-8"
-          );
-          console.log("Received data from test tab :", msg);
-          setLoading(false);
-          addObject(msg, "RX");
-          Toast.show({
-            type: "info",
-            text1: "Success",
-            text2: "Received data : " + msg,
-            visibilityTime: 3000,
-          });
-          return true;
-        }
-      );
-    } catch (error) {
-      console.error("Error receiving data from device:", error.message);
-      return false;
-    }
-  };
+  // const receiveData = (device) => {
+  //   try {
+  //     device?.monitorCharacteristicForService(
+  //       UART_SERVICE_UUID,
+  //       UART_RX_CHARACTERISTIC_UUID,
+  //       (error, characteristic) => {
+  //         if (error) {
+  //           console.error(error);
+  //           return false;
+  //         }
+  //         const msg = Buffer.from(characteristic.value, "base64").toString(
+  //           "utf-8"
+  //         );
+  //         console.log("Received data from test tab :", msg);
+  //         setLoading(false);
+  //         addObject(msg, "RX");
+  //         Toast.show({
+  //           type: "info",
+  //           text1: "Success",
+  //           text2: "Received data : " + msg,
+  //           visibilityTime: 3000,
+  //         });
+  //         return true;
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error("Error receiving data from device:", error.message);
+  //     return false;
+  //   }
+  // };
 
   //   function for sending data only for testing mode
   const sendData = async (device, data) => {
     try {
       setLoading(true);
+      setDataReceived(false);
+      Toast.show({
+        type: "info",
+        text1: "Info",
+        text2: "Data sent, waiting for response...",
+        visibilityTime: 3000,
+      });
       const buffer = Buffer.from(data, "utf-8");
       await device?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent to " + device.name,
-        visibilityTime: 3000,
-      });
       addObject(data, "TX");
     } catch (error) {
       console.error("Error sending data:", error);
@@ -177,7 +198,6 @@ const TestTab = (props) => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
-            loading={false}
           />
         </View>
         <Modal animationType="slide" transparent={true} visible={loading}>
