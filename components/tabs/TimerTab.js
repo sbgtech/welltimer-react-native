@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, Modal, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  ScrollView,
+  Modal,
+  Text,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import Timer from "./blocs/Timer";
 import { styles } from "./style/styles";
-import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
-import {
-  UART_SERVICE_UUID,
-  UART_TX_CHARACTERISTIC_UUID,
-  UART_RX_CHARACTERISTIC_UUID,
-} from "../Utils/Constants";
 import { Receive } from "../Utils/Receive";
+import RefreshBtn from "./blocs/RefreshBtn";
 
 const TimerTab = (props) => {
   const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
@@ -17,6 +19,7 @@ const TimerTab = (props) => {
   const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
   const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // State to track refresh
 
   useEffect(() => {
     // setLoading(true);
@@ -29,37 +32,29 @@ const TimerTab = (props) => {
     });
   }, []);
 
-  // const receiveData = async (device) => {
-  //   try {
-  //     await device?.monitorCharacteristicForService(
-  //       UART_SERVICE_UUID,
-  //       UART_RX_CHARACTERISTIC_UUID,
-  //       (error, characteristic) => {
-  //         if (error) {
-  //           console.error(error);
-  //           return false;
-  //         }
-  //         const msg = Buffer.from(characteristic.value, "base64");
-  //         console.log("Received data from timer tab :", msg);
-  //         if (msg[0] == 123 && msg[msg.length - 2] == 125 && msg[1] == 2) {
-  //           setReceivedOpenTimer(msg[2] * 256 + msg[3]);
-  //           setReceivedShutinTimer(msg[4] * 256 + msg[5]);
-  //           setReceivedAfterflowTimer(msg[6] * 256 + msg[7]);
-  //           setReceivedMandatoryTimer(msg[8] * 256 + msg[9]);
-  //         }
-  //         setLoading(false);
-  //         return true;
-  //       }
-  //     );
-  //   } catch (error) {
-  //     console.error("Error receiving data from device:", error.message);
-  //     return false;
-  //   }
-  // };
+  const onRefresh = () => {
+    // Simulate fetching new data for your table
+    setRefreshing(true);
+    // Perform your async refresh operation
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2500); // Simulating a delay (remove this in real implementation)
+  };
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#35374B", "#35374B", "#55B546"]}
+          progressBackgroundColor={"#fff"}
+          tintColor={"#35374B"}
+        />
+      }
+    >
       <View style={[styles.container, styles.marginBottomContainer]}>
+        <RefreshBtn onPress={() => onRefresh()} />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Open timer"}

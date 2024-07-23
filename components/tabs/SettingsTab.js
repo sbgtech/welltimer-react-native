@@ -2,28 +2,24 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
-  Modal,
+  RefreshControl,
   Text,
-  ActivityIndicator,
   TextInput,
 } from "react-native";
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
 import Dropdown from "./blocs/Dropdown";
-import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
-import {
-  UART_SERVICE_UUID,
-  UART_TX_CHARACTERISTIC_UUID,
-  UART_RX_CHARACTERISTIC_UUID,
-} from "../Utils/Constants";
 import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
 import Valve from "./blocs/Valve";
 import Psi from "./blocs/Psi";
+import RefreshBtn from "./blocs/RefreshBtn";
 
 const SettingsTab = (props) => {
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // State to track refresh
+
   const list_production_method = [{ title: "Timer mode" }];
   const [missrunMax, setMissrunMax] = useState("");
 
@@ -56,8 +52,28 @@ const SettingsTab = (props) => {
     });
   }, []);
 
+  const onRefresh = () => {
+    // Simulate fetching new data for your table
+    setRefreshing(true);
+    // Perform your async refresh operation
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2500); // Simulating a delay (remove this in real implementation)
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#35374B", "#35374B", "#55B546"]}
+          progressBackgroundColor={"#fff"}
+          tintColor={"#35374B"}
+        />
+      }
+    >
+      <RefreshBtn onPress={() => onRefresh()} />
       <Valve title={"Valve A"} />
       <Psi title={"Line (PSI)"} />
       <Psi title={"Tubing (PSI)"} />

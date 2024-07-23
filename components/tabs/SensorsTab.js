@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, ScrollView, Text, RefreshControl } from "react-native";
 import Arrival from "./blocs/Arrival";
-import Psi from "./blocs/Psi";
 import { styles } from "./style/styles";
 import Table from "./blocs/Table";
+import RefreshBtn from "./blocs/RefreshBtn";
 
 const SensorsTab = () => {
   const [refreshing, setRefreshing] = useState(false); // State to track refresh
@@ -23,7 +23,7 @@ const SensorsTab = () => {
     // Perform your async refresh operation
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000); // Simulating a delay (remove this in real implementation)
+    }, 2500); // Simulating a delay (remove this in real implementation)
   };
 
   return (
@@ -32,13 +32,14 @@ const SensorsTab = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={["#9Bd35A", "#689F38"]}
-          // colors prop is for setting the colors of the refresh indicator on Android
-          // On iOS, it uses the tintColor prop to set the color of the refresh indicator
+          colors={["#35374B", "#35374B", "#55B546"]}
+          progressBackgroundColor={"#fff"}
+          tintColor={"#35374B"}
         />
       }
     >
       <View style={[styles.container, styles.marginBottomContainer]}>
+        <RefreshBtn onPress={() => onRefresh()} />
         <View style={styles.statusWrapper}>
           <Text style={styles.statusText}>Plunger state</Text>
           <Text style={styles.statusValue}>Afterflow</Text>

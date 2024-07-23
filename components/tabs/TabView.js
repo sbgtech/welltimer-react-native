@@ -19,26 +19,27 @@ import { styles } from "./style/styles";
 const bleManager = new BleManager();
 
 const TabView = ({ navigation }) => {
-  const [connectedDevice, setConnectedDevice] = useState([]);
+  const [connectedDevice, setConnectedDevice] = useState(null);
   const tabs = [
     { label: "Well status", content: <SensorsTab /> },
     {
       label: "Timers",
-      content: <TimerTab connectedDevice={connectedDevice[0]} />,
+      content: <TimerTab connectedDevice={connectedDevice} />,
     },
     {
       label: "Settings",
-      content: <SettingsTab connectedDevice={connectedDevice[0]} />,
+      content: <SettingsTab connectedDevice={connectedDevice} />,
     },
     {
       label: "Test",
-      content: <TestTab connectedDevice={connectedDevice[0]} />,
+      content: <TestTab connectedDevice={connectedDevice} />,
     },
   ];
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabPress = (index) => {
     setActiveTab(index);
+    // sendReq();
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const TabView = ({ navigation }) => {
         UART_SERVICE_UUID,
       ]);
       if (connectedDevices.length > 0) {
-        setConnectedDevice(connectedDevices);
+        setConnectedDevice(connectedDevices[0]);
         sendReq();
       }
       //   else {
@@ -68,45 +69,36 @@ const TabView = ({ navigation }) => {
     };
 
     checkDeviceConnection();
-  }, [activeTab]);
+  }, []);
+
+  useEffect(() => {
+    if (connectedDevice) {
+      sendReq(); // Send request whenever activeTab changes
+    }
+  }, [activeTab, connectedDevice]); // Watch activeTab changes
 
   // function for sending data
   const sendReq = () => {
-    const data = "0x0" + (activeTab + 1) + " \n";
-    const buffer = Buffer.from(data, "utf-8");
-    connectedDevice[0]?.writeCharacteristicWithResponseForService(
-      UART_SERVICE_UUID,
-      UART_TX_CHARACTERISTIC_UUID,
-      buffer.toString("base64")
-    );
-    console.log("req sent : ", data);
+    if (connectedDevice) {
+      const data = "0x0" + (activeTab + 1) + " \n";
+      const buffer = Buffer.from(data, "utf-8");
+      connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      console.log("req sent : ", data);
+    } else {
+      console.log("No connected device available");
+    }
   };
-
-  //   const sendData = async (data) => {
-  //     try {
-  //       const buffer = Buffer.from(data, "utf-8");
-  //       await connectedDevice[0]?.writeCharacteristicWithResponseForService(
-  //         UART_SERVICE_UUID,
-  //         UART_TX_CHARACTERISTIC_UUID,
-  //         buffer.toString("base64")
-  //       );
-  //       Toast.show({
-  //         type: "success",
-  //         text1: "Success",
-  //         text2: "Data sent to " + connectedDevice[0].name,
-  //         visibilityTime: 3000,
-  //       });
-  //     } catch (error) {
-  //       console.error("Error sending data:", error);
-  //     }
-  //   };
 
   const disconnectFromDevice = async () => {
     try {
-      if (connectedDevice[0]) {
-        await connectedDevice[0].cancelConnection();
-        setConnectedDevice([]);
-        console.log("Disconnected from device:", connectedDevice[0].name);
+      if (connectedDevice) {
+        await connectedDevice.cancelConnection();
+        setConnectedDevice(null);
+        console.log("Disconnected from device:", connectedDevice.name);
         navigation.navigate("Home");
       }
     } catch (error) {
@@ -141,12 +133,10 @@ const TabView = ({ navigation }) => {
         <View>
           <Text style={styles.deviceTitle}>Connected Devices:</Text>
         </View>
-        {connectedDevice.length > 0 ? (
-          <View key={connectedDevice[0].id}>
-            <Text style={styles.deviceInfo}>
-              Name: {connectedDevice[0].name}
-            </Text>
-            <Text style={styles.deviceInfo}>ID: {connectedDevice[0].id}</Text>
+        {connectedDevice ? (
+          <View key={connectedDevice.id}>
+            <Text style={styles.deviceInfo}>Name: {connectedDevice.name}</Text>
+            <Text style={styles.deviceInfo}>ID: {connectedDevice.id}</Text>
             <ButtonUI
               onPress={() => handleDisconnect()}
               title={"Disconnect"}
