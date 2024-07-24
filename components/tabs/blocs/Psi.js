@@ -52,7 +52,6 @@ const Psi = (props) => {
       </View>
 
       <View style={styles.rangeWrapper}>
-        <Text style={styles.rangeText}>Range :</Text>
         <View style={styles.containerRange}>
           <Text style={styles.labelRange}>Min :</Text>
           <TextInput

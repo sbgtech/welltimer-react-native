@@ -323,7 +323,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontStyle: "italic",
     marginBottom: 10 * scale,
-    fontSize: 28 * scale,
+    fontSize: 22 * scale,
   },
   onOffStatus: {
     flexDirection: "row",
@@ -352,7 +352,6 @@ export const styles = StyleSheet.create({
     maxHeight: 90,
   },
   // psi.js
-  rangeText: { fontSize: 22 * scale, fontWeight: "bold" },
   modeWrapper: {
     backgroundColor: "#ddd",
     padding: 8,
@@ -361,7 +360,7 @@ export const styles = StyleSheet.create({
   },
   labelRange: {
     fontWeight: "bold",
-    fontSize: 18 * scale,
+    fontSize: 16 * scale,
   },
   inputRange: {
     backgroundColor: "#fff",

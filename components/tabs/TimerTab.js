@@ -12,6 +12,7 @@ import { styles } from "./style/styles";
 import Toast from "react-native-toast-message";
 import { Receive } from "../Utils/Receive";
 import RefreshBtn from "./blocs/RefreshBtn";
+import Loading from "./blocs/Loading";
 
 const TimerTab = (props) => {
   const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
@@ -22,7 +23,7 @@ const TimerTab = (props) => {
   const [refreshing, setRefreshing] = useState(false); // State to track refresh
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     Receive.TimerReceivedData(props.connectedDevice, {
       setReceivedOpenTimer,
       setReceivedShutinTimer,
@@ -80,14 +81,7 @@ const TimerTab = (props) => {
           totalSec={receivedMandatoryTimer}
         />
       </View>
-      <Modal animationType="slide" transparent={true} visible={loading}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.waitingMsg}>Wait</Text>
-            <ActivityIndicator color={"#35374B"} size={"large"} />
-          </View>
-        </View>
-      </Modal>
+      <Loading loading={loading} />
     </ScrollView>
   );
 };

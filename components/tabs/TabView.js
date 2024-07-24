@@ -21,7 +21,10 @@ const bleManager = new BleManager();
 const TabView = ({ navigation }) => {
   const [connectedDevice, setConnectedDevice] = useState(null);
   const tabs = [
-    { label: "Well status", content: <SensorsTab /> },
+    {
+      label: "Well status",
+      content: <SensorsTab connectedDevice={connectedDevice} />,
+    },
     {
       label: "Timers",
       content: <TimerTab connectedDevice={connectedDevice} />,
@@ -79,35 +82,27 @@ const TabView = ({ navigation }) => {
 
   // function for sending data
   const sendReq = () => {
-    if (connectedDevice) {
-      const data = "0x0" + (activeTab + 1) + " \n";
-      const buffer = Buffer.from(data, "utf-8");
-      connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
-      console.log("req sent : ", data);
-    } else {
-      console.log("No connected device available");
-    }
+    const data = "0x0" + (activeTab + 1) + " \n";
+    const buffer = Buffer.from(data, "utf-8");
+    connectedDevice?.writeCharacteristicWithResponseForService(
+      UART_SERVICE_UUID,
+      UART_TX_CHARACTERISTIC_UUID,
+      buffer.toString("base64")
+    );
+    console.log("req sent : ", data);
   };
 
   const disconnectFromDevice = async () => {
     try {
       if (connectedDevice) {
         await connectedDevice.cancelConnection();
-        setConnectedDevice(null);
-        console.log("Disconnected from device:", connectedDevice.name);
+        console.log("Disconnected successfully");
         navigation.navigate("Home");
+      } else {
+        console.log("No device connected");
       }
     } catch (error) {
-      if (error.message === "Operation was cancelled") {
-        // Handle cancellation gracefully (optional)
-        console.log("Disconnect operation was cancelled.");
-      } else {
-        console.error("Error disconnecting from device:", error);
-      }
+      console.error("Error disconnecting:", error);
     }
   };
 

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, Text, RefreshControl } from "react-native";
 import Arrival from "./blocs/Arrival";
 import { styles } from "./style/styles";
 import Table from "./blocs/Table";
 import RefreshBtn from "./blocs/RefreshBtn";
+import { Receive } from "../Utils/Receive";
+import Loading from "./blocs/Loading";
 
-const SensorsTab = () => {
+const SensorsTab = (props) => {
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false); // State to track refresh
   const tableHeader = [{ name: "Telemetry data" }];
   const tableData = [
@@ -25,6 +28,13 @@ const SensorsTab = () => {
       setRefreshing(false);
     }, 2500); // Simulating a delay (remove this in real implementation)
   };
+
+  useEffect(() => {
+    // setLoading(true);
+    // Receive.SensorsReceivedData(props.connectedDevice, {
+    //   setLoading,
+    // });
+  }, []);
 
   return (
     <ScrollView
@@ -50,15 +60,15 @@ const SensorsTab = () => {
         </View>
         <View style={styles.statusWrapper}>
           <Text style={styles.statusText}>Line (PSI)</Text>
-          <Text style={styles.statusValue}>00:01:12</Text>
+          <Text style={styles.statusValue}>1200</Text>
         </View>
         <View style={styles.statusWrapper}>
           <Text style={styles.statusText}>Tubing (PSI)</Text>
-          <Text style={styles.statusValue}>00:01:12</Text>
+          <Text style={styles.statusValue}>1225</Text>
         </View>
         <View style={styles.statusWrapper}>
           <Text style={styles.statusText}>Casing (PSI)</Text>
-          <Text style={styles.statusValue}>00:01:12</Text>
+          <Text style={styles.statusValue}>852</Text>
         </View>
         <View style={styles.arrivalContainer}>
           <Arrival />
@@ -67,6 +77,7 @@ const SensorsTab = () => {
           <Table data={tableData} header={tableHeader} />
         </View>
       </View>
+      <Loading loading={loading} />
     </ScrollView>
   );
 };

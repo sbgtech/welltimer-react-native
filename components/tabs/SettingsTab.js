@@ -9,7 +9,6 @@ import {
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
 import Dropdown from "./blocs/Dropdown";
-import Toast from "react-native-toast-message";
 import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
 import Valve from "./blocs/Valve";
@@ -45,7 +44,7 @@ const SettingsTab = (props) => {
   };
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
     Receive.SettingsReceivedData(props.connectedDevice, {
       setMissrunMax,
       setLoading,

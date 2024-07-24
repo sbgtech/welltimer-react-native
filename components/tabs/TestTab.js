@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -32,6 +32,7 @@ const TestTab = (props) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [dataReceived, setDataReceived] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const [dataArray, setDataArray] = useState([]);
   const { width } = Dimensions.get("window");
   const scale = width / 450;
@@ -57,26 +58,24 @@ const TestTab = (props) => {
   };
 
   useEffect(() => {
-    //   if (loading) {
-    //     const timer = setTimeout(() => {
-    //       if (!dataReceived) {
-    //         Toast.show({
-    //           type: "error",
-    //           text1: "Warning",
-    //           text2: "No data received within 5 seconds",
-    //           visibilityTime: 3000,
-    //         });
-    //         setLoading(false);
-    //       }
-    //     }, 5000);
-    //     return () => clearTimeout(timer);
-    //   }
-    // receiveData(props.connectedDevice);
-    Receive.TestReceivedData(props.connectedDevice, {
-      setLoading,
-      setDataArray,
-    });
-  }, []);
+    if (loading && !dataReceived) {
+      const timer = setTimeout(() => {
+        if (!dataReceived) {
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "No data received within 5 seconds",
+            visibilityTime: 3000,
+          });
+          setLoading(false);
+        }
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+    if (!isSubscribed) {
+      receiveData();
+    }
+  }, [loading, dataReceived, isSubscribed, props.connectedDevice, receiveData]);
 
   const addObject = (data, type) => {
     const newObj = { date: Date.now(), data: data, type: type };
@@ -84,36 +83,16 @@ const TestTab = (props) => {
   };
 
   // function for receiving data only for testing mode
-  // const receiveData = (device) => {
-  //   try {
-  //     device?.monitorCharacteristicForService(
-  //       UART_SERVICE_UUID,
-  //       UART_RX_CHARACTERISTIC_UUID,
-  //       (error, characteristic) => {
-  //         if (error) {
-  //           console.error(error);
-  //           return false;
-  //         }
-  //         const msg = Buffer.from(characteristic.value, "base64").toString(
-  //           "utf-8"
-  //         );
-  //         console.log("Received data from test tab :", msg);
-  //         setLoading(false);
-  //         addObject(msg, "RX");
-  //         Toast.show({
-  //           type: "info",
-  //           text1: "Success",
-  //           text2: "Received data : " + msg,
-  //           visibilityTime: 3000,
-  //         });
-  //         return true;
-  //       }
-  //     );
-  //   } catch (error) {
-  //     console.error("Error receiving data from device:", error.message);
-  //     return false;
-  //   }
-  // };
+  const receiveData = useCallback(() => {
+    if (!isSubscribed) {
+      setIsSubscribed(true);
+      Receive.TestReceivedData(props.connectedDevice, {
+        setDataArray,
+        setLoading,
+        setDataReceived,
+      });
+    }
+  }, [isSubscribed]);
 
   //   function for sending data only for testing mode
   const sendData = async (device, data) => {
@@ -121,9 +100,8 @@ const TestTab = (props) => {
       setLoading(true);
       setDataReceived(false);
       Toast.show({
-        type: "info",
-        text1: "Info",
-        text2: "Data sent, waiting for response...",
+        type: "success",
+        text1: "Success",
         visibilityTime: 3000,
       });
       const buffer = Buffer.from(data, "utf-8");
@@ -198,6 +176,7 @@ const TestTab = (props) => {
             title={<Ionicons name="send" size={20 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
+            loading={false}
           />
         </View>
         <Modal animationType="slide" transparent={true} visible={loading}>
