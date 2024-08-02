@@ -9,6 +9,7 @@ import {
   UART_TX_CHARACTERISTIC_UUID,
   UART_RX_CHARACTERISTIC_UUID,
 } from "../../Utils/Constants";
+import { Receive } from "../../Utils/Receive";
 
 const Timer = (props) => {
   const [hourValue, setHourValue] = useState("");
@@ -74,18 +75,15 @@ const Timer = (props) => {
     }
   };
 
-  const convertToHMS = (totalSeconds) => {
-    let hours = Math.floor(totalSeconds / 3600);
-    let remainingSecondsAfterHours = totalSeconds % 3600;
-    let minutes = Math.floor(remainingSecondsAfterHours / 60);
-    let seconds = remainingSecondsAfterHours % 60;
+  const toHMS = (totalSeconds) => {
+    const { hours, minutes, seconds } = Receive.convertToHMS(totalSeconds);
     setHourValue(hours);
     setMinValue(minutes);
     setSecValue(seconds);
   };
 
   useEffect(() => {
-    convertToHMS(props.totalSec);
+    toHMS(props.totalSec);
   }, [props.totalSec]);
   return (
     <View style={styles.wrapper}>

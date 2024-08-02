@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     margin: 2,
     padding: 8,
-    borderRadius: 9,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -85,7 +84,6 @@ export const styles = StyleSheet.create({
   },
   deviceBtns: {
     paddingHorizontal: 12 * scale,
-    borderRadius: 6 * scale,
     marginRight: 10 * scale,
     marginTop: 6 * scale,
   },
@@ -96,7 +94,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 4 * scale,
     marginHorizontal: 5 * scale,
     marginVertical: 16 * scale,
-    borderRadius: 9 * scale,
     borderWidth: 0.5,
   },
   testContainer: {
@@ -110,7 +107,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 8 * scale,
     paddingHorizontal: 10 * scale,
     borderWidth: 0.5 * scale,
-    borderRadius: 6 * scale,
     width: "85%",
     maxWidth: "85%",
     height: 40 * scale,
@@ -123,7 +119,6 @@ export const styles = StyleSheet.create({
     marginBottom: 10 * scale,
     marginHorizontal: 6 * scale,
     backgroundColor: "#f7f7f7",
-    borderRadius: 9 * scale,
     padding: 4 * scale,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -162,7 +157,6 @@ export const styles = StyleSheet.create({
   tableContainer: {
     flex: 1,
     backgroundColor: "#fff",
-    borderRadius: 14 * scale,
   },
   tableRow: {
     flexDirection: "row",
@@ -171,14 +165,12 @@ export const styles = StyleSheet.create({
   tableCell: {
     flex: 1,
     padding: 10 * scale,
-    borderColor: "#ccc",
+    borderColor: "#D4D4D4",
     borderTopWidth: 1,
     fontSize: 16 * scale,
   },
   tableHeader: {
     backgroundColor: "#35374B",
-    borderTopStartRadius: 14 * scale,
-    borderTopEndRadius: 14 * scale,
   },
   tableHeaderText: {
     fontWeight: "bold",
@@ -191,9 +183,8 @@ export const styles = StyleSheet.create({
   buttonStyle: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 6,
+    padding: 4 * scale,
     backgroundColor: "#35374B",
-    borderRadius: 6,
   },
   buttonTextStyle: {
     color: "#fff",
@@ -210,7 +201,6 @@ export const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "white",
     padding: 34 * scale,
-    borderRadius: 9 * scale,
     alignItems: "center",
   },
   waitingMsg: {
@@ -229,7 +219,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10 * scale,
     margin: 2 * scale,
     borderWidth: 0.5,
-    borderRadius: 6 * scale,
     width: "100%",
     maxWidth: "100%",
     height: 40 * scale,
@@ -245,7 +234,6 @@ export const styles = StyleSheet.create({
   // dropdown.js
   dropdownButtonStyle: {
     backgroundColor: "#fff",
-    borderRadius: 6 * scale,
     borderWidth: 0.5 * scale,
     flexDirection: "row",
     justifyContent: "center",
@@ -264,7 +252,6 @@ export const styles = StyleSheet.create({
   },
   dropdownMenuStyle: {
     backgroundColor: "#eeeeee",
-    borderRadius: 9,
   },
   dropdownItemStyle: {
     width: "100%",
@@ -292,29 +279,30 @@ export const styles = StyleSheet.create({
   arrivalContainer: {
     marginHorizontal: 26 * scale,
     marginTop: 16 * scale,
-    padding: 16 * scale,
-    borderRadius: 14 * scale,
+    padding: 14 * scale,
     backgroundColor: "#eeeeee",
   },
   telemetryDataContainer: {
     marginHorizontal: 26 * scale,
     marginTop: 16 * scale,
     padding: 16 * scale,
-    borderRadius: 14 * scale,
+    backgroundColor: "#eeeeee",
+  },
+  statusContainer: {
+    marginHorizontal: 26 * scale,
+    marginTop: 16 * scale,
+    padding: 14 * scale,
     backgroundColor: "#eeeeee",
   },
   statusWrapper: {
-    marginHorizontal: 26 * scale,
-    marginTop: 16 * scale,
-    padding: 16 * scale,
-    borderRadius: 14 * scale,
-    backgroundColor: "#eeeeee",
     flexDirection: "row",
     justifyContent: "space-between",
+    borderBottomWidth: 1,
+    paddingVertical: 4,
+    borderColor: "#D4D4D4",
   },
   statusText: {
-    fontWeight: "bold",
-    fontSize: 20 * scale,
+    fontSize: 18 * scale,
   },
   statusValue: {
     fontSize: 18 * scale,
@@ -345,109 +333,49 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#7d7d7d",
     fontSize: 16 * scale,
-    borderRadius: 6 * scale,
     width: 55 * scale,
     maxWidth: 90,
     height: 45 * scale,
     maxHeight: 90,
   },
-  // psi.js
-  modeWrapper: {
-    backgroundColor: "#ddd",
-    padding: 8,
-    borderRadius: 14,
-    marginTop: 14,
-  },
-  labelRange: {
-    fontWeight: "bold",
-    fontSize: 16 * scale,
-  },
-  inputRange: {
-    backgroundColor: "#fff",
-    paddingVertical: 8 * scale,
-    paddingHorizontal: 12 * scale,
-    borderWidth: 0.5 * scale,
-    fontSize: 14 * scale,
-    width: 150 * scale,
-    height: 40 * scale,
-    borderRadius: 6 * scale,
-  },
-  inputContainerMin: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-  },
-  inputContainerMax: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  labelInput: {
-    fontWeight: "bold",
-    fontSize: 16 * scale,
-  },
-  input: {
-    backgroundColor: "#fff",
-    paddingVertical: 8 * scale,
-    paddingHorizontal: 12 * scale,
-    borderWidth: 0.5 * scale,
-    fontSize: 14 * scale,
-    width: 90 * scale,
-    height: 40 * scale,
-    borderRadius: 6 * scale,
-  },
-  btnSendIcon: {
-    width: 40 * scale,
-    height: 40 * scale,
-    borderRadius: 6 * scale,
-  },
   //Arrival.js
   arrivalWrapper: {
-    backgroundColor: "white",
-    borderRadius: 14 * scale,
-    padding: 2 * scale,
+    backgroundColor: "#D4D4D4",
+    padding: 1 * scale,
     maxHeight: 400 * scale,
   },
   arrivalItems: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12 * scale,
-    marginBottom: 4 * scale,
-    borderRadius: 14 * scale,
+    padding: 8 * scale,
+    marginBottom: 1 * scale,
     backgroundColor: "#f7f7f7",
   },
   arrivalName: {
-    fontWeight: "bold",
-    fontStyle: "italic",
     fontSize: 18 * scale,
   },
   arrivalValue: {
-    fontSize: 14 * scale,
+    fontSize: 16 * scale,
   },
   // RefreshBtn.js
   refreshBtnWrapper: {
     marginHorizontal: 26 * scale,
     marginTop: 16 * scale,
-    borderRadius: 14 * scale,
   },
   refreshBtn: {
     paddingHorizontal: 12 * scale,
-    borderRadius: 6 * scale,
   },
   // many tabs
   wrapper: {
     marginHorizontal: 26 * scale,
     marginTop: 14 * scale,
     padding: 14 * scale,
-    borderRadius: 14 * scale,
     backgroundColor: "#eeeeee",
   },
   rangeWrapper: {
     backgroundColor: "#ddd",
     padding: 10 * scale,
-    borderRadius: 14 * scale,
   },
   containerRange: {
     flexDirection: "row",
@@ -457,7 +385,6 @@ export const styles = StyleSheet.create({
   },
   btnSendText: {
     paddingHorizontal: 12 * scale,
-    borderRadius: 6 * scale,
     height: 45 * scale,
     maxHeight: 90,
   },

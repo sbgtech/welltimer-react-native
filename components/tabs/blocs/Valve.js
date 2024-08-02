@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Dimensions } from "react-native";
 import Switch from "react-native-switch-toggles";
 import { styles } from "../style/styles";
 
-const Valve = (props) => {
+const Valve = ({ title, status }) => {
   const { width } = Dimensions.get("window");
   const scale = width / 450;
-  const [isEnabledValve, setIsEnabledValve] = useState(false);
+  const [isEnabledValve, setIsEnabledValve] = useState(status);
+
+  // Update state when status changes
+  useEffect(() => {
+    setIsEnabledValve(status);
+  }, [status]);
+
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.valveTitle}>{props.title}</Text>
+      <Text style={styles.valveTitle}>{title}</Text>
       <View style={styles.onOffStatus}>
         <Text style={styles.onOffText}>
           Status : {isEnabledValve ? <Text>ON</Text> : <Text>OFF</Text>}

@@ -9,14 +9,16 @@ const Dropdown = (props) => {
     <View>
       <SelectDropdown
         data={props.list}
+        defaultValueByIndex={props.selectedIndex}
         onSelect={(selectedItem, index) => {
           console.log(selectedItem, index);
+          props.setSelectedIndex(index);
         }}
         renderButton={(selectedItem, isOpened) => {
           return (
             <View style={styles.dropdownButtonStyle}>
               <Text style={styles.dropdownButtonTxtStyle}>
-                {(selectedItem && selectedItem.title) || props.dropdownTitle}
+                {selectedItem || props.dropdownTitle}
               </Text>
               <Ionicons
                 name={isOpened ? "chevron-up" : "chevron-down"}
@@ -33,7 +35,7 @@ const Dropdown = (props) => {
                 ...(isSelected && { backgroundColor: "#ddd" }),
               }}
             >
-              <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+              <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
             </View>
           );
         }}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
 import ButtonUI from "../ButtonUI";
 import Tab from "./Tab";
 import SensorsTab from "./SensorsTab";
@@ -7,14 +7,9 @@ import TimerTab from "./TimerTab";
 import SettingsTab from "./SettingsTab";
 import TestTab from "./TestTab";
 import { BleManager } from "react-native-ble-plx";
-import { Buffer } from "buffer";
-import Toast from "react-native-toast-message";
-import {
-  UART_SERVICE_UUID,
-  UART_TX_CHARACTERISTIC_UUID,
-  UART_RX_CHARACTERISTIC_UUID,
-} from "../Utils/Constants";
+import { UART_SERVICE_UUID } from "../Utils/Constants";
 import { styles } from "./style/styles";
+import { Receive } from "../Utils/Receive";
 
 const bleManager = new BleManager();
 
@@ -52,23 +47,22 @@ const TabView = ({ navigation }) => {
       ]);
       if (connectedDevices.length > 0) {
         setConnectedDevice(connectedDevices[0]);
-        sendReq();
+        Receive.sendReqToGetData(connectedDevice, activeTab);
+      } else {
+        Alert.alert(
+          "Warning",
+          "The device is disconnected",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Canceled"),
+              style: "cancel",
+            },
+            { text: "OK", onPress: () => navigation.navigate("Home") },
+          ],
+          { cancelable: false }
+        );
       }
-      //   else {
-      //     Alert.alert(
-      //       "Warning",
-      //       "The device is disconnected",
-      //       [
-      //         {
-      //           text: "Cancel",
-      //           onPress: () => console.log("Canceled"),
-      //           style: "cancel",
-      //         },
-      //         { text: "OK", onPress: () => navigation.navigate("Home") },
-      //       ],
-      //       { cancelable: false }
-      //     );
-      //   }
     };
 
     checkDeviceConnection();
@@ -76,21 +70,9 @@ const TabView = ({ navigation }) => {
 
   useEffect(() => {
     if (connectedDevice) {
-      sendReq(); // Send request whenever activeTab changes
+      Receive.sendReqToGetData(connectedDevice, activeTab); // Send request whenever activeTab changes
     }
   }, [activeTab, connectedDevice]); // Watch activeTab changes
-
-  // function for sending data
-  const sendReq = () => {
-    const data = "0x0" + (activeTab + 1) + " \n";
-    const buffer = Buffer.from(data, "utf-8");
-    connectedDevice?.writeCharacteristicWithResponseForService(
-      UART_SERVICE_UUID,
-      UART_TX_CHARACTERISTIC_UUID,
-      buffer.toString("base64")
-    );
-    console.log("req sent : ", data);
-  };
 
   const disconnectFromDevice = async () => {
     try {

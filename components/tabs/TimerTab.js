@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  ScrollView,
-  Modal,
-  Text,
-  ActivityIndicator,
-  RefreshControl,
-} from "react-native";
+import { View } from "react-native";
 import Timer from "./blocs/Timer";
 import { styles } from "./style/styles";
-import Toast from "react-native-toast-message";
 import { Receive } from "../Utils/Receive";
 import RefreshBtn from "./blocs/RefreshBtn";
 import Loading from "./blocs/Loading";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const TimerTab = (props) => {
   const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
@@ -20,46 +13,61 @@ const TimerTab = (props) => {
   const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
   const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false); // State to track refresh
 
+  // Initial load
   useEffect(() => {
-    setLoading(true);
-    Receive.TimerReceivedData(props.connectedDevice, {
-      setReceivedOpenTimer,
-      setReceivedShutinTimer,
-      setReceivedAfterflowTimer,
-      setReceivedMandatoryTimer,
-      setLoading,
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        await Receive.TimerReceivedData(props.connectedDevice, {
+          setReceivedOpenTimer,
+          setReceivedShutinTimer,
+          setReceivedAfterflowTimer,
+          setReceivedMandatoryTimer,
+          setLoading,
+        });
+      } catch (error) {
+        console.error("Error in useEffect:", error);
+      }
+    };
 
-  const onRefresh = () => {
-    // Simulate fetching new data for your table
-    setRefreshing(true);
-    // Perform your async refresh operation
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2500); // Simulating a delay (remove this in real implementation)
+    if (props.connectedDevice) {
+      const cleanup = fetchData();
+      return () => cleanup; // Clean up subscription on component unmount or when device changes
+    }
+  }, [props.connectedDevice]);
+
+  const onRefresh = async () => {
+    // call function to send req to device to get data
+    Receive.sendReqToGetData(props.connectedDevice, 1);
+    // start receiving data
+    try {
+      await Receive.TimerReceivedData(props.connectedDevice, {
+        setReceivedOpenTimer,
+        setReceivedShutinTimer,
+        setReceivedAfterflowTimer,
+        setReceivedMandatoryTimer,
+        setLoading,
+      });
+    } catch (error) {
+      console.error("Error during refresh:", error);
+    }
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={["#35374B", "#35374B", "#55B546"]}
-          progressBackgroundColor={"#fff"}
-          tintColor={"#35374B"}
-        />
-      }
+    <KeyboardAwareScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
+      keyboardShouldPersistTaps="handled"
     >
       <View style={[styles.container, styles.marginBottomContainer]}>
         <RefreshBtn onPress={() => onRefresh()} />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Open timer"}
-          address={122}
+          address={112}
           totalSec={receivedOpenTimer}
         />
         <Timer
@@ -82,7 +90,7 @@ const TimerTab = (props) => {
         />
       </View>
       <Loading loading={loading} />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
