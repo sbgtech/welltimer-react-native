@@ -292,20 +292,20 @@ export class Receive {
             setLPTypeIndex(msg[9]);
             setLPSensorMax(msg[10]);
             setLPSensorMin(msg[11]);
-            setLPVoltageMax(msg[12]);
-            setLPVoltageMin(msg[13]);
+            setLPVoltageMax(msg[12] / 10);
+            setLPVoltageMin(msg[13] / 10);
             //
             setCPTypeIndex(msg[14]);
             setCPSensorMax(msg[15]);
             setCPSensorMin(msg[16]);
-            setCPVoltageMax(msg[17]);
-            setCPVoltageMin(msg[18]);
+            setCPVoltageMax(msg[17] / 10);
+            setCPVoltageMin(msg[18] / 10);
             //
             setTPTypeIndex(msg[19]);
             setTPSensorMax(msg[20]);
             setTPSensorMin(msg[21]);
-            setTPVoltageMax(msg[22]);
-            setTPVoltageMin(msg[23]);
+            setTPVoltageMax(msg[22] / 10);
+            setTPVoltageMin(msg[23] / 10);
             //
             setLoading(false);
             received = true;

@@ -260,9 +260,9 @@ const SettingsTab = (props) => {
         102,
         Number(LPSensorMin),
         116,
-        Number(LPVoltageMax),
+        Number(LPVoltageMax * 10),
         117,
-        Number(LPVoltageMin),
+        Number(LPVoltageMin * 10),
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
@@ -291,9 +291,9 @@ const SettingsTab = (props) => {
         105,
         Number(CPSensorMin),
         118,
-        Number(CPVoltageMax),
+        Number(CPVoltageMax * 10),
         119,
-        Number(CPVoltageMin),
+        Number(CPVoltageMin * 10),
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
@@ -322,9 +322,9 @@ const SettingsTab = (props) => {
         108,
         Number(TPSensorMin),
         120,
-        Number(TPVoltageMax),
+        Number(TPVoltageMax * 10),
         121,
-        Number(TPVoltageMin),
+        Number(TPVoltageMin * 10),
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
