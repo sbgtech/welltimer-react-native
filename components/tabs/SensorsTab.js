@@ -64,7 +64,7 @@ const SensorsTab = (props) => {
     }
   }, [props.connectedDevice]);
 
-  const formattedTime =
+  const formattedTimeSystemClock =
     systemClock !== null ? Receive.convertToHMS(systemClock) : null;
 
   const onRefresh = async () => {
@@ -104,8 +104,9 @@ const SensorsTab = (props) => {
           <View style={styles.statusWrapper}>
             <Text style={styles.statusText}>System clock</Text>
             <Text style={styles.statusValue}>
-              {formattedTime.hours} : {formattedTime.minutes} :{" "}
-              {formattedTime.seconds}
+              {formattedTimeSystemClock.formattedHours} :{" "}
+              {formattedTimeSystemClock.formattedMinutes} :{" "}
+              {formattedTimeSystemClock.formattedSeconds}
             </Text>
           </View>
           <View style={styles.statusWrapper}>

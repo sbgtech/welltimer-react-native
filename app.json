@@ -3,6 +3,13 @@
     "name": "Welltimer",
     "slug": "expo-bare",
     "version": "1.0.0",
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "android": {
       "package": "com.sbgdev.expobare",
       "permissions": [
@@ -11,8 +18,12 @@
         "android.permission.BLUETOOTH_CONNECT"
       ]
     },
+    "label": "WELLTIMER",
     "ios": {
-      "bundleIdentifier": "com.sbgdev.expobare"
+      "bundleIdentifier": "com.sbgdev.expobare",
+      "infoPlist": {
+        "CFBundleName": "WELLTIMER"
+      }
     },
     "plugins": [
       [

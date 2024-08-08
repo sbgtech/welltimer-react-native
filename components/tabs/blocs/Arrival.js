@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { styles } from "../style/styles";
+import { Receive } from "../../Utils/Receive";
 
 const Arrival = ({ arrivals }) => {
   // const [arrivalArray, setArrivalArray] = useState([]);
@@ -26,14 +27,23 @@ const Arrival = ({ arrivals }) => {
   //   { name: "Arrival 19", value: "00:09:56" },
   //   { name: "Arrival 20", value: "00:09:56" },
   // ];
+  const formattedTimeArrivals = (value) => {
+    return value !== null ? Receive.convertToHMS(value) : null;
+  };
   return (
     <ScrollView style={styles.arrivalWrapper} nestedScrollEnabled={true}>
-      {arrivals.map((data, index) => (
-        <View key={index} style={styles.arrivalItems}>
-          <Text style={styles.arrivalName}>{data.name}</Text>
-          <Text style={styles.arrivalValue}>{data.value}</Text>
-        </View>
-      ))}
+      {arrivals.map((data, index) => {
+        const { formattedHours, formattedMinutes, formattedSeconds } =
+          formattedTimeArrivals(data.value);
+        return (
+          <View key={index} style={styles.arrivalItems}>
+            <Text style={styles.arrivalName}>{data.name}</Text>
+            <Text style={styles.arrivalValue}>
+              {formattedHours} : {formattedMinutes} : {formattedSeconds}
+            </Text>
+          </View>
+        );
+      })}
     </ScrollView>
   );
 };

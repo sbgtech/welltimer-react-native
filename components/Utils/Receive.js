@@ -53,49 +53,45 @@ export class Receive {
             reject(error); // Reject the promise
             return;
           }
-
           //   // Check if data is received
-          const msg = Buffer.from(characteristic.value, "base64");
-          //   // Step 1: Convert ASCII codes to characters to form a string
-          //   let hexString = buffer.toString("ascii").trim();
-          //   // Step 2: Remove non-hexadecimal characters
-          //   hexString = hexString.replace(/[^0-9a-fA-F]/g, "");
-          //   // Step 3: Convert the cleaned hexadecimal string to a list of integers
-          //   const msg = [];
-          //   for (let i = 0; i < hexString.length - 2; i += 2) {
-          //     msg.push(parseInt(hexString.substr(i, 2), 16));
-          //   }
-          //   console.log("Received data from well status tab1 :", buffer);
-          console.log("Received data from well status tab :", msg);
-
-          if (msg[0] === 123 && msg[msg.length - 2] === 125 && msg[1] === 1) {
-            // Ensure data is processed only once
-            console.log("Data received successfully");
-            setPlungerStateIndex(msg[2] * 256 + msg[3]); // get two bytes for plunger state
-            setSystemClock(msg[4] * 256 + msg[5]); // set value to system clock
-            setLine(msg[6] * 256 + msg[7]); // set value to line
-            setTubing(msg[8] * 256 + msg[9]); // set value to tubing
-            setCasing(msg[10] * 256 + msg[11]); // set value to casing
-            const arr1 = msg[12] * 256 + msg[13];
-            const arr2 = msg[14] * 256 + msg[15];
-            const arr3 = msg[16] * 256 + msg[17];
-            const arr4 = msg[18] * 256 + msg[19];
-            const arr5 = msg[20] * 256 + msg[21];
-            const arr6 = msg[22] * 256 + msg[23];
-            const arr7 = msg[24] * 256 + msg[25];
-            const arr8 = msg[26] * 256 + msg[27];
-            const arr9 = msg[28] * 256 + msg[29];
-            const arr10 = msg[30] * 256 + msg[31];
-            const arr11 = msg[32] * 256 + msg[33];
-            const arr12 = msg[34] * 256 + msg[35];
-            const arr13 = msg[36] * 256 + msg[37];
-            const arr14 = msg[38] * 256 + msg[39];
-            const arr15 = msg[40] * 256 + msg[41];
-            const arr16 = msg[42] * 256 + msg[43];
-            const arr17 = msg[44] * 256 + msg[45];
-            const arr18 = msg[46] * 256 + msg[47];
-            const arr19 = msg[48] * 256 + msg[49];
-            const arr20 = msg[50] * 256 + msg[51];
+          const str = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          console.log("Received data from well status tab :", str);
+          const firstIndexValue = str.charAt(0); // Getting the character at index 0
+          const pageIndex = str.charAt(1); // Getting the character at index 0
+          const lastIndexValue = str[str.length - 2]; // Accessing the last character
+          if (
+            firstIndexValue == "[" &&
+            lastIndexValue == "]" &&
+            Number(pageIndex) == 1
+          ) {
+            const msg = JSON.parse(str);
+            setPlungerStateIndex(msg[1]); // get two bytes for plunger state
+            setSystemClock(msg[2]); // set value to system clock
+            setLine(msg[3]); // set value to line
+            setTubing(msg[4]); // set value to tubing
+            setCasing(msg[5]); // set value to casing
+            const arr1 = msg[6];
+            const arr2 = msg[7];
+            const arr3 = msg[8];
+            const arr4 = msg[9];
+            const arr5 = msg[10];
+            const arr6 = msg[11];
+            const arr7 = msg[12];
+            const arr8 = msg[13];
+            const arr9 = msg[14];
+            const arr10 = msg[15];
+            const arr11 = msg[16];
+            const arr12 = msg[17];
+            const arr13 = msg[18];
+            const arr14 = msg[19];
+            const arr15 = msg[20];
+            const arr16 = msg[21];
+            const arr17 = msg[22];
+            const arr18 = msg[23];
+            const arr19 = msg[24];
+            const arr20 = msg[25];
             setArrivals([
               { name: "Arrival 1", value: arr1 },
               { name: "Arrival 2", value: arr2 },
@@ -118,15 +114,21 @@ export class Receive {
               { name: "Arrival 19", value: arr19 },
               { name: "Arrival 20", value: arr20 },
             ]);
-            setFwVersion(msg[52] * 256 + msg[53]);
-            setBattery(msg[54] * 256 + msg[55]);
+            setFwVersion(msg[26]);
+            setBattery(msg[27]);
             dataReceived = true; // Mark data as received
             clearTimeout(timeout); // Clear timeout once data is received
             setLoading(false); // Set loading to false
             resolve(true); // Resolve the promise
           }
-          if (msg[0] === 123 && msg[msg.length - 2] === 125 && msg[1] === 5) {
-            setUniqueID(msg.slice(2, 19).toString());
+          if (
+            firstIndexValue == "[" &&
+            lastIndexValue == "]" &&
+            Number(pageIndex) == 5
+          ) {
+            const jsonString = str.replace(/'/g, '"');
+            const msg = JSON.parse(jsonString);
+            setUniqueID(msg[1]);
           }
         }
       );
@@ -175,23 +177,23 @@ export class Receive {
             reject(error);
             return;
           }
-          const msg = Buffer.from(characteristic.value, "base64");
-          //   // Step 1: Convert ASCII codes to characters to form a string
-          //   let hexString = buffer.toString("ascii").trim();
-          //   // Step 2: Remove non-hexadecimal characters
-          //   hexString = hexString.replace(/[^0-9a-fA-F]/g, "");
-          //   // Step 3: Convert the cleaned hexadecimal string to a list of integers
-          //   const msg = [];
-          //   for (let i = 0; i < hexString.length - 2; i += 2) {
-          //     msg.push(parseInt(hexString.substr(i, 2), 16));
-          //   }
-          //   console.log("Received data from timer tab1 :", buffer);
-          console.log("Received data from timer tab :", msg);
-          if (msg[0] == 123 && msg[msg.length - 2] == 125 && msg[1] == 2) {
-            setReceivedOpenTimer(msg[2] * 256 + msg[3]);
-            setReceivedShutinTimer(msg[4] * 256 + msg[5]);
-            setReceivedAfterflowTimer(msg[6] * 256 + msg[7]);
-            setReceivedMandatoryTimer(msg[8] * 256 + msg[9]);
+          const str = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          console.log("Received data from timer tab :", str);
+          const firstIndexValue = str.charAt(0); // Getting the character at index 0
+          const pageIndex = str.charAt(1); // Getting the character at index 0
+          const lastIndexValue = str[str.length - 2]; // Accessing the last character
+          if (
+            firstIndexValue == "[" &&
+            lastIndexValue == "]" &&
+            Number(pageIndex) == 2
+          ) {
+            const msg = JSON.parse(str);
+            setReceivedOpenTimer(msg[1]);
+            setReceivedShutinTimer(msg[2]);
+            setReceivedAfterflowTimer(msg[3]);
+            setReceivedMandatoryTimer(msg[4]);
             setLoading(false);
             received = true;
             resolve(received);
@@ -262,48 +264,48 @@ export class Receive {
             reject(error);
             return;
           }
-          const msg = Buffer.from(characteristic.value, "base64");
-          //   // Step 1: Convert ASCII codes to characters to form a string
-          //   let hexString = buffer.toString("ascii").trim();
-          //   // Step 2: Remove non-hexadecimal characters
-          //   hexString = hexString.replace(/[^0-9a-fA-F]/g, "");
-          //   // Step 3: Convert the cleaned hexadecimal string to a list of integers
-          //   const msg = [];
-          //   for (let i = 0; i < hexString.length - 2; i += 2) {
-          //     msg.push(parseInt(hexString.substr(i, 2), 16));
-          //   }
-          //   console.log("Received data from settings tab1 :", buffer);
-          console.log("Received data from settings tab :", msg);
-          if (msg[0] == 123 && msg[msg.length - 2] == 125 && msg[1] == 3) {
+          const str = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          console.log("Received data from settings tab :", str);
+          const firstIndexValue = str.charAt(0); // Getting the character at index 0
+          const pageIndex = str.charAt(1); // Getting the character at index 0
+          const lastIndexValue = str[str.length - 2]; // Accessing the last character
+          if (
+            firstIndexValue == "[" &&
+            lastIndexValue == "]" &&
+            Number(pageIndex) == 3
+          ) {
+            const msg = JSON.parse(str);
             //
-            setValveA(msg[2] * 256 + msg[3]);
+            setValveA(msg[1]);
             //
-            setProductionMethodIndex(msg[4] * 256 + msg[5]);
-            setMissrunMax(msg[6] * 256 + msg[7]);
-            setFalseArrivalsIndex(msg[8] * 256 + msg[9]);
-            setWellDepth(msg[10] * 256 + msg[11]);
+            setProductionMethodIndex(msg[2]);
+            setMissrunMax(msg[3]);
+            setFalseArrivalsIndex(msg[4]);
+            setWellDepth(msg[5]);
             //
-            setHiLoModeIndex(msg[12] * 256 + msg[13]);
-            setHiLoHigh(msg[14] * 256 + msg[15]);
-            setHiLoLow(msg[16] * 256 + msg[17]);
+            setHiLoModeIndex(msg[6]);
+            setHiLoHigh(msg[7]);
+            setHiLoLow(msg[8]);
             //
-            setLPTypeIndex(msg[18] * 256 + msg[19]);
-            setLPSensorMax(msg[20] * 256 + msg[21]);
-            setLPSensorMin(msg[22] * 256 + msg[23]);
-            setLPVoltageMax(msg[24] * 256 + msg[25]);
-            setLPVoltageMin(msg[26] * 256 + msg[27]);
+            setLPTypeIndex(msg[9]);
+            setLPSensorMax(msg[10]);
+            setLPSensorMin(msg[11]);
+            setLPVoltageMax(msg[12]);
+            setLPVoltageMin(msg[13]);
             //
-            setCPTypeIndex(msg[28] * 256 + msg[29]);
-            setCPSensorMax(msg[30] * 256 + msg[31]);
-            setCPSensorMin(msg[32] * 256 + msg[33]);
-            setCPVoltageMax(msg[34] * 256 + msg[35]);
-            setCPVoltageMin(msg[36] * 256 + msg[37]);
+            setCPTypeIndex(msg[14]);
+            setCPSensorMax(msg[15]);
+            setCPSensorMin(msg[16]);
+            setCPVoltageMax(msg[17]);
+            setCPVoltageMin(msg[18]);
             //
-            setTPTypeIndex(msg[38] * 256 + msg[39]);
-            setTPSensorMax(msg[40] * 256 + msg[41]);
-            setTPSensorMin(msg[42] * 256 + msg[43]);
-            setTPVoltageMax(msg[45] * 256 + msg[46]);
-            setTPVoltageMin(msg[47] * 256 + msg[48]);
+            setTPTypeIndex(msg[19]);
+            setTPSensorMax(msg[20]);
+            setTPSensorMin(msg[21]);
+            setTPVoltageMax(msg[22]);
+            setTPVoltageMin(msg[23]);
             //
             setLoading(false);
             received = true;
@@ -337,12 +339,14 @@ export class Receive {
             "utf-8"
           );
           console.log("Received data from test tab :", msg);
-          setDataArray((prevArray) => [
-            ...prevArray,
-            { date: Date.now(), data: msg, type: "RX" },
-          ]);
-          setLoading(false);
-          setDataReceived(true); // Update dataReceived state
+          if (msg !== "ACK\n") {
+            setDataArray((prevArray) => [
+              ...prevArray,
+              { date: Date.now(), data: msg, type: "RX" },
+            ]);
+            setLoading(false);
+            setDataReceived(true); // Update dataReceived state
+          }
         }
       );
       // Return a function to clean up the subscription
@@ -361,18 +365,81 @@ export class Receive {
     let remainingSecondsAfterHours = totalSeconds % 3600;
     let minutes = Math.floor(remainingSecondsAfterHours / 60);
     let seconds = remainingSecondsAfterHours % 60;
-    return { hours, minutes, seconds };
+
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+    return { formattedHours, formattedMinutes, formattedSeconds };
   };
 
   // function for sending data
   static sendReqToGetData = (connectedDevice, activeTab) => {
-    const data = "0x0" + (activeTab + 1) + " \n";
-    const buffer = Buffer.from(data, "utf-8");
-    connectedDevice?.writeCharacteristicWithResponseForService(
-      UART_SERVICE_UUID,
-      UART_TX_CHARACTERISTIC_UUID,
-      buffer.toString("base64")
-    );
-    console.log("req sent : ", data);
+    try {
+      const data = "0x0" + (activeTab + 1) + " \n";
+      const buffer = Buffer.from(data, "utf-8");
+      connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      console.log("req sent : ", data);
+    } catch (error) {
+      console.log("Error to sent request for receiving data.");
+    }
   };
+
+  static async ACKReceivedData(device, setters) {
+    const { setLoading } = setters;
+    let sent = false;
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      const timeout = setTimeout(() => {
+        if (!sent) {
+          console.log("Error to send data");
+          setLoading(false);
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "Error to send data",
+            visibilityTime: 3000,
+          });
+        }
+        reject({ sent: false });
+      }, 20000);
+      const subscription = device?.monitorCharacteristicForService(
+        UART_SERVICE_UUID,
+        UART_RX_CHARACTERISTIC_UUID,
+        (error, characteristic) => {
+          clearTimeout(timeout);
+          if (error) {
+            console.log(error);
+            reject(error);
+            return;
+          }
+          const msg = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          if (msg === "ACK\n") {
+            setLoading(false);
+            sent = true;
+            resolve(sent);
+            Toast.show({
+              type: "success",
+              text1: "Success",
+              text2: "Data sent successfully",
+              visibilityTime: 3000,
+            });
+          }
+        }
+      );
+      // Return a function to clean up the subscription
+      return () => {
+        subscription.remove();
+        clearTimeout(timeout);
+      };
+    }).catch(() => {
+      console.log("Error receiving ACK");
+      return false; // Return false in case of error
+    });
+  }
 }

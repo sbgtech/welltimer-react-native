@@ -9,7 +9,6 @@ import Valve from "./blocs/Valve";
 import RefreshBtn from "./blocs/RefreshBtn";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Buffer } from "buffer";
-import Toast from "react-native-toast-message";
 import {
   UART_SERVICE_UUID,
   UART_TX_CHARACTERISTIC_UUID,
@@ -214,20 +213,12 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data updated successfully",
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error sending data",
-        visibilityTime: 3000,
-      });
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
@@ -249,20 +240,12 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data updated successfully",
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error sending data",
-        visibilityTime: 3000,
-      });
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
@@ -288,20 +271,12 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data updated successfully",
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error sending data",
-        visibilityTime: 3000,
-      });
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
@@ -327,20 +302,12 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data updated successfully",
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error sending data",
-        visibilityTime: 3000,
-      });
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
@@ -366,20 +333,12 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data updated successfully",
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error sending data",
-        visibilityTime: 3000,
-      });
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
@@ -459,10 +418,11 @@ const SettingsTab = (props) => {
   };
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
       <RefreshBtn onPress={() => onRefresh()} />
       <Valve
         connectedDevice={props.connectedDevice}
+        setLoading={setLoading}
         title={"Valve A"}
         status={valveA === 1 ? true : false}
       />

@@ -69,24 +69,28 @@ const TimerTab = (props) => {
           title={"Open timer"}
           address={112}
           totalSec={receivedOpenTimer}
+          setLoading={setLoading}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Shutin timer"}
           address={113}
           totalSec={receivedShutinTimer}
+          setLoading={setLoading}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Afterflow timer"}
           address={114}
           totalSec={receivedAfterflowTimer}
+          setLoading={setLoading}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Mandatory shutin timer"}
           address={115}
           totalSec={receivedMandatoryTimer}
+          setLoading={setLoading}
         />
       </View>
       <Loading loading={loading} />

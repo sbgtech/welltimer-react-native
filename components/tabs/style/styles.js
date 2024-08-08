@@ -10,13 +10,13 @@ export const styles = StyleSheet.create({
   HomeView: {
     flex: 1,
     backgroundColor: "#eeeeee",
-    padding: 10,
+    padding: 10 * scale,
   },
   HomeTitle: {
-    fontSize: 26,
+    fontSize: 26 * scale,
     fontWeight: "bold",
-    marginHorizontal: 4,
-    marginBottom: 10,
+    marginHorizontal: 4 * scale,
+    marginBottom: 10 * scale,
   },
   HomeCountDevices: {
     fontSize: 16 * scale,
@@ -24,8 +24,8 @@ export const styles = StyleSheet.create({
   //item.js
   itemView: {
     backgroundColor: "#fff",
-    margin: 2,
-    padding: 8,
+    margin: 2 * scale,
+    padding: 8 * scale,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   // TabView.js
   tabsContainer: {
     flexDirection: "row",
-    borderBottomWidth: 1,
+    borderBottomWidth: 1 * scale,
     borderBottomColor: "#ccc", // Customize tab bar border color
   },
   // Tab.js
@@ -79,8 +79,8 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   deviceBloc: {
-    marginHorizontal: 15,
-    marginVertical: 10,
+    marginHorizontal: 15 * scale,
+    marginVertical: 10 * scale,
   },
   deviceBtns: {
     paddingHorizontal: 12 * scale,
@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
     height: 40 * scale,
   },
   btnSend: {
-    width: 40 * scale,
+    width: 55 * scale,
     height: 40 * scale,
   },
   msgViewContainer: {
@@ -160,13 +160,13 @@ export const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: "row",
+    borderTopWidth: 2 * scale,
     borderColor: "#ccc",
   },
   tableCell: {
     flex: 1,
     padding: 10 * scale,
     borderColor: "#D4D4D4",
-    borderTopWidth: 1,
     fontSize: 16 * scale,
   },
   tableHeader: {
@@ -188,8 +188,8 @@ export const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     color: "#fff",
-    fontSize: 16,
-    padding: 4,
+    fontSize: 16 * scale,
+    padding: 4 * scale,
   },
   modalContainer: {
     flex: 1,
@@ -245,10 +245,10 @@ export const styles = StyleSheet.create({
   },
   dropdownButtonTxtStyle: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 16 * scale,
   },
   dropdownButtonArrowStyle: {
-    fontSize: 20,
+    fontSize: 20 * scale,
   },
   dropdownMenuStyle: {
     backgroundColor: "#eeeeee",
@@ -256,14 +256,14 @@ export const styles = StyleSheet.create({
   dropdownItemStyle: {
     width: "100%",
     flexDirection: "row",
-    paddingHorizontal: 14,
+    paddingHorizontal: 14 * scale,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 8,
+    paddingVertical: 8 * scale,
   },
   dropdownItemTxtStyle: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 16 * scale,
     fontWeight: "500",
     color: "#151E26",
   },
@@ -297,8 +297,8 @@ export const styles = StyleSheet.create({
   statusWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
-    borderBottomWidth: 1,
-    paddingVertical: 4,
+    borderBottomWidth: 2 * scale,
+    paddingVertical: 6 * scale,
     borderColor: "#D4D4D4",
   },
   statusText: {
@@ -349,14 +349,14 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 8 * scale,
-    marginBottom: 1 * scale,
+    marginBottom: 2 * scale,
     backgroundColor: "#f7f7f7",
   },
   arrivalName: {
     fontSize: 18 * scale,
   },
   arrivalValue: {
-    fontSize: 16 * scale,
+    fontSize: 18 * scale,
   },
   // RefreshBtn.js
   refreshBtnWrapper: {
@@ -381,7 +381,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    paddingVertical: 4,
+    paddingVertical: 4 * scale,
   },
   btnSendText: {
     paddingHorizontal: 12 * scale,

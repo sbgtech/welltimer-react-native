@@ -27,6 +27,7 @@ import {
   UART_RX_CHARACTERISTIC_UUID,
 } from "../Utils/Constants";
 import { Receive } from "../Utils/Receive";
+import Loading from "./blocs/Loading";
 
 const TestTab = (props) => {
   const [message, setMessage] = useState("");
@@ -102,6 +103,7 @@ const TestTab = (props) => {
       Toast.show({
         type: "success",
         text1: "Success",
+        text2: "Sent successfully",
         visibilityTime: 3000,
       });
       const buffer = Buffer.from(data, "utf-8");
@@ -173,20 +175,13 @@ const TestTab = (props) => {
           />
           <ButtonUI
             onPress={async () => await onSendMessageSubmit()}
-            title={<Ionicons name="send" size={20 * scale} color="white" />}
+            title={<Ionicons name="send" size={25 * scale} color="white" />}
             btnStyle={styles.btnSend}
             txtStyle={styles.TextSendStyle}
             loading={false}
           />
         </View>
-        <Modal animationType="slide" transparent={true} visible={loading}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.waitingMsg}>Wait</Text>
-              <ActivityIndicator color={"#35374B"} size={"large"} />
-            </View>
-          </View>
-        </Modal>
+        <Loading loading={loading} />
       </View>
     </Animated.View>
   );

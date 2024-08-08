@@ -6,16 +6,19 @@ import {
   ActivityIndicator,
   PermissionsAndroid,
   Platform,
+  Alert,
 } from "react-native";
 import Item from "./Item";
 import { BleManager } from "react-native-ble-plx";
 import ButtonUI from "./ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
+import Loading from "./tabs/blocs/Loading";
 
 const bleManager = new BleManager();
 
 export default function Home({ navigation }) {
+  const [bluetoothState, setBluetoothState] = useState("Unknown");
   const [scanning, setScanning] = useState(false);
   const [devices, setDevices] = useState([]);
   const discoveredDevices = new Set();
@@ -55,20 +58,43 @@ export default function Home({ navigation }) {
         );
       }
     }
-    this.showErrorToast("Permission have not been granted");
+    Alert.alert("Permission have not been granted");
     return false;
   };
+
+  useEffect(() => {
+    const checkBluetoothState = async () => {
+      const state = await bleManager.state();
+      setBluetoothState(state);
+    };
+    checkBluetoothState();
+    // Set up a listener for Bluetooth state changes
+    const checkState = async () => {
+      const subscription = await bleManager.onStateChange((state) => {
+        setBluetoothState(state);
+        if (state !== "PoweredOn") {
+          Alert.alert(
+            "Info",
+            "Please make sure to activate Bluetooth and position."
+          );
+        }
+      }, true);
+      return () => subscription.remove(); // Clean up listener on unmount
+    };
+    checkState();
+  }, []);
 
   useEffect(() => {
     // when page refreshed call requestBluetoothPermissions function
     requestBluetoothPermission();
     scanForDevices();
-
     // Cleanup function to stop scanning when component unmounts
     return () => {
       bleManager.stopDeviceScan();
     };
   }, [scanning]);
+
+  console.log("bluetoothState ", bluetoothState);
 
   // function to scan devices
   const scanForDevices = () => {
@@ -80,7 +106,13 @@ export default function Home({ navigation }) {
         (error, scannedDevice) => {
           if (error) {
             // if error when scanning
-            console.error("Error scanning for devices:", error);
+            console.log("Error scanning for devices:", error);
+            Toast.show({
+              type: "error",
+              text1: "Error",
+              text2: error.message,
+              visibilityTime: 3000,
+            });
             return;
           }
           // If the device is new, add it to the scanned devices list

@@ -11,7 +11,7 @@ import {
 } from "../../Utils/Constants";
 import { Receive } from "../../Utils/Receive";
 
-const Timer = (props) => {
+const Timer = ({ title, totalSec, connectedDevice, address, setLoading }) => {
   const [hourValue, setHourValue] = useState("");
   const [minValue, setMinValue] = useState("");
   const [secValue, setSecValue] = useState("");
@@ -56,35 +56,34 @@ const Timer = (props) => {
     try {
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
-      const arr = JSON.stringify([props.address, totalSeconds]);
+      const arr = JSON.stringify([address, totalSeconds]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent to " + props.connectedDevice.name,
-        visibilityTime: 3000,
-      });
+      Receive.ACKReceivedData(connectedDevice, { setLoading });
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
     }
   };
 
   const toHMS = (totalSeconds) => {
-    const { hours, minutes, seconds } = Receive.convertToHMS(totalSeconds);
-    setHourValue(hours);
-    setMinValue(minutes);
-    setSecValue(seconds);
+    const { formattedHours, formattedMinutes, formattedSeconds } =
+      Receive.convertToHMS(totalSeconds);
+    setHourValue(formattedHours);
+    setMinValue(formattedMinutes);
+    setSecValue(formattedSeconds);
   };
 
   useEffect(() => {
-    toHMS(props.totalSec);
-  }, [props.totalSec]);
+    toHMS(totalSec);
+  }, [totalSec]);
   return (
     <View style={styles.wrapper}>
       <View
@@ -94,7 +93,7 @@ const Timer = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <Text style={styles.valveTitle}>{props.title}</Text>
+        <Text style={styles.valveTitle}>{title}</Text>
       </View>
 
       <View style={styles.rangeWrapper}>
@@ -102,7 +101,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={hourValue.toString()}
+            value={hourValue}
             onChangeText={handleChangeHour}
             maxLength={2}
           />
@@ -110,7 +109,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={minValue.toString()}
+            value={minValue}
             onChangeText={handleChangeMin}
             maxLength={2}
           />
@@ -118,7 +117,7 @@ const Timer = (props) => {
           <TextInput
             style={styles.inputTimer}
             keyboardType="numeric"
-            value={secValue.toString()}
+            value={secValue}
             onChangeText={handleChangeSec}
             maxLength={2}
           />
