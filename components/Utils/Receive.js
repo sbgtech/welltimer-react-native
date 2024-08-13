@@ -39,7 +39,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 5000);
+      }, 20000);
 
       // Monitor characteristic for service
       const subscription = device?.monitorCharacteristicForService(
@@ -166,7 +166,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 5000);
+      }, 20000);
       const subscription = device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,
@@ -253,7 +253,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 5000);
+      }, 20000);
       const subscription = device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,

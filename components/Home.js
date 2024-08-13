@@ -75,7 +75,7 @@ export default function Home({ navigation }) {
         if (state !== "PoweredOn") {
           Alert.alert(
             "Info",
-            "Please make sure to activate Bluetooth and position."
+            "Please make sure to activate Bluetooth and position for better usage."
           );
         }
       }, true);
@@ -185,7 +185,7 @@ export default function Home({ navigation }) {
         title={scanning ? "Stop Scanning" : "Scan devices"}
       />
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.HomeTitle}>Available devices</Text>
+        <Text style={styles.HomeTitle}>Available devices :</Text>
         <Text style={styles.HomeCountDevices}>({devices.length})</Text>
         {scanning && <ActivityIndicator size="small" color="#35374B" />}
       </View>

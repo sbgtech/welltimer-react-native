@@ -65,12 +65,12 @@ const TestTab = (props) => {
           Toast.show({
             type: "error",
             text1: "Warning",
-            text2: "No data received within 5 seconds",
+            text2: "No data received within 20 seconds",
             visibilityTime: 3000,
           });
           setLoading(false);
         }
-      }, 5000);
+      }, 20000);
       return () => clearTimeout(timer);
     }
     if (!isSubscribed) {
