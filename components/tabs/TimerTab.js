@@ -8,13 +8,15 @@ import Loading from "./blocs/Loading";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const TimerTab = (props) => {
+  // declare initial states for the 4 timers
   const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
   const [receivedShutinTimer, setReceivedShutinTimer] = useState("");
   const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
   const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
+  // the loading state, default is false
   const [loading, setLoading] = useState(false);
 
-  // Initial load
+  // Initial load, call TimerReceivedData function with the corresponding data of timers
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,14 +32,16 @@ const TimerTab = (props) => {
       }
     };
 
+    // fetcha data if the device is connected
     if (props.connectedDevice) {
       const cleanup = fetchData();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
+  // function run when clicking on refresh button
   const onRefresh = async () => {
-    // call function to send req to device to get data
+    // call function to send request to device to get data
     Receive.sendReqToGetData(props.connectedDevice, 1);
     // start receiving data
     try {
@@ -70,6 +74,7 @@ const TimerTab = (props) => {
           address={112}
           totalSec={receivedOpenTimer}
           setLoading={setLoading}
+          onRefresh={onRefresh}
         />
         <Timer
           connectedDevice={props.connectedDevice}
@@ -77,6 +82,7 @@ const TimerTab = (props) => {
           address={113}
           totalSec={receivedShutinTimer}
           setLoading={setLoading}
+          onRefresh={onRefresh}
         />
         <Timer
           connectedDevice={props.connectedDevice}
@@ -84,6 +90,7 @@ const TimerTab = (props) => {
           address={114}
           totalSec={receivedAfterflowTimer}
           setLoading={setLoading}
+          onRefresh={onRefresh}
         />
         <Timer
           connectedDevice={props.connectedDevice}
@@ -91,6 +98,7 @@ const TimerTab = (props) => {
           address={115}
           totalSec={receivedMandatoryTimer}
           setLoading={setLoading}
+          onRefresh={onRefresh}
         />
       </View>
       <Loading loading={loading} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Alert } from "react-native";
 import ButtonUI from "../ButtonUI";
 import Tab from "./Tab";
-import SensorsTab from "./SensorsTab";
+import WellStatus from "./WellStatusTab";
 import TimerTab from "./TimerTab";
 import SettingsTab from "./SettingsTab";
 import TestTab from "./TestTab";
@@ -14,11 +14,13 @@ import { Receive } from "../Utils/Receive";
 const bleManager = new BleManager();
 
 const TabView = ({ navigation }) => {
+  // set the connected welltimer to this variable
   const [connectedDevice, setConnectedDevice] = useState(null);
+  // the existed pages for config welltimer after connected to it
   const tabs = [
     {
       label: "Well status",
-      content: <SensorsTab connectedDevice={connectedDevice} />,
+      content: <WellStatus connectedDevice={connectedDevice} />,
     },
     {
       label: "Timers",
@@ -33,14 +35,18 @@ const TabView = ({ navigation }) => {
       content: <TestTab connectedDevice={connectedDevice} />,
     },
   ];
+  // variable used for known the current page, default is the first page (index 0)
   const [activeTab, setActiveTab] = useState(0);
 
+  // function to set active page to the variable when pressing on the page
   const handleTabPress = (index) => {
     setActiveTab(index);
     // sendReq();
   };
 
+  // useEffect used for handling side effects in component like data fetching, event listeners, subscriptions, timers, updating state or manually changing the DOM that can’t be done during rendering
   useEffect(() => {
+    // verify the device is connected or not
     const checkDeviceConnection = async () => {
       const connectedDevices = await bleManager.connectedDevices([
         UART_SERVICE_UUID,
@@ -69,11 +75,13 @@ const TabView = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    // if device is connected ,call send requests function to send request to device with the current page input to get data and display them
     if (connectedDevice) {
-      Receive.sendReqToGetData(connectedDevice, activeTab); // Send request whenever activeTab changes
+      Receive.sendReqToGetData(connectedDevice, activeTab);
     }
-  }, [activeTab, connectedDevice]); // Watch activeTab changes
+  }, [activeTab, connectedDevice]); // Send request whenever activeTab changes (call useEffect whenever activeTab changes)
 
+  // function to disconnect the current connected device from BLE
   const disconnectFromDevice = async () => {
     try {
       if (connectedDevice) {
@@ -88,6 +96,7 @@ const TabView = ({ navigation }) => {
     }
   };
 
+  // when clicking on disconnect button, run this function
   const handleDisconnect = () => {
     Alert.alert(
       "Disconnect",
@@ -98,7 +107,7 @@ const TabView = ({ navigation }) => {
           onPress: () => console.log("Cancel disconnect"),
           style: "cancel",
         },
-        { text: "Disconnect", onPress: () => disconnectFromDevice() },
+        { text: "Disconnect", onPress: () => disconnectFromDevice() }, // call disconnectFromDevice function
       ],
       { cancelable: false }
     );

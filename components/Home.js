@@ -13,17 +13,22 @@ import { BleManager } from "react-native-ble-plx";
 import ButtonUI from "./ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
-import Loading from "./tabs/blocs/Loading";
 
+// create new instance for the BleManager module
 const bleManager = new BleManager();
 
 export default function Home({ navigation }) {
+  // initialize the state of bluetooth in the mobile, default Unknown
   const [bluetoothState, setBluetoothState] = useState("Unknown");
+  // create scanning state of the devices, default is not scanning yet
   const [scanning, setScanning] = useState(false);
+  // an array of available devices
   const [devices, setDevices] = useState([]);
+  // create new Set of the discovered devices to set thems into devices array
   const discoveredDevices = new Set();
 
   // Request Bluetooth permissions
+  // Ask user when he open the app to allow and activate position and bluetooth
   const requestBluetoothPermission = async () => {
     if (Platform.OS === "ios") {
       return true;
@@ -62,7 +67,9 @@ export default function Home({ navigation }) {
     return false;
   };
 
+  // Initial load
   useEffect(() => {
+    // when load this component it check the bluetooth state
     const checkBluetoothState = async () => {
       const state = await bleManager.state();
       setBluetoothState(state);
@@ -70,9 +77,11 @@ export default function Home({ navigation }) {
     checkBluetoothState();
     // Set up a listener for Bluetooth state changes
     const checkState = async () => {
+      // read the state of bluetooth with ble plx module and set it into our state
       const subscription = await bleManager.onStateChange((state) => {
         setBluetoothState(state);
         if (state !== "PoweredOn") {
+          // if bluetooth or posiition are deactivates, it show an alert to activate them
           Alert.alert(
             "Info",
             "Please make sure to activate Bluetooth and position for better usage."
@@ -87,6 +96,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     // when page refreshed call requestBluetoothPermissions function
     requestBluetoothPermission();
+    // call scanning function
     scanForDevices();
     // Cleanup function to stop scanning when component unmounts
     return () => {
@@ -94,18 +104,18 @@ export default function Home({ navigation }) {
     };
   }, [scanning]);
 
-  console.log("bluetoothState ", bluetoothState);
-
   // function to scan devices
   const scanForDevices = () => {
     if (scanning) {
-      setDevices([]); // empty array
+      // if scanning state is true
+      setDevices([]); // empty the array
+      // call scan function of the ble plx module
       bleManager.startDeviceScan(
         null,
         { allowDuplicates: false },
         (error, scannedDevice) => {
           if (error) {
-            // if error when scanning
+            // if error when scanning show error alert
             console.log("Error scanning for devices:", error);
             Toast.show({
               type: "error",
@@ -115,7 +125,7 @@ export default function Home({ navigation }) {
             });
             return;
           }
-          // If the device is new, add it to the scanned devices list
+          // If retrieve an device, add it to the scanned devices list
           if (scannedDevice && !discoveredDevices.has(scannedDevice.id)) {
             if (scannedDevice.name) {
               discoveredDevices.add(scannedDevice.id);
@@ -163,6 +173,7 @@ export default function Home({ navigation }) {
   const renderItem = ({ item }) => (
     <Item
       name={item.name}
+      id={item.id}
       onPress={() => connectToDevice(item)}
       title={"Connect"}
     />

@@ -7,9 +7,13 @@ import RefreshBtn from "./blocs/RefreshBtn";
 import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
 
-const SensorsTab = (props) => {
+const WellStatus = (props) => {
+  // declare initial states
+  // the loading state, default is false
   const [loading, setLoading] = useState(false);
+  // variable for the index of plungerState received from welltimer
   const [plungerStateIndex, setPlungerStateIndex] = useState(null);
+  // display the name of plungerState based on the received index
   const plungerState = [
     "POWER UP",
     "SHUTIN",
@@ -19,6 +23,7 @@ const SensorsTab = (props) => {
     "HILINE",
     "LOLINE",
   ];
+  // prepare variables to set them the received data
   const [systemClock, setSystemClock] = useState(0);
   const [line, setLine] = useState();
   const [tubing, setTubing] = useState();
@@ -37,7 +42,7 @@ const SensorsTab = (props) => {
     },
   ];
 
-  // Initial load
+  // Initial load, call SensorsReceivedData function with the corresponding data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,17 +63,20 @@ const SensorsTab = (props) => {
       }
     };
 
+    // fetcha data if the device is connected
     if (props.connectedDevice) {
       const cleanup = fetchData();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
+  // get the seconds of systemClock state and convert them to HH:MM:SS format
   const formattedTimeSystemClock =
     systemClock !== null ? Receive.convertToHMS(systemClock) : null;
 
+  // function run when clicking on refresh button
   const onRefresh = async () => {
-    // call function to send req to device to get data
+    // call function to send request to device to get data
     Receive.sendReqToGetData(props.connectedDevice, 0);
     // start receiving data
     try {
@@ -134,4 +142,4 @@ const SensorsTab = (props) => {
   );
 };
 
-export default SensorsTab;
+export default WellStatus;

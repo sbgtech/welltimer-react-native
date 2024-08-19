@@ -30,10 +30,18 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  itemText: {
+  itemInfo: {
+    margin: 2 * scale,
+    width: "70%",
+    maxWidth: "70%",
+  },
+  itemName: {
     fontSize: 20 * scale,
     fontWeight: "bold",
-    maxWidth: "70%",
+  },
+  itemID: {
+    fontSize: 10 * scale,
+    color: "#9E9E9E",
   },
   // TabView.js
   tabsContainer: {
@@ -223,6 +231,15 @@ export const styles = StyleSheet.create({
     maxWidth: "100%",
     height: 40 * scale,
   },
+  inputSettingsDisabled: {
+    backgroundColor: "#eeeeee",
+    paddingHorizontal: 10 * scale,
+    margin: 2 * scale,
+    borderWidth: 0.5,
+    width: "100%",
+    maxWidth: "100%",
+    height: 40 * scale,
+  },
   settingsSection: { marginBottom: 20 },
   containerBtnText: {
     margin: 2 * scale,
@@ -267,7 +284,7 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#151E26",
   },
-  //sensorsTab.js
+  //WellStatus.js
   marginBottomContainer: {
     marginBottom:
       Platform.OS === "android" ? marginBottomAndroid : marginBottomIOS,

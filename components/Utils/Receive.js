@@ -7,6 +7,7 @@ import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
 
 export class Receive {
+  // function listen to receive data for well status page
   static async SensorsReceivedData(device, setters) {
     const {
       setPlungerStateIndex,
@@ -29,7 +30,7 @@ export class Receive {
       // Set a timeout for the operation
       const timeout = setTimeout(() => {
         if (!dataReceived) {
-          console.log("Data not received within 5 seconds timer");
+          console.log("Data not received within 20 seconds in well status");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -53,11 +54,10 @@ export class Receive {
             reject(error); // Reject the promise
             return;
           }
-          //   // Check if data is received
+          // Check if data is received
           const str = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log("Received data from well status tab :", str);
           const firstIndexValue = str.charAt(0); // Getting the character at index 0
           const pageIndex = str.charAt(1); // Getting the character at index 0
           const lastIndexValue = str[str.length - 2]; // Accessing the last character
@@ -72,48 +72,11 @@ export class Receive {
             setLine(msg[3]); // set value to line
             setTubing(msg[4]); // set value to tubing
             setCasing(msg[5]); // set value to casing
-            const arr1 = msg[6];
-            const arr2 = msg[7];
-            const arr3 = msg[8];
-            const arr4 = msg[9];
-            const arr5 = msg[10];
-            const arr6 = msg[11];
-            const arr7 = msg[12];
-            const arr8 = msg[13];
-            const arr9 = msg[14];
-            const arr10 = msg[15];
-            const arr11 = msg[16];
-            const arr12 = msg[17];
-            const arr13 = msg[18];
-            const arr14 = msg[19];
-            const arr15 = msg[20];
-            const arr16 = msg[21];
-            const arr17 = msg[22];
-            const arr18 = msg[23];
-            const arr19 = msg[24];
-            const arr20 = msg[25];
-            setArrivals([
-              { name: "Arrival 1", value: arr1 },
-              { name: "Arrival 2", value: arr2 },
-              { name: "Arrival 3", value: arr3 },
-              { name: "Arrival 4", value: arr4 },
-              { name: "Arrival 5", value: arr5 },
-              { name: "Arrival 6", value: arr6 },
-              { name: "Arrival 7", value: arr7 },
-              { name: "Arrival 8", value: arr8 },
-              { name: "Arrival 9", value: arr9 },
-              { name: "Arrival 10", value: arr10 },
-              { name: "Arrival 11", value: arr11 },
-              { name: "Arrival 12", value: arr12 },
-              { name: "Arrival 13", value: arr13 },
-              { name: "Arrival 14", value: arr14 },
-              { name: "Arrival 15", value: arr15 },
-              { name: "Arrival 16", value: arr16 },
-              { name: "Arrival 17", value: arr17 },
-              { name: "Arrival 18", value: arr18 },
-              { name: "Arrival 19", value: arr19 },
-              { name: "Arrival 20", value: arr20 },
-            ]);
+            const arrivals = msg.slice(6, 26).map((value, index) => ({
+              name: `Arrival ${index + 1}`,
+              value,
+            }));
+            setArrivals(arrivals);
             setFwVersion(msg[26]);
             setBattery(msg[27]);
             dataReceived = true; // Mark data as received
@@ -143,6 +106,7 @@ export class Receive {
     });
   }
 
+  // function listen to receive data for timer page
   static async TimerReceivedData(device, setters) {
     const {
       setReceivedOpenTimer,
@@ -156,7 +120,7 @@ export class Receive {
       setLoading(true);
       const timeout = setTimeout(() => {
         if (!received) {
-          console.log("Data not received within 5 seconds timer");
+          console.log("Data not received within 20 seconds timer");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -180,7 +144,6 @@ export class Receive {
           const str = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log("Received data from timer tab :", str);
           const firstIndexValue = str.charAt(0); // Getting the character at index 0
           const pageIndex = str.charAt(1); // Getting the character at index 0
           const lastIndexValue = str[str.length - 2]; // Accessing the last character
@@ -211,6 +174,7 @@ export class Receive {
     });
   }
 
+  // function listen to receive data for settings page
   static async SettingsReceivedData(device, setters) {
     const {
       setValveA,
@@ -236,6 +200,15 @@ export class Receive {
       setTPSensorMin,
       setTPVoltageMax,
       setTPVoltageMin,
+      setArrivalsToday,
+      setArrivalsWeek,
+      setArrivalsTotal,
+      setMissrunToday,
+      setMissrunWeek,
+      setMissrunTotal,
+      setOnTimeToday,
+      setOnTimeWeek,
+      setOnTimeTotal,
       setLoading,
     } = setters;
     let received = false;
@@ -243,7 +216,7 @@ export class Receive {
       setLoading(true);
       const timeout = setTimeout(() => {
         if (!received) {
-          console.log("Data not received within 5 seconds settings");
+          console.log("Data not received within 20 seconds settings");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -267,7 +240,6 @@ export class Receive {
           const str = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log("Received data from settings tab :", str);
           const firstIndexValue = str.charAt(0); // Getting the character at index 0
           const pageIndex = str.charAt(1); // Getting the character at index 0
           const lastIndexValue = str[str.length - 2]; // Accessing the last character
@@ -307,6 +279,16 @@ export class Receive {
             setTPVoltageMax(msg[22] / 10);
             setTPVoltageMin(msg[23] / 10);
             //
+            setArrivalsToday(msg[24]);
+            setArrivalsWeek(msg[25]);
+            setArrivalsTotal(msg[26]);
+            setMissrunToday(msg[27]);
+            setMissrunWeek(msg[28]);
+            setMissrunTotal(msg[29]);
+            setOnTimeToday(msg[30]);
+            setOnTimeWeek(msg[31]);
+            setOnTimeTotal(msg[32]);
+            //
             setLoading(false);
             received = true;
             resolve(received);
@@ -324,6 +306,7 @@ export class Receive {
     });
   }
 
+  // function listen to receive data for test page
   static async TestReceivedData(device, setters) {
     const { setDataArray, setLoading, setDataReceived } = setters;
     try {
@@ -338,7 +321,6 @@ export class Receive {
           const msg = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log("Received data from test tab :", msg);
           if (msg !== "ACK\n") {
             setDataArray((prevArray) => [
               ...prevArray,
@@ -360,6 +342,7 @@ export class Receive {
     }
   }
 
+  // function get total seconds in input and return converted time in HH:MM:SS format
   static convertToHMS = (totalSeconds) => {
     let hours = Math.floor(totalSeconds / 3600);
     let remainingSecondsAfterHours = totalSeconds % 3600;
@@ -372,7 +355,7 @@ export class Receive {
     return { formattedHours, formattedMinutes, formattedSeconds };
   };
 
-  // function for sending data
+  // function for sending data to device (called it into each page)
   static sendReqToGetData = (connectedDevice, activeTab) => {
     try {
       const data = "0x0" + (activeTab + 1) + " \n";
@@ -388,6 +371,7 @@ export class Receive {
     }
   };
 
+  // function listen to receive "ACK" from device to stop loading and show "successfully sent", else show "Error to sent data" and the time given for waiting response to stop loading is 20 seconds.
   static async ACKReceivedData(device, setters) {
     const { setLoading } = setters;
     let sent = false;

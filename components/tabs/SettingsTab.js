@@ -15,39 +15,54 @@ import {
 } from "../Utils/Constants";
 
 const SettingsTab = (props) => {
+  // declare initial states
+  // the loading state, default is false
   const [loading, setLoading] = useState(false);
-  //
+  // value of valve, default 0 (OFF)
   const [valveA, setValveA] = useState(0);
-  //
+  // display the name of the productionMethod based on the received index
   const [productionMethodIndex, setProductionMethodIndex] = useState(null);
   const productionMethod = ["Timer mode", "Intermit mode", "Trigger mode"];
+  // prepare variables to set them the received data
   const [missrunMax, setMissrunMax] = useState("");
   const [falseArrivalsIndex, setFalseArrivalsIndex] = useState(null);
   const falseArrivals_hiLoMode = ["Disbale", "Enable"];
   const [wellDepth, setWellDepth] = useState("");
-  //
+  // states of HiLo mode
   const [hiLoModeIndex, setHiLoModeIndex] = useState(null);
   const [hiLoHigh, setHiLoHigh] = useState("");
   const [hiLoLow, setHiLoLow] = useState("");
-  //
+  // states of LP
   const LP_CP_TP_type = ["Voltage"];
   const [LPTypeIndex, setLPTypeIndex] = useState(null);
   const [LPSensorMax, setLPSensorMax] = useState("");
   const [LPSensorMin, setLPSensorMin] = useState("");
   const [LPVoltageMax, setLPVoltageMax] = useState("");
   const [LPVoltageMin, setLPVoltageMin] = useState("");
-  //
+  // states of CP
   const [CPTypeIndex, setCPTypeIndex] = useState(null);
   const [CPSensorMax, setCPSensorMax] = useState("");
   const [CPSensorMin, setCPSensorMin] = useState("");
   const [CPVoltageMax, setCPVoltageMax] = useState("");
   const [CPVoltageMin, setCPVoltageMin] = useState("");
-  //
+  // states of TP
   const [TPTypeIndex, setTPTypeIndex] = useState(null);
   const [TPSensorMax, setTPSensorMax] = useState("");
   const [TPSensorMin, setTPSensorMin] = useState("");
   const [TPVoltageMax, setTPVoltageMax] = useState("");
   const [TPVoltageMin, setTPVoltageMin] = useState("");
+  // states of arrivals statistics
+  const [arrivalsToday, setArrivalsToday] = useState("");
+  const [arrivalsWeek, setArrivalsWeek] = useState("");
+  const [arrivalsTotal, setArrivalsTotal] = useState("");
+  // states of missrun statistics
+  const [missrunToday, setMissrunToday] = useState("");
+  const [missrunWeek, setMissrunWeek] = useState("");
+  const [missrunTotal, setMissrunTotal] = useState("");
+  // states of onTime statistics
+  const [onTimeToday, setOnTimeToday] = useState("");
+  const [onTimeWeek, setOnTimeWeek] = useState("");
+  const [onTimeTotal, setOnTimeTotal] = useState("");
 
   // handle change missrunMax value
   const handleChangeMissrunMax = (text) => {
@@ -193,8 +208,8 @@ const SettingsTab = (props) => {
     }
   };
 
-  // send array of prod method, missrun max, false arrivals and well depth values to device
-  const handleSendFirstBloc = () => {
+  // send array of prod method, missrun max, false arrivals and well depth values to device with their addresses
+  const handleSendFirstBloc = async () => {
     try {
       const arr = JSON.stringify([
         111,
@@ -213,7 +228,8 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -223,7 +239,7 @@ const SettingsTab = (props) => {
   };
 
   // send array of HiLo values to device
-  const handleSendHiLo = () => {
+  const handleSendHiLo = async () => {
     try {
       const arr = JSON.stringify([
         122,
@@ -240,7 +256,8 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -250,7 +267,7 @@ const SettingsTab = (props) => {
   };
 
   // send array of CP values to device
-  const handleSendLP = () => {
+  const handleSendLP = async () => {
     try {
       const arr = JSON.stringify([
         100,
@@ -271,7 +288,8 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -281,7 +299,7 @@ const SettingsTab = (props) => {
   };
 
   // send array of CP values to device
-  const handleSendCP = () => {
+  const handleSendCP = async () => {
     try {
       const arr = JSON.stringify([
         103,
@@ -302,7 +320,8 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -312,7 +331,7 @@ const SettingsTab = (props) => {
   };
 
   // send array of TP values to device
-  const handleSendTP = () => {
+  const handleSendTP = async () => {
     try {
       const arr = JSON.stringify([
         106,
@@ -333,7 +352,8 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -342,6 +362,64 @@ const SettingsTab = (props) => {
     }
   };
 
+  // send "reset" to device to reset arrivals values
+  const handleResetArrivals = async () => {
+    try {
+      const buffer = Buffer.from("RST1 \n", "utf-8");
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
+    } catch (error) {
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
+    }
+  };
+
+  // send "reset" to device to reset missrun values
+  const handleResetMissrun = async () => {
+    try {
+      const buffer = Buffer.from("RST2 \n", "utf-8");
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
+    } catch (error) {
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
+    }
+  };
+
+  // send "reset" to device to reset onTime values
+  const handleResetOnTime = async () => {
+    try {
+      const buffer = Buffer.from("RST3 \n", "utf-8");
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      onRefresh();
+    } catch (error) {
+      console.log(
+        "Error with writeCharacteristicWithResponseForService :",
+        error
+      );
+    }
+  };
+
+  // function called in useEffect when load component to fetch data
   const fetchData = async () => {
     try {
       await Receive.SettingsReceivedData(props.connectedDevice, {
@@ -368,21 +446,34 @@ const SettingsTab = (props) => {
         setTPSensorMin,
         setTPVoltageMax,
         setTPVoltageMin,
+        setArrivalsToday,
+        setArrivalsWeek,
+        setArrivalsTotal,
+        setMissrunToday,
+        setMissrunWeek,
+        setMissrunTotal,
+        setOnTimeToday,
+        setOnTimeWeek,
+        setOnTimeTotal,
         setLoading,
       });
     } catch (error) {
       console.error("Error in useEffect:", error);
     }
   };
+
+  // Initial load, call fetchData function with the corresponding data
   useEffect(() => {
+    // fetcha data if the device is connected
     if (props.connectedDevice) {
       const cleanup = fetchData();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
+  // function run when clicking on refresh button
   const onRefresh = async () => {
-    // call function to send req to device to get data
+    // call function to send request to device to get data
     Receive.sendReqToGetData(props.connectedDevice, 2);
     // start receiving data
     try {
@@ -410,6 +501,15 @@ const SettingsTab = (props) => {
         setTPSensorMin,
         setTPVoltageMax,
         setTPVoltageMin,
+        setArrivalsToday,
+        setArrivalsWeek,
+        setArrivalsTotal,
+        setMissrunToday,
+        setMissrunWeek,
+        setMissrunTotal,
+        setOnTimeToday,
+        setOnTimeWeek,
+        setOnTimeTotal,
         setLoading,
       });
     } catch (error) {
@@ -612,6 +712,91 @@ const SettingsTab = (props) => {
             <ButtonUI
               onPress={() => handleSendTP()}
               title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+            />
+          </View>
+        </View>
+        <Text style={styles.valveTitle}>Arrival statistics</Text>
+        <View style={[styles.rangeWrapper, styles.settingsSection]}>
+          <Text style={styles.titleSettings}>Arrivals today :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={arrivalsToday.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>Arrivals week :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={arrivalsWeek.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>Arrivals total :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={arrivalsTotal.toString()}
+            editable={false}
+          />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleResetArrivals()}
+              title={"Reset"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+            />
+          </View>
+        </View>
+        <View style={[styles.rangeWrapper, styles.settingsSection]}>
+          <Text style={styles.titleSettings}>Missrun today :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={missrunToday.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>Missrun week :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={missrunWeek.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>Missrun total :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={missrunTotal.toString()}
+            editable={false}
+          />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleResetMissrun()}
+              title={"Reset"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+            />
+          </View>
+        </View>
+        <View style={[styles.rangeWrapper, styles.settingsSection]}>
+          <Text style={styles.titleSettings}>OnTime today (sec) :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={onTimeToday.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>OnTime week (hour) :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={onTimeWeek.toString()}
+            editable={false}
+          />
+          <Text style={styles.titleSettings}>OnTime total (hour) :</Text>
+          <TextInput
+            style={styles.inputSettingsDisabled}
+            value={onTimeTotal.toString()}
+            editable={false}
+          />
+          <View style={styles.containerBtnText}>
+            <ButtonUI
+              onPress={() => handleResetOnTime()}
+              title={"Reset"}
               btnStyle={styles.btnSendText}
               txtStyle={styles.TextSendStyle}
             />

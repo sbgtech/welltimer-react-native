@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, Modal } from "react-native";
+import { Text, View, TextInput } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "../style/styles";
@@ -7,11 +7,17 @@ import { Buffer } from "buffer";
 import {
   UART_SERVICE_UUID,
   UART_TX_CHARACTERISTIC_UUID,
-  UART_RX_CHARACTERISTIC_UUID,
 } from "../../Utils/Constants";
 import { Receive } from "../../Utils/Receive";
 
-const Timer = ({ title, totalSec, connectedDevice, address, setLoading }) => {
+const Timer = ({
+  title,
+  totalSec,
+  connectedDevice,
+  address,
+  setLoading,
+  onRefresh,
+}) => {
   const [hourValue, setHourValue] = useState("");
   const [minValue, setMinValue] = useState("");
   const [secValue, setSecValue] = useState("");
@@ -52,7 +58,7 @@ const Timer = ({ title, totalSec, connectedDevice, address, setLoading }) => {
     }
   };
 
-  const handleSendTimer = () => {
+  const handleSendTimer = async () => {
     try {
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
@@ -64,7 +70,8 @@ const Timer = ({ title, totalSec, connectedDevice, address, setLoading }) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      Receive.ACKReceivedData(connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(connectedDevice, { setLoading });
+      onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -128,7 +135,6 @@ const Timer = ({ title, totalSec, connectedDevice, address, setLoading }) => {
             txtStyle={styles.TextSendStyle}
           />
         </View>
-        {/* <Text>Total seconds : {props.totalSec}</Text> */}
       </View>
     </View>
   );
