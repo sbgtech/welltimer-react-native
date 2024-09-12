@@ -34,9 +34,10 @@
     "react-native-screens": "~3.22.0",
     "react-native-select-dropdown": "^4.0.1",
     "react-native-simple-radio-button": "^2.7.4",
-    "react-native-switch-toggles": "^1.0.1",
     "react-native-tab-view": "^3.5.2",
-    "react-native-toast-message": "^2.2.0"
+    "react-native-toast-message": "^2.2.0",
+    "react-native-toggle-element": "^2.0.1",
+    "react-native-vector-icons": "^10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

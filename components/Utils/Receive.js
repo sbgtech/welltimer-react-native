@@ -20,13 +20,14 @@ export class Receive {
       setFwVersion,
       setBattery,
       setLoading,
+      setTitle,
     } = setters;
     let dataReceived = false; // Flag to track if data is received
 
     return new Promise((resolve, reject) => {
       // Set loading to true at the start
       setLoading(true);
-
+      setTitle("Uploading...");
       // Set a timeout for the operation
       const timeout = setTimeout(() => {
         if (!dataReceived) {
@@ -114,10 +115,12 @@ export class Receive {
       setReceivedAfterflowTimer,
       setReceivedMandatoryTimer,
       setLoading,
+      setTitle,
     } = setters;
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
+      setTitle("Uploading...");
       const timeout = setTimeout(() => {
         if (!received) {
           console.log("Data not received within 20 seconds timer");
@@ -200,20 +203,13 @@ export class Receive {
       setTPSensorMin,
       setTPVoltageMax,
       setTPVoltageMin,
-      setArrivalsToday,
-      setArrivalsWeek,
-      setArrivalsTotal,
-      setMissrunToday,
-      setMissrunWeek,
-      setMissrunTotal,
-      setOnTimeToday,
-      setOnTimeWeek,
-      setOnTimeTotal,
       setLoading,
+      setTitle,
     } = setters;
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
+      setTitle("Uploading...");
       const timeout = setTimeout(() => {
         if (!received) {
           console.log("Data not received within 20 seconds settings");
@@ -249,6 +245,7 @@ export class Receive {
             Number(pageIndex) == 3
           ) {
             const msg = JSON.parse(str);
+            console.log(msg);
             //
             setValveA(msg[1]);
             //
@@ -279,15 +276,86 @@ export class Receive {
             setTPVoltageMax(msg[22] / 10);
             setTPVoltageMin(msg[23] / 10);
             //
-            setArrivalsToday(msg[24]);
-            setArrivalsWeek(msg[25]);
-            setArrivalsTotal(msg[26]);
-            setMissrunToday(msg[27]);
-            setMissrunWeek(msg[28]);
-            setMissrunTotal(msg[29]);
-            setOnTimeToday(msg[30]);
-            setOnTimeWeek(msg[31]);
-            setOnTimeTotal(msg[32]);
+            setLoading(false);
+            received = true;
+            resolve(received);
+          }
+        }
+      );
+      // Return a function to clean up the subscription
+      return () => {
+        subscription.remove();
+        clearTimeout(timeout);
+      };
+    }).catch(() => {
+      console.log("Error receiving data from device");
+      return false; // Return false in case of error
+    });
+  }
+
+  // function listen to receive data for settings page
+  static async StatisticsReceivedData(device, setters) {
+    const {
+      setArrivalsToday,
+      setArrivalsWeek,
+      setArrivalsTotal,
+      setMissrunToday,
+      setMissrunWeek,
+      setMissrunTotal,
+      setOnTimeToday,
+      setOnTimeWeek,
+      setOnTimeTotal,
+      setLoading,
+      setTitle,
+    } = setters;
+    let received = false;
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      setTitle("Uploading...");
+      const timeout = setTimeout(() => {
+        if (!received) {
+          console.log("Data not received within 20 seconds settings");
+          setLoading(false);
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "No received data",
+            visibilityTime: 3000,
+          });
+        }
+        reject({ received: false });
+      }, 20000);
+      const subscription = device?.monitorCharacteristicForService(
+        UART_SERVICE_UUID,
+        UART_RX_CHARACTERISTIC_UUID,
+        (error, characteristic) => {
+          clearTimeout(timeout);
+          if (error) {
+            console.log(error);
+            reject(error);
+            return;
+          }
+          const str = Buffer.from(characteristic.value, "base64").toString(
+            "utf-8"
+          );
+          const firstIndexValue = str.charAt(0); // Getting the character at index 0
+          const pageIndex = str.charAt(1); // Getting the character at index 0
+          const lastIndexValue = str[str.length - 2]; // Accessing the last character
+          if (
+            firstIndexValue == "[" &&
+            lastIndexValue == "]" &&
+            Number(pageIndex) == 4
+          ) {
+            const msg = JSON.parse(str);
+            setArrivalsToday(msg[1]);
+            setArrivalsWeek(msg[2]);
+            setArrivalsTotal(msg[3]);
+            setMissrunToday(msg[4]);
+            setMissrunWeek(msg[5]);
+            setMissrunTotal(msg[6]);
+            setOnTimeToday(msg[7]);
+            setOnTimeWeek(msg[8]);
+            setOnTimeTotal(msg[9]);
             //
             setLoading(false);
             received = true;
@@ -352,15 +420,27 @@ export class Receive {
     const formattedHours = String(hours).padStart(2, "0");
     const formattedMinutes = String(minutes).padStart(2, "0");
     const formattedSeconds = String(seconds).padStart(2, "0");
+    return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+  };
+
+  static convertTimersToHMS = (totalSeconds) => {
+    let hours = Math.floor(totalSeconds / 3600);
+    let remainingSecondsAfterHours = totalSeconds % 3600;
+    let minutes = Math.floor(remainingSecondsAfterHours / 60);
+    let seconds = remainingSecondsAfterHours % 60;
+
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
     return { formattedHours, formattedMinutes, formattedSeconds };
   };
 
   // function for sending data to device (called it into each page)
-  static sendReqToGetData = (connectedDevice, activeTab) => {
+  static async sendReqToGetData(connectedDevice, activeTab) {
     try {
       const data = "0x0" + (activeTab + 1) + " \n";
       const buffer = Buffer.from(data, "utf-8");
-      connectedDevice?.writeCharacteristicWithResponseForService(
+      await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
@@ -369,14 +449,15 @@ export class Receive {
     } catch (error) {
       console.log("Error to sent request for receiving data.");
     }
-  };
+  }
 
   // function listen to receive "ACK" from device to stop loading and show "successfully sent", else show "Error to sent data" and the time given for waiting response to stop loading is 20 seconds.
   static async ACKReceivedData(device, setters) {
-    const { setLoading } = setters;
+    const { setLoading, setTitle } = setters;
     let sent = false;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       setLoading(true);
+      setTitle("Sending...");
       const timeout = setTimeout(() => {
         if (!sent) {
           console.log("Error to send data");
@@ -390,13 +471,14 @@ export class Receive {
         }
         reject({ sent: false });
       }, 20000);
-      const subscription = device?.monitorCharacteristicForService(
+      const subscription = await device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,
         (error, characteristic) => {
           clearTimeout(timeout);
           if (error) {
             console.log(error);
+            setLoading(false);
             reject(error);
             return;
           }
@@ -418,6 +500,7 @@ export class Receive {
       );
       // Return a function to clean up the subscription
       return () => {
+        setLoading(false);
         subscription.remove();
         clearTimeout(timeout);
       };

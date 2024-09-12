@@ -31,6 +31,8 @@ const TestTab = (props) => {
   const [message, setMessage] = useState("");
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
+  // title of loading modal
+  const [title, setTitle] = useState("");
   // data received state, default empty
   const [dataReceived, setDataReceived] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -115,6 +117,7 @@ const TestTab = (props) => {
     try {
       // when this function is called when the message is submitted, set loading true to show loading modal and display success alert
       setLoading(true);
+      setTitle("Sending...");
       setDataReceived(false);
       Toast.show({
         type: "success",
@@ -201,7 +204,7 @@ const TestTab = (props) => {
             loading={false}
           />
         </View>
-        <Loading loading={loading} />
+        <Loading loading={loading} title={title} />
       </View>
     </Animated.View>
   );

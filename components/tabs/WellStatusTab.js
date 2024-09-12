@@ -11,6 +11,8 @@ const WellStatus = (props) => {
   // declare initial states
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
+  // title of loading modal
+  const [title, setTitle] = useState("");
   // variable for the index of plungerState received from welltimer
   const [plungerStateIndex, setPlungerStateIndex] = useState(null);
   // display the name of plungerState based on the received index
@@ -57,6 +59,7 @@ const WellStatus = (props) => {
           setFwVersion,
           setBattery,
           setLoading,
+          setTitle,
         });
       } catch (error) {
         console.error("Error in useEffect:", error);
@@ -71,8 +74,8 @@ const WellStatus = (props) => {
   }, [props.connectedDevice]);
 
   // get the seconds of systemClock state and convert them to HH:MM:SS format
-  const formattedTimeSystemClock =
-    systemClock !== null ? Receive.convertToHMS(systemClock) : null;
+  // const formattedTimeSystemClock =
+  //   systemClock !== null ? Receive.convertToHMS(systemClock) : null;
 
   // function run when clicking on refresh button
   const onRefresh = async () => {
@@ -91,6 +94,7 @@ const WellStatus = (props) => {
         setFwVersion,
         setBattery,
         setLoading,
+        setTitle,
       });
     } catch (error) {
       console.error("Error during refresh:", error);
@@ -112,9 +116,7 @@ const WellStatus = (props) => {
           <View style={styles.statusWrapper}>
             <Text style={styles.statusText}>System clock</Text>
             <Text style={styles.statusValue}>
-              {formattedTimeSystemClock.formattedHours} :{" "}
-              {formattedTimeSystemClock.formattedMinutes} :{" "}
-              {formattedTimeSystemClock.formattedSeconds}
+              {systemClock !== null ? Receive.convertToHMS(systemClock) : null}
             </Text>
           </View>
           <View style={styles.statusWrapper}>
@@ -137,7 +139,7 @@ const WellStatus = (props) => {
           <Table data={tableData} header={tableHeader} />
         </View>
       </View>
-      <Loading loading={loading} />
+      <Loading loading={loading} title={title} />
     </ScrollView>
   );
 };

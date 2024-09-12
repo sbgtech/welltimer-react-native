@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#43455E",
   },
   tabText: {
-    fontSize: 16 * scale,
+    fontSize: 15 * scale,
     fontWeight: "bold",
     color: "#fff", // Customize tab label color
   },
@@ -216,6 +216,11 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#35374B",
   },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
   // settingsTab.js
   titleSettings: {
     fontSize: 16 * scale,
@@ -328,16 +333,16 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontStyle: "italic",
     marginBottom: 10 * scale,
-    fontSize: 22 * scale,
+    fontSize: 24 * scale,
   },
   onOffStatus: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  onOffText: {
-    fontSize: 16 * scale,
-  },
+  // onOffText: {
+  //   fontSize: 16 * scale,
+  // },
   // timer.js
   dotTimer: {
     fontSize: 20 * scale,
@@ -382,6 +387,8 @@ export const styles = StyleSheet.create({
   },
   refreshBtn: {
     paddingHorizontal: 12 * scale,
+    height: 45 * scale,
+    maxHeight: 90,
   },
   // many tabs
   wrapper: {
@@ -406,7 +413,7 @@ export const styles = StyleSheet.create({
     maxHeight: 90,
   },
   TextSendStyle: {
-    fontSize: 14 * scale,
+    fontSize: 16 * scale,
     padding: 4 * scale,
   },
 });

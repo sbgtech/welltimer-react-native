@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Alert } from "react-native";
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
 import Dropdown from "./blocs/Dropdown";
@@ -18,6 +18,8 @@ const SettingsTab = (props) => {
   // declare initial states
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
+  // title of loading modal
+  const [title, setTitle] = useState("");
   // value of valve, default 0 (OFF)
   const [valveA, setValveA] = useState(0);
   // display the name of the productionMethod based on the received index
@@ -26,7 +28,7 @@ const SettingsTab = (props) => {
   // prepare variables to set them the received data
   const [missrunMax, setMissrunMax] = useState("");
   const [falseArrivalsIndex, setFalseArrivalsIndex] = useState(null);
-  const falseArrivals_hiLoMode = ["Disbale", "Enable"];
+  const falseArrivals_hiLoMode = ["Disable", "Enable"];
   const [wellDepth, setWellDepth] = useState("");
   // states of HiLo mode
   const [hiLoModeIndex, setHiLoModeIndex] = useState(null);
@@ -51,23 +53,26 @@ const SettingsTab = (props) => {
   const [TPSensorMin, setTPSensorMin] = useState("");
   const [TPVoltageMax, setTPVoltageMax] = useState("");
   const [TPVoltageMin, setTPVoltageMin] = useState("");
-  // states of arrivals statistics
-  const [arrivalsToday, setArrivalsToday] = useState("");
-  const [arrivalsWeek, setArrivalsWeek] = useState("");
-  const [arrivalsTotal, setArrivalsTotal] = useState("");
-  // states of missrun statistics
-  const [missrunToday, setMissrunToday] = useState("");
-  const [missrunWeek, setMissrunWeek] = useState("");
-  const [missrunTotal, setMissrunTotal] = useState("");
-  // states of onTime statistics
-  const [onTimeToday, setOnTimeToday] = useState("");
-  const [onTimeWeek, setOnTimeWeek] = useState("");
-  const [onTimeTotal, setOnTimeTotal] = useState("");
 
   // handle change missrunMax value
   const handleChangeMissrunMax = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setMissrunMax(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setMissrunMax("");
+        } else {
+          setMissrunMax(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setMissrunMax("");
+      }
     } else {
       setMissrunMax("");
     }
@@ -75,8 +80,23 @@ const SettingsTab = (props) => {
 
   // handle change wellDepth value
   const handleChangeWellDepth = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setWellDepth(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setWellDepth("");
+        } else {
+          setWellDepth(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setWellDepth("");
+      }
     } else {
       setWellDepth("");
     }
@@ -84,8 +104,23 @@ const SettingsTab = (props) => {
 
   // handle change hiloHight value
   const handleChangeHiLoHigh = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setHiLoHigh(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setHiLoHigh("");
+        } else {
+          setHiLoHigh(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setHiLoHigh("");
+      }
     } else {
       setHiLoHigh("");
     }
@@ -93,8 +128,23 @@ const SettingsTab = (props) => {
 
   // handle change hiloLow value
   const handleChangeHiLoLow = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setHiLoLow(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setHiLoLow("");
+        } else {
+          setHiLoLow(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setHiLoLow("");
+      }
     } else {
       setHiLoLow("");
     }
@@ -102,8 +152,25 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMax value
   const handleChangeLPSensorMax = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setLPSensorMax(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+      // Ensure there is only one decimal point
+
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setLPSensorMax("");
+        } else {
+          setLPSensorMax(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setLPSensorMax("");
+      }
     } else {
       setLPSensorMax("");
     }
@@ -111,8 +178,25 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMin value
   const handleChangeLPSensorMin = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setLPSensorMin(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+      // Ensure there is only one decimal point
+
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setLPSensorMin("");
+        } else {
+          setLPSensorMin(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setLPSensorMin("");
+      }
     } else {
       setLPSensorMin("");
     }
@@ -120,8 +204,29 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMax value
   const handleChangeLPVoltageMax = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setLPVoltageMax(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setLPVoltageMax("");
+          } else {
+            setLPVoltageMax(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setLPVoltageMax("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setLPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setLPVoltageMax("");
     }
@@ -129,8 +234,29 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMin value
   const handleChangeLPVoltageMin = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setLPVoltageMin(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setLPVoltageMin("");
+          } else {
+            setLPVoltageMin(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setLPVoltageMin("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setLPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setLPVoltageMin("");
     }
@@ -138,8 +264,23 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMax value
   const handleChangeCPSensorMax = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setCPSensorMax(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setCPSensorMax("");
+        } else {
+          setCPSensorMax(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setCPSensorMax("");
+      }
     } else {
       setCPSensorMax("");
     }
@@ -147,8 +288,23 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMin value
   const handleChangeCPSensorMin = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setCPSensorMin(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setCPSensorMin("");
+        } else {
+          setCPSensorMin(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setCPSensorMin("");
+      }
     } else {
       setCPSensorMin("");
     }
@@ -156,8 +312,29 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMax value
   const handleChangeCPVoltageMax = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setCPVoltageMax(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setCPVoltageMax("");
+          } else {
+            setCPVoltageMax(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setCPVoltageMax("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setCPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setCPVoltageMax("");
     }
@@ -165,8 +342,29 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMin value
   const handleChangeCPVoltageMin = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setCPVoltageMin(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setCPVoltageMin("");
+          } else {
+            setCPVoltageMin(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setCPVoltageMin("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setCPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setCPVoltageMin("");
     }
@@ -174,8 +372,23 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMax value
   const handleChangeTPSensorMax = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setTPSensorMax(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setTPSensorMax("");
+        } else {
+          setTPSensorMax(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setTPSensorMax("");
+      }
     } else {
       setTPSensorMax("");
     }
@@ -183,8 +396,23 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMin value
   const handleChangeTPSensorMin = (text) => {
+    const MAX_VALUE = 65535;
     if (text) {
-      setTPSensorMin(text);
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure there is only one decimal point
+      const numericValue = parseFloat(validText);
+      // Check if the number is within the range
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 65535");
+          setTPSensorMin("");
+        } else {
+          setTPSensorMin(validText);
+        }
+      } else {
+        // If the conversion failed, reset to empty or default value
+        setTPSensorMin("");
+      }
     } else {
       setTPSensorMin("");
     }
@@ -192,8 +420,29 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMax value
   const handleChangeTPVoltageMax = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setTPVoltageMax(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setTPVoltageMax("");
+          } else {
+            setTPVoltageMax(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setTPVoltageMax("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setTPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setTPVoltageMax("");
     }
@@ -201,8 +450,29 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMin value
   const handleChangeTPVoltageMin = (text) => {
+    const MAX_VALUE = 100;
     if (text) {
-      setTPVoltageMin(text);
+      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
+      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
+      // Ensure there is only one decimal point
+      if (decimalCount <= 1) {
+        const numericValue = parseFloat(validText);
+        // Check if the number is within the range
+        if (!isNaN(numericValue)) {
+          if (numericValue > MAX_VALUE) {
+            Alert.alert("Warning", "The max value must be 65535");
+            setTPVoltageMin("");
+          } else {
+            setTPVoltageMin(validText);
+          }
+        } else {
+          // If the conversion failed, reset to empty or default value
+          setTPVoltageMin("");
+        }
+      } else {
+        // For example, you might want to trim or notify the user
+        setTPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+      }
     } else {
       setTPVoltageMin("");
     }
@@ -228,8 +498,11 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
+      await Receive.ACKReceivedData(props.connectedDevice, {
+        setLoading,
+        setTitle,
+      });
+      await onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -256,8 +529,11 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
+      await Receive.ACKReceivedData(props.connectedDevice, {
+        setLoading,
+        setTitle,
+      });
+      await onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -269,6 +545,8 @@ const SettingsTab = (props) => {
   // send array of CP values to device
   const handleSendLP = async () => {
     try {
+      console.log(LPVoltageMax);
+      console.log(Number(LPVoltageMax * 10));
       const arr = JSON.stringify([
         100,
         LPTypeIndex,
@@ -288,7 +566,10 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
+      await Receive.ACKReceivedData(props.connectedDevice, {
+        setLoading,
+        setTitle,
+      });
       onRefresh();
     } catch (error) {
       console.log(
@@ -320,8 +601,11 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
+      await Receive.ACKReceivedData(props.connectedDevice, {
+        setLoading,
+        setTitle,
+      });
+      await onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -352,65 +636,11 @@ const SettingsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
-    }
-  };
-
-  // send "reset" to device to reset arrivals values
-  const handleResetArrivals = async () => {
-    try {
-      const buffer = Buffer.from("RST1 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
-    }
-  };
-
-  // send "reset" to device to reset missrun values
-  const handleResetMissrun = async () => {
-    try {
-      const buffer = Buffer.from("RST2 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
-    }
-  };
-
-  // send "reset" to device to reset onTime values
-  const handleResetOnTime = async () => {
-    try {
-      const buffer = Buffer.from("RST3 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
-      await Receive.ACKReceivedData(props.connectedDevice, { setLoading });
-      onRefresh();
+      await Receive.ACKReceivedData(props.connectedDevice, {
+        setLoading,
+        setTitle,
+      });
+      await onRefresh();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -446,16 +676,8 @@ const SettingsTab = (props) => {
         setTPSensorMin,
         setTPVoltageMax,
         setTPVoltageMin,
-        setArrivalsToday,
-        setArrivalsWeek,
-        setArrivalsTotal,
-        setMissrunToday,
-        setMissrunWeek,
-        setMissrunTotal,
-        setOnTimeToday,
-        setOnTimeWeek,
-        setOnTimeTotal,
         setLoading,
+        setTitle,
       });
     } catch (error) {
       console.error("Error in useEffect:", error);
@@ -473,10 +695,10 @@ const SettingsTab = (props) => {
 
   // function run when clicking on refresh button
   const onRefresh = async () => {
-    // call function to send request to device to get data
-    Receive.sendReqToGetData(props.connectedDevice, 2);
-    // start receiving data
     try {
+      // call function to send request to device to get data
+      await Receive.sendReqToGetData(props.connectedDevice, 2);
+      // start receiving data
       await Receive.SettingsReceivedData(props.connectedDevice, {
         setValveA,
         setProductionMethodIndex,
@@ -501,16 +723,8 @@ const SettingsTab = (props) => {
         setTPSensorMin,
         setTPVoltageMax,
         setTPVoltageMin,
-        setArrivalsToday,
-        setArrivalsWeek,
-        setArrivalsTotal,
-        setMissrunToday,
-        setMissrunWeek,
-        setMissrunTotal,
-        setOnTimeToday,
-        setOnTimeWeek,
-        setOnTimeTotal,
         setLoading,
+        setTitle,
       });
     } catch (error) {
       console.error("Error during refresh:", error);
@@ -542,6 +756,7 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={missrunMax.toString()}
             onChangeText={handleChangeMissrunMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>Detect false arrivals :</Text>
           <Dropdown
@@ -555,6 +770,7 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={wellDepth.toString()}
             onChangeText={handleChangeWellDepth}
+            keyboardType="numbers-and-punctuation"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -578,12 +794,14 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={hiLoHigh.toString()}
             onChangeText={handleChangeHiLoHigh}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
           <TextInput
             style={styles.inputSettings}
             value={hiLoLow.toString()}
             onChangeText={handleChangeHiLoLow}
+            keyboardType="numbers-and-punctuation"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -607,24 +825,28 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={LPSensorMax.toString()}
             onChangeText={handleChangeLPSensorMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={LPSensorMin.toString()}
             onChangeText={handleChangeLPSensorMin}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>LP voltage max (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={LPVoltageMax.toString()}
             onChangeText={handleChangeLPVoltageMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>LP voltage min (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={LPVoltageMin.toString()}
             onChangeText={handleChangeLPVoltageMin}
+            keyboardType="numbers-and-punctuation"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -648,24 +870,28 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={CPSensorMax.toString()}
             onChangeText={handleChangeCPSensorMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={CPSensorMin.toString()}
             onChangeText={handleChangeCPSensorMin}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>CP voltage max (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={CPVoltageMax.toString()}
             onChangeText={handleChangeCPVoltageMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>CP voltage min (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={CPVoltageMin.toString()}
             onChangeText={handleChangeCPVoltageMin}
+            keyboardType="numbers-and-punctuation"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -689,24 +915,28 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={TPSensorMax.toString()}
             onChangeText={handleChangeTPSensorMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={TPSensorMin.toString()}
             onChangeText={handleChangeTPSensorMin}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>TP voltage max (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={TPVoltageMax.toString()}
             onChangeText={handleChangeTPVoltageMax}
+            keyboardType="numbers-and-punctuation"
           />
           <Text style={styles.titleSettings}>TP voltage min (V) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={TPVoltageMin.toString()}
             onChangeText={handleChangeTPVoltageMin}
+            keyboardType="numbers-and-punctuation"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -717,93 +947,8 @@ const SettingsTab = (props) => {
             />
           </View>
         </View>
-        <Text style={styles.valveTitle}>Arrival statistics</Text>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>Arrivals today :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Arrivals week :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Arrivals total :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetArrivals()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
-          </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>Missrun today :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Missrun week :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Missrun total :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetMissrun()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
-          </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>OnTime today (sec) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>OnTime week (hour) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>OnTime total (hour) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetOnTime()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
-          </View>
-        </View>
       </View>
-      <Loading loading={loading} />
+      <Loading loading={loading} title={title} />
     </KeyboardAwareScrollView>
   );
 };

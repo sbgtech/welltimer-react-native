@@ -8,7 +8,7 @@ const Loading = (props) => {
       <Modal animationType="slide" transparent={true} visible={props.loading}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.waitingMsg}>Wait</Text>
+            <Text style={styles.waitingMsg}>{props.title}</Text>
             <ActivityIndicator color={"#35374B"} size={"large"} />
           </View>
         </View>

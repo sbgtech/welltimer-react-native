@@ -10,7 +10,12 @@ const Item = ({ name, id, onPress, title }) => {
         <Text style={styles.itemName}>{name ? name : "Unknown"}</Text>
         <Text style={styles.itemID}>{id ? id : "Unknown"}</Text>
       </View>
-      <ButtonUI onPress={onPress} title={title} />
+      <ButtonUI
+        onPress={onPress}
+        title={title}
+        btnStyle={styles.btnSendText}
+        txtStyle={styles.TextSendStyle}
+      />
     </View>
   );
 };

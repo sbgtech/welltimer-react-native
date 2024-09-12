@@ -17,7 +17,7 @@ import { styles } from "./tabs/style/styles";
 // create new instance for the BleManager module
 const bleManager = new BleManager();
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, route }) {
   // initialize the state of bluetooth in the mobile, default Unknown
   const [bluetoothState, setBluetoothState] = useState("Unknown");
   // create scanning state of the devices, default is not scanning yet
@@ -103,6 +103,14 @@ export default function Home({ navigation }) {
       bleManager.stopDeviceScan();
     };
   }, [scanning]);
+
+  useEffect(() => {
+    // Check if parameters exist and update state accordingly
+    if (route.params && route.params.scanning) {
+      setScanning(true);
+      scanForDevices();
+    }
+  }, [route.params]); // Depend on route.params
 
   // function to scan devices
   const scanForDevices = () => {
@@ -194,6 +202,8 @@ export default function Home({ navigation }) {
           setScanning(!scanning);
         }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
+        btnStyle={styles.btnSendText}
+        txtStyle={styles.TextSendStyle}
       />
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.HomeTitle}>Available devices :</Text>

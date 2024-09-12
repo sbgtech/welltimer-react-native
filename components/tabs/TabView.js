@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { View, Text, Alert } from "react-native";
 import ButtonUI from "../ButtonUI";
 import Tab from "./Tab";
 import WellStatus from "./WellStatusTab";
 import TimerTab from "./TimerTab";
 import SettingsTab from "./SettingsTab";
+import StatisticsTab from "./StatisticsTab";
 import TestTab from "./TestTab";
 import { BleManager } from "react-native-ble-plx";
 import { UART_SERVICE_UUID } from "../Utils/Constants";
@@ -16,6 +18,7 @@ const bleManager = new BleManager();
 const TabView = ({ navigation }) => {
   // set the connected welltimer to this variable
   const [connectedDevice, setConnectedDevice] = useState(null);
+  const isFocused = useIsFocused();
   // the existed pages for config welltimer after connected to it
   const tabs = [
     {
@@ -31,6 +34,10 @@ const TabView = ({ navigation }) => {
       content: <SettingsTab connectedDevice={connectedDevice} />,
     },
     {
+      label: "Statistics",
+      content: <StatisticsTab connectedDevice={connectedDevice} />,
+    },
+    {
       label: "Test",
       content: <TestTab connectedDevice={connectedDevice} />,
     },
@@ -43,6 +50,15 @@ const TabView = ({ navigation }) => {
     setActiveTab(index);
     // sendReq();
   };
+
+  // This function will be called when the screen gains focus
+  // const handleBackButtonClick = useCallback(() => {
+  //   // Display an alert or perform any action when the back button is pressed
+  //   Alert.alert("Back Button Clicked", "You clicked the back arrow!");
+  // }, []);
+
+  // // Use the focus effect hook to trigger the callback when the screen gains focus
+  // useFocusEffect(handleBackButtonClick);
 
   // useEffect used for handling side effects in component like data fetching, event listeners, subscriptions, timers, updating state or manually changing the DOM that can’t be done during rendering
   useEffect(() => {
@@ -64,7 +80,15 @@ const TabView = ({ navigation }) => {
               onPress: () => console.log("Canceled"),
               style: "cancel",
             },
-            { text: "OK", onPress: () => navigation.navigate("Home") },
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.removeListener,
+                  navigation.navigate("Home", {
+                    scanning: true,
+                  });
+              },
+            },
           ],
           { cancelable: false }
         );
@@ -75,11 +99,56 @@ const TabView = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    // Function to handle disconnection
+    const handleDisconnection = (error) => {
+      if (error) {
+        console.error("Disconnection error:", error);
+      }
+      Alert.alert(
+        "Device Disconnected",
+        "The BLE device has been disconnected."
+      );
+      setConnectedDevice(null); // Optionally reset device state
+      navigation.removeListener;
+      navigation.navigate("Home", { scanning: true });
+    };
+
+    // If device is connected, listen for disconnection events
+    if (connectedDevice) {
+      const subscription = connectedDevice.onDisconnected(handleDisconnection);
+
+      // Cleanup subscription on component unmount or when device changes
+      return () => subscription.remove();
+    }
+  }, [connectedDevice]);
+
+  useEffect(() => {
     // if device is connected ,call send requests function to send request to device with the current page input to get data and display them
     if (connectedDevice) {
       Receive.sendReqToGetData(connectedDevice, activeTab);
     }
   }, [activeTab, connectedDevice]); // Send request whenever activeTab changes (call useEffect whenever activeTab changes)
+
+  // useEffect(() => {
+  //   const handleBackPress = (e) => {
+  //     // Notify when back button is pressed
+  //     disconnectFromDevice();
+  //     Alert.alert("Navigation", "Back arrow pressed!");
+  //   };
+
+  //   const unsubscribe = navigation.addListener("beforeRemove", handleBackPress);
+
+  //   // Clean up the event listener
+  //   return () => unsubscribe();
+  // }, [navigation]);
+
+  useEffect(() => {
+    if (!isFocused) {
+      // Code to run when the screen is focused
+      console.log("Device screen is not focused");
+      disconnectFromDevice();
+    }
+  }, [isFocused]);
 
   // function to disconnect the current connected device from BLE
   const disconnectFromDevice = async () => {
@@ -87,7 +156,9 @@ const TabView = ({ navigation }) => {
       if (connectedDevice) {
         await connectedDevice.cancelConnection();
         console.log("Disconnected successfully");
-        navigation.navigate("Home");
+        setConnectedDevice(null);
+        navigation.removeListener;
+        navigation.navigate("Home", { scanning: true });
       } else {
         console.log("No device connected");
       }

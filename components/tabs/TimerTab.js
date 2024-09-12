@@ -15,6 +15,8 @@ const TimerTab = (props) => {
   const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
+  // title of loading modal
+  const [title, setTitle] = useState("");
 
   // Initial load, call TimerReceivedData function with the corresponding data of timers
   useEffect(() => {
@@ -26,6 +28,7 @@ const TimerTab = (props) => {
           setReceivedAfterflowTimer,
           setReceivedMandatoryTimer,
           setLoading,
+          setTitle,
         });
       } catch (error) {
         console.error("Error in useEffect:", error);
@@ -40,17 +43,18 @@ const TimerTab = (props) => {
   }, [props.connectedDevice]);
 
   // function run when clicking on refresh button
-  const onRefresh = async () => {
+  const onRefresh = () => {
     // call function to send request to device to get data
-    Receive.sendReqToGetData(props.connectedDevice, 1);
     // start receiving data
     try {
-      await Receive.TimerReceivedData(props.connectedDevice, {
+      Receive.sendReqToGetData(props.connectedDevice, 1);
+      Receive.TimerReceivedData(props.connectedDevice, {
         setReceivedOpenTimer,
         setReceivedShutinTimer,
         setReceivedAfterflowTimer,
         setReceivedMandatoryTimer,
         setLoading,
+        setTitle,
       });
     } catch (error) {
       console.error("Error during refresh:", error);
@@ -74,6 +78,7 @@ const TimerTab = (props) => {
           address={112}
           totalSec={receivedOpenTimer}
           setLoading={setLoading}
+          setTitle={setTitle}
           onRefresh={onRefresh}
         />
         <Timer
@@ -82,6 +87,7 @@ const TimerTab = (props) => {
           address={113}
           totalSec={receivedShutinTimer}
           setLoading={setLoading}
+          setTitle={setTitle}
           onRefresh={onRefresh}
         />
         <Timer
@@ -90,6 +96,7 @@ const TimerTab = (props) => {
           address={114}
           totalSec={receivedAfterflowTimer}
           setLoading={setLoading}
+          setTitle={setTitle}
           onRefresh={onRefresh}
         />
         <Timer
@@ -98,10 +105,11 @@ const TimerTab = (props) => {
           address={115}
           totalSec={receivedMandatoryTimer}
           setLoading={setLoading}
+          setTitle={setTitle}
           onRefresh={onRefresh}
         />
       </View>
-      <Loading loading={loading} />
+      <Loading loading={loading} title={title} />
     </KeyboardAwareScrollView>
   );
 };

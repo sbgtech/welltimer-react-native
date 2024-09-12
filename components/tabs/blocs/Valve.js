@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Dimensions } from "react-native";
-import Switch from "react-native-switch-toggles";
+import Toggle from "react-native-toggle-element";
 import { styles } from "../style/styles";
 import { Buffer } from "buffer";
 import {
@@ -49,38 +49,30 @@ const Valve = ({ connectedDevice, setLoading, title, status }) => {
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.valveTitle}>{title}</Text>
       <View style={styles.onOffStatus}>
-        <Text style={styles.onOffText}>
-          Status : {isEnabledValve ? <Text>ON</Text> : <Text>OFF</Text>}
-        </Text>
-        <Switch
-          size={30 * scale}
+        <Text style={styles.valveTitle}>{title}</Text>
+        <Toggle
           value={isEnabledValve}
-          onChange={handleSwitchChange}
-          activeTrackColor={"#45D058"}
-          renderOffIndicator={() => (
-            <Text
-              style={{
-                fontSize: 10 * scale,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              OFF
-            </Text>
-          )}
-          renderOnIndicator={() => (
-            <Text
-              style={{
-                fontSize: 10 * scale,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              ON
-            </Text>
-          )}
+          onPress={(newState) => handleSwitchChange(newState)}
+          thumbActiveComponent={<Text style={{ color: "#fff" }}>ON</Text>}
+          thumbInActiveComponent={<Text style={{ color: "#fff" }}>OFF</Text>}
+          thumbButton={{
+            width: 60,
+            height: 60,
+            radius: 0,
+            activeBackgroundColor: "#349E43",
+            inActiveBackgroundColor: "#a3a3a3",
+          }}
+          trackBar={{
+            activeBackgroundColor: "#45D058",
+            inActiveBackgroundColor: "#ddd",
+            borderActiveColor: "#45D058",
+            borderInActiveColor: "#ddd",
+            borderWidth: 5,
+            width: 180,
+            height: 40,
+            radius: 0,
+          }}
         />
       </View>
     </View>
