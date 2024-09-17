@@ -44,31 +44,31 @@ const WellStatus = (props) => {
     },
   ];
 
-  // Initial load, call SensorsReceivedData function with the corresponding data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Receive.SensorsReceivedData(props.connectedDevice, {
-          setPlungerStateIndex,
-          setSystemClock,
-          setLine,
-          setTubing,
-          setCasing,
-          setArrivals,
-          setUniqueID,
-          setFwVersion,
-          setBattery,
-          setLoading,
-          setTitle,
-        });
-      } catch (error) {
-        console.error("Error in useEffect:", error);
-      }
-    };
+  const fetchDataWellStatus = async () => {
+    try {
+      await Receive.WellStatusReceivedData(props.connectedDevice, {
+        setPlungerStateIndex,
+        setSystemClock,
+        setLine,
+        setTubing,
+        setCasing,
+        setArrivals,
+        setUniqueID,
+        setFwVersion,
+        setBattery,
+        setLoading,
+        setTitle,
+      });
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+    }
+  };
 
+  // Initial load, call WellStatusReceivedData function with the corresponding data
+  useEffect(() => {
     // fetcha data if the device is connected
     if (props.connectedDevice) {
-      const cleanup = fetchData();
+      const cleanup = fetchDataWellStatus();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
@@ -78,12 +78,12 @@ const WellStatus = (props) => {
   //   systemClock !== null ? Receive.convertToHMS(systemClock) : null;
 
   // function run when clicking on refresh button
-  const onRefresh = async () => {
-    // call function to send request to device to get data
-    Receive.sendReqToGetData(props.connectedDevice, 0);
-    // start receiving data
+  const onRefreshWellStatus = async () => {
     try {
-      await Receive.SensorsReceivedData(props.connectedDevice, {
+      // call function to send request to device to get data
+      Receive.sendReqToGetData(props.connectedDevice, 0);
+      // start receiving data
+      await Receive.WellStatusReceivedData(props.connectedDevice, {
         setPlungerStateIndex,
         setSystemClock,
         setLine,
@@ -104,7 +104,7 @@ const WellStatus = (props) => {
   return (
     <ScrollView>
       <View style={[styles.container, styles.marginBottomContainer]}>
-        <RefreshBtn onPress={() => onRefresh()} />
+        <RefreshBtn onPress={() => onRefreshWellStatus()} />
         <View style={styles.statusContainer}>
           <View style={styles.statusWrapper}>
             <Text style={styles.statusText}>Plunger state</Text>

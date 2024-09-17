@@ -8,7 +8,7 @@ import Toast from "react-native-toast-message";
 
 export class Receive {
   // function listen to receive data for well status page
-  static async SensorsReceivedData(device, setters) {
+  static async WellStatusReceivedData(device, setters) {
     const {
       setPlungerStateIndex,
       setSystemClock,
@@ -31,7 +31,7 @@ export class Receive {
       // Set a timeout for the operation
       const timeout = setTimeout(() => {
         if (!dataReceived) {
-          console.log("Data not received within 20 seconds in well status");
+          console.log("Data not received within 7 seconds in well status");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -41,7 +41,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 20000);
+      }, 7000);
 
       // Monitor characteristic for service
       const subscription = device?.monitorCharacteristicForService(
@@ -78,8 +78,8 @@ export class Receive {
               value,
             }));
             setArrivals(arrivals);
-            setFwVersion(msg[26]);
-            setBattery(msg[27]);
+            setFwVersion(parseFloat([msg[26]]) / 10 + "." + Number([msg[27]]));
+            setBattery(msg[28]);
             dataReceived = true; // Mark data as received
             clearTimeout(timeout); // Clear timeout once data is received
             setLoading(false); // Set loading to false
@@ -123,7 +123,7 @@ export class Receive {
       setTitle("Uploading...");
       const timeout = setTimeout(() => {
         if (!received) {
-          console.log("Data not received within 20 seconds timer");
+          console.log("Data not received within 7 seconds timer");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -133,7 +133,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 20000);
+      }, 7000);
       const subscription = device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,
@@ -207,12 +207,12 @@ export class Receive {
       setTitle,
     } = setters;
     let received = false;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       setLoading(true);
       setTitle("Uploading...");
       const timeout = setTimeout(() => {
         if (!received) {
-          console.log("Data not received within 20 seconds settings");
+          console.log("Data not received within 7 seconds settings");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -222,8 +222,8 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 20000);
-      const subscription = device?.monitorCharacteristicForService(
+      }, 7000);
+      const subscription = await device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,
         (error, characteristic) => {
@@ -284,7 +284,7 @@ export class Receive {
       );
       // Return a function to clean up the subscription
       return () => {
-        subscription.remove();
+        subscription.remove(); // unsubscribes from the characteristic updates
         clearTimeout(timeout);
       };
     }).catch(() => {
@@ -314,7 +314,7 @@ export class Receive {
       setTitle("Uploading...");
       const timeout = setTimeout(() => {
         if (!received) {
-          console.log("Data not received within 20 seconds settings");
+          console.log("Data not received within 7 seconds settings");
           setLoading(false);
           Toast.show({
             type: "error",
@@ -324,7 +324,7 @@ export class Receive {
           });
         }
         reject({ received: false });
-      }, 20000);
+      }, 7000);
       const subscription = device?.monitorCharacteristicForService(
         UART_SERVICE_UUID,
         UART_RX_CHARACTERISTIC_UUID,

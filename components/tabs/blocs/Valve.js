@@ -7,26 +7,25 @@ import {
   UART_SERVICE_UUID,
   UART_TX_CHARACTERISTIC_UUID,
 } from "../../Utils/Constants";
-import { Receive } from "../../Utils/Receive";
 
-const Valve = ({ connectedDevice, setLoading, title, status }) => {
+const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
   const { width } = Dimensions.get("window");
   const scale = width / 450;
   const [isEnabledValve, setIsEnabledValve] = useState(status);
 
   // sent data of valve
-  const handleSendValveValue = (value) => {
+  const handleSendValveValue = async (value) => {
     try {
-      const arr = JSON.stringify([1, Number(value)]);
+      const arr = JSON.stringify([3, 1, Number(value)]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      connectedDevice?.writeCharacteristicWithResponseForService(
+      await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
       setIsEnabledValve(value);
-      Receive.ACKReceivedData(connectedDevice, { setLoading });
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -57,8 +56,8 @@ const Valve = ({ connectedDevice, setLoading, title, status }) => {
           thumbActiveComponent={<Text style={{ color: "#fff" }}>ON</Text>}
           thumbInActiveComponent={<Text style={{ color: "#fff" }}>OFF</Text>}
           thumbButton={{
-            width: 60,
-            height: 60,
+            width: 60 * scale,
+            height: 60 * scale,
             radius: 0,
             activeBackgroundColor: "#349E43",
             inActiveBackgroundColor: "#a3a3a3",
@@ -68,9 +67,9 @@ const Valve = ({ connectedDevice, setLoading, title, status }) => {
             inActiveBackgroundColor: "#ddd",
             borderActiveColor: "#45D058",
             borderInActiveColor: "#ddd",
-            borderWidth: 5,
-            width: 180,
-            height: 40,
+            borderWidth: 5 * scale,
+            width: 180 * scale,
+            height: 40 * scale,
             radius: 0,
           }}
         />

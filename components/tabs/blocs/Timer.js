@@ -15,9 +15,7 @@ const Timer = ({
   totalSec,
   connectedDevice,
   address,
-  setLoading,
-  setTitle,
-  onRefresh,
+  fetchDataTimer,
 }) => {
   const [hourValue, setHourValue] = useState("");
   const [minValue, setMinValue] = useState("");
@@ -63,7 +61,7 @@ const Timer = ({
     try {
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
-      const arr = JSON.stringify([address, totalSeconds]);
+      const arr = JSON.stringify([2, address, totalSeconds]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
@@ -71,8 +69,7 @@ const Timer = ({
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(connectedDevice, { setLoading, setTitle });
-      await onRefresh();
+      await fetchDataTimer();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -92,6 +89,7 @@ const Timer = ({
   useEffect(() => {
     toHMS(totalSec);
   }, [totalSec]);
+
   return (
     <View style={styles.wrapper}>
       <View

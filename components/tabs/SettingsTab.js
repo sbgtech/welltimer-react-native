@@ -206,29 +206,34 @@ const SettingsTab = (props) => {
   const handleChangeLPVoltageMax = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setLPVoltageMax("");
-          } else {
-            setLPVoltageMax(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setLPVoltageMax(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setLPVoltageMax("");
+          setLPVoltageMax(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setLPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+        setLPVoltageMax(""); // Clear or reset the value
       }
     } else {
-      setLPVoltageMax("");
+      setLPVoltageMax(""); // Handle empty input case
     }
   };
 
@@ -236,29 +241,34 @@ const SettingsTab = (props) => {
   const handleChangeLPVoltageMin = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setLPVoltageMin("");
-          } else {
-            setLPVoltageMin(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setLPVoltageMin(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setLPVoltageMin("");
+          setLPVoltageMin(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setLPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+        setLPVoltageMin(""); // Clear or reset the value
       }
     } else {
-      setLPVoltageMin("");
+      setLPVoltageMin(""); // Handle empty input case
     }
   };
 
@@ -314,29 +324,34 @@ const SettingsTab = (props) => {
   const handleChangeCPVoltageMax = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setCPVoltageMax("");
-          } else {
-            setCPVoltageMax(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setTPVoltageMax(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setCPVoltageMax("");
+          setTPVoltageMax(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setCPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+        setTPVoltageMax(""); // Clear or reset the value
       }
     } else {
-      setCPVoltageMax("");
+      setTPVoltageMax(""); // Handle empty input case
     }
   };
 
@@ -344,29 +359,34 @@ const SettingsTab = (props) => {
   const handleChangeCPVoltageMin = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setCPVoltageMin("");
-          } else {
-            setCPVoltageMin(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setCPVoltageMin(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setCPVoltageMin("");
+          setCPVoltageMin(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setCPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+        setCPVoltageMin(""); // Clear or reset the value
       }
     } else {
-      setCPVoltageMin("");
+      setCPVoltageMin(""); // Handle empty input case
     }
   };
 
@@ -422,29 +442,34 @@ const SettingsTab = (props) => {
   const handleChangeTPVoltageMax = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setTPVoltageMax("");
-          } else {
-            setTPVoltageMax(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setTPVoltageMax(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setTPVoltageMax("");
+          setTPVoltageMax(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setTPVoltageMax(validText.substring(0, validText.lastIndexOf(".")));
+        setTPVoltageMax(""); // Clear or reset the value
       }
     } else {
-      setTPVoltageMax("");
+      setTPVoltageMax(""); // Handle empty input case
     }
   };
 
@@ -452,29 +477,34 @@ const SettingsTab = (props) => {
   const handleChangeTPVoltageMin = (text) => {
     const MAX_VALUE = 100;
     if (text) {
-      const validText = text.replace(/[^0-9.]/g, ""); // Remove non-numeric and non-decimal characters
-      const decimalCount = (validText.match(/\./g) || []).length; // Count occurrences of decimal points
-      // Ensure there is only one decimal point
-      if (decimalCount <= 1) {
-        const numericValue = parseFloat(validText);
-        // Check if the number is within the range
-        if (!isNaN(numericValue)) {
-          if (numericValue > MAX_VALUE) {
-            Alert.alert("Warning", "The max value must be 65535");
-            setTPVoltageMin("");
-          } else {
-            setTPVoltageMin(validText);
-          }
+      // Remove all non-numeric characters except decimal points
+      let validText = text.replace(/[^0-9.]/g, "");
+
+      // Find the position of the first decimal point
+      const decimalIndex = validText.indexOf(".");
+
+      // If there's a decimal point, truncate the string to one decimal place
+      if (decimalIndex !== -1) {
+        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+      }
+
+      // Remove any additional decimal points
+      validText = validText.replace(/\.(?=.*\.)/g, "");
+
+      const numericValue = parseFloat(validText);
+
+      if (!isNaN(numericValue)) {
+        if (numericValue > MAX_VALUE) {
+          Alert.alert("Warning", "The max value must be 100");
+          setTPVoltageMin(""); // Clear or reset the value
         } else {
-          // If the conversion failed, reset to empty or default value
-          setTPVoltageMin("");
+          setTPVoltageMin(validText);
         }
       } else {
-        // For example, you might want to trim or notify the user
-        setTPVoltageMin(validText.substring(0, validText.lastIndexOf(".")));
+        setTPVoltageMin(""); // Clear or reset the value
       }
     } else {
-      setTPVoltageMin("");
+      setTPVoltageMin(""); // Handle empty input case
     }
   };
 
@@ -482,6 +512,7 @@ const SettingsTab = (props) => {
   const handleSendFirstBloc = async () => {
     try {
       const arr = JSON.stringify([
+        3,
         111,
         productionMethodIndex,
         109,
@@ -493,16 +524,12 @@ const SettingsTab = (props) => {
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -515,6 +542,7 @@ const SettingsTab = (props) => {
   const handleSendHiLo = async () => {
     try {
       const arr = JSON.stringify([
+        3,
         122,
         hiLoModeIndex,
         123,
@@ -524,16 +552,12 @@ const SettingsTab = (props) => {
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -545,9 +569,8 @@ const SettingsTab = (props) => {
   // send array of CP values to device
   const handleSendLP = async () => {
     try {
-      console.log(LPVoltageMax);
-      console.log(Number(LPVoltageMax * 10));
       const arr = JSON.stringify([
+        3,
         100,
         LPTypeIndex,
         101,
@@ -561,16 +584,12 @@ const SettingsTab = (props) => {
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      onRefresh();
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -583,6 +602,7 @@ const SettingsTab = (props) => {
   const handleSendCP = async () => {
     try {
       const arr = JSON.stringify([
+        3,
         103,
         CPTypeIndex,
         104,
@@ -596,16 +616,12 @@ const SettingsTab = (props) => {
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -618,6 +634,7 @@ const SettingsTab = (props) => {
   const handleSendTP = async () => {
     try {
       const arr = JSON.stringify([
+        3,
         106,
         TPTypeIndex,
         107,
@@ -631,16 +648,12 @@ const SettingsTab = (props) => {
       ]);
       console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataSettings();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -650,7 +663,7 @@ const SettingsTab = (props) => {
   };
 
   // function called in useEffect when load component to fetch data
-  const fetchData = async () => {
+  const fetchDataSettings = async () => {
     try {
       await Receive.SettingsReceivedData(props.connectedDevice, {
         setValveA,
@@ -680,7 +693,7 @@ const SettingsTab = (props) => {
         setTitle,
       });
     } catch (error) {
-      console.error("Error in useEffect:", error);
+      console.error("Error in receiving data:", error);
     }
   };
 
@@ -688,16 +701,16 @@ const SettingsTab = (props) => {
   useEffect(() => {
     // fetcha data if the device is connected
     if (props.connectedDevice) {
-      const cleanup = fetchData();
+      const cleanup = fetchDataSettings();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
   // function run when clicking on refresh button
-  const onRefresh = async () => {
+  const onRefreshSettings = async () => {
     try {
       // call function to send request to device to get data
-      await Receive.sendReqToGetData(props.connectedDevice, 2);
+      Receive.sendReqToGetData(props.connectedDevice, 2);
       // start receiving data
       await Receive.SettingsReceivedData(props.connectedDevice, {
         setValveA,
@@ -733,10 +746,12 @@ const SettingsTab = (props) => {
 
   return (
     <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-      <RefreshBtn onPress={() => onRefresh()} />
+      <RefreshBtn onPress={() => onRefreshSettings()} />
       <Valve
         connectedDevice={props.connectedDevice}
         setLoading={setLoading}
+        setTitle={setTitle}
+        fetchDataSettings={fetchDataSettings}
         title={"Valve A"}
         status={valveA === 1 ? true : false}
       />

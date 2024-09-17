@@ -18,36 +18,36 @@ const TimerTab = (props) => {
   // title of loading modal
   const [title, setTitle] = useState("");
 
+  const fetchDataTimer = async () => {
+    try {
+      await Receive.TimerReceivedData(props.connectedDevice, {
+        setReceivedOpenTimer,
+        setReceivedShutinTimer,
+        setReceivedAfterflowTimer,
+        setReceivedMandatoryTimer,
+        setLoading,
+        setTitle,
+      });
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+    }
+  };
+
   // Initial load, call TimerReceivedData function with the corresponding data of timers
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Receive.TimerReceivedData(props.connectedDevice, {
-          setReceivedOpenTimer,
-          setReceivedShutinTimer,
-          setReceivedAfterflowTimer,
-          setReceivedMandatoryTimer,
-          setLoading,
-          setTitle,
-        });
-      } catch (error) {
-        console.error("Error in useEffect:", error);
-      }
-    };
-
     // fetcha data if the device is connected
     if (props.connectedDevice) {
-      const cleanup = fetchData();
+      const cleanup = fetchDataTimer();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
   // function run when clicking on refresh button
-  const onRefresh = () => {
-    // call function to send request to device to get data
-    // start receiving data
+  const onRefreshTimer = () => {
     try {
+      // call function to send request to device to get data
       Receive.sendReqToGetData(props.connectedDevice, 1);
+      // start receiving data
       Receive.TimerReceivedData(props.connectedDevice, {
         setReceivedOpenTimer,
         setReceivedShutinTimer,
@@ -71,42 +71,38 @@ const TimerTab = (props) => {
       keyboardShouldPersistTaps="handled"
     >
       <View style={[styles.container, styles.marginBottomContainer]}>
-        <RefreshBtn onPress={() => onRefresh()} />
+        <RefreshBtn onPress={() => onRefreshTimer()} />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Open timer"}
           address={112}
           totalSec={receivedOpenTimer}
-          setLoading={setLoading}
           setTitle={setTitle}
-          onRefresh={onRefresh}
+          fetchDataTimer={fetchDataTimer}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Shutin timer"}
           address={113}
           totalSec={receivedShutinTimer}
-          setLoading={setLoading}
           setTitle={setTitle}
-          onRefresh={onRefresh}
+          fetchDataTimer={fetchDataTimer}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Afterflow timer"}
           address={114}
           totalSec={receivedAfterflowTimer}
-          setLoading={setLoading}
           setTitle={setTitle}
-          onRefresh={onRefresh}
+          fetchDataTimer={fetchDataTimer}
         />
         <Timer
           connectedDevice={props.connectedDevice}
           title={"Mandatory shutin timer"}
           address={115}
           totalSec={receivedMandatoryTimer}
-          setLoading={setLoading}
           setTitle={setTitle}
-          onRefresh={onRefresh}
+          fetchDataTimer={fetchDataTimer}
         />
       </View>
       <Loading loading={loading} title={title} />

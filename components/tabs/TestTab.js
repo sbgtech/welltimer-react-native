@@ -56,62 +56,6 @@ const TestTab = (props) => {
     console.log(e);
   };
 
-  // function get the message variable and sent it with sendData function
-  const onSendMessageSubmit = async () => {
-    if (message !== "") {
-      // call sentData function with two inputs (device and writting message)
-      await sendData(props.connectedDevice, message + "\n");
-      // empty the variable
-      setMessage("");
-    } else {
-      Alert.alert("Warning", "Data required");
-    }
-  };
-
-  // Initial load
-  useEffect(() => {
-    if (loading && !dataReceived) {
-      // if loading is false and dataReceived is false too
-      const timer = setTimeout(() => {
-        if (!dataReceived) {
-          // if data no received show warning alert
-          Toast.show({
-            type: "error",
-            text1: "Warning",
-            text2: "No data received within 20 seconds",
-            visibilityTime: 3000,
-          });
-          setLoading(false); // set loading to false
-        }
-      }, 20000); // set timeout to 20 seconds to wait if data received or not
-      return () => clearTimeout(timer); // clear timeout
-    }
-    if (!isSubscribed) {
-      receiveData();
-    }
-  }, [loading, dataReceived, isSubscribed, props.connectedDevice, receiveData]);
-
-  // function used to get the data and type of this data as parameters
-  const addObject = (data, type) => {
-    // create new object with the passed data and type
-    const newObj = { date: Date.now(), data: data, type: type };
-    // set to dataArray state the created object
-    setDataArray((prevArray) => [...prevArray, newObj]);
-  };
-
-  // function for receiving data only for testing mode
-  const receiveData = useCallback(() => {
-    if (!isSubscribed) {
-      setIsSubscribed(true);
-      // call TestReceivedData function
-      Receive.TestReceivedData(props.connectedDevice, {
-        setDataArray,
-        setLoading,
-        setDataReceived,
-      });
-    }
-  }, [isSubscribed]);
-
   // function for sending data only for testing mode
   const sendData = async (device, data) => {
     try {
@@ -140,6 +84,62 @@ const TestTab = (props) => {
       console.error("Error sending data:", error);
     }
   };
+
+  // function get the message variable and sent it with sendData function
+  const onSendMessageSubmit = async () => {
+    if (message !== "") {
+      // call sentData function with two inputs (device and writting message)
+      await sendData(props.connectedDevice, message + "\n");
+      // empty the variable
+      setMessage("");
+    } else {
+      Alert.alert("Warning", "Data required");
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    if (loading && !dataReceived) {
+      // if loading is false and dataReceived is false too
+      const timer = setTimeout(() => {
+        if (!dataReceived) {
+          // if data no received show warning alert
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "No data received",
+            visibilityTime: 3000,
+          });
+          setLoading(false); // set loading to false
+        }
+      }, 7000); // set timeout to 7 seconds to wait if data received or not
+      return () => clearTimeout(timer); // clear timeout
+    }
+    if (!isSubscribed) {
+      receiveData();
+    }
+  }, [loading, dataReceived, isSubscribed, props.connectedDevice, receiveData]);
+
+  // function used to get the data and type of this data as parameters
+  const addObject = (data, type) => {
+    // create new object with the passed data and type
+    const newObj = { date: Date.now(), data: data, type: type };
+    // set to dataArray state the created object
+    setDataArray((prevArray) => [...prevArray, newObj]);
+  };
+
+  // function for receiving data only for testing mode
+  const receiveData = useCallback(() => {
+    if (!isSubscribed) {
+      setIsSubscribed(true);
+      // call TestReceivedData function
+      Receive.TestReceivedData(props.connectedDevice, {
+        setDataArray,
+        setLoading,
+        setDataReceived,
+      });
+    }
+  }, [isSubscribed]);
 
   const renderItem = ({ item }) => (
     <View style={styles.msgViewContainer}>

@@ -28,20 +28,17 @@ const StatisticsTab = (props) => {
   const [onTimeToday, setOnTimeToday] = useState("");
   const [onTimeWeek, setOnTimeWeek] = useState("");
   const [onTimeTotal, setOnTimeTotal] = useState("");
+
   // send "reset" to device to reset arrivals values
   const handleResetArrivals = async () => {
     try {
       const buffer = Buffer.from("RST1 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -54,16 +51,12 @@ const StatisticsTab = (props) => {
   const handleResetMissrun = async () => {
     try {
       const buffer = Buffer.from("RST2 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -76,16 +69,12 @@ const StatisticsTab = (props) => {
   const handleResetOnTime = async () => {
     try {
       const buffer = Buffer.from("RST3 \n", "utf-8");
-      props.connectedDevice?.writeCharacteristicWithResponseForService(
+      await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      await Receive.ACKReceivedData(props.connectedDevice, {
-        setLoading,
-        setTitle,
-      });
-      await onRefresh();
+      await fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -95,7 +84,7 @@ const StatisticsTab = (props) => {
   };
 
   // function called in useEffect when load component to fetch data
-  const fetchData = async () => {
+  const fetchDataStatistic = async () => {
     try {
       await Receive.StatisticsReceivedData(props.connectedDevice, {
         setArrivalsToday,
@@ -111,7 +100,7 @@ const StatisticsTab = (props) => {
         setTitle,
       });
     } catch (error) {
-      console.error("Error in useEffect:", error);
+      console.error("Error in receiving data:", error);
     }
   };
 
@@ -119,17 +108,17 @@ const StatisticsTab = (props) => {
   useEffect(() => {
     // fetcha data if the device is connected
     if (props.connectedDevice) {
-      const cleanup = fetchData();
+      const cleanup = fetchDataStatistic();
       return () => cleanup; // Clean up subscription on component unmount or when device changes
     }
   }, [props.connectedDevice]);
 
   // function run when clicking on refresh button
-  const onRefresh = async () => {
-    // call function to send request to device to get data
-    Receive.sendReqToGetData(props.connectedDevice, 3);
-    // start receiving data
+  const onRefreshStatistic = async () => {
     try {
+      // call function to send request to device to get data
+      Receive.sendReqToGetData(props.connectedDevice, 3);
+      // start receiving data
       await Receive.StatisticsReceivedData(props.connectedDevice, {
         setArrivalsToday,
         setArrivalsWeek,
@@ -147,9 +136,10 @@ const StatisticsTab = (props) => {
       console.error("Error during refresh:", error);
     }
   };
+
   return (
     <ScrollView>
-      <RefreshBtn onPress={() => onRefresh()} />
+      <RefreshBtn onPress={() => onRefreshStatistic()} />
       <View style={[styles.wrapper, styles.marginBottomContainer]}>
         <Text style={styles.valveTitle}>Arrival statistics</Text>
         <View style={[styles.rangeWrapper, styles.settingsSection]}>
