@@ -10,6 +10,7 @@ import {
   UART_SERVICE_UUID,
   UART_TX_CHARACTERISTIC_UUID,
 } from "../Utils/Constants";
+import Toast from "react-native-toast-message";
 
 const StatisticsTab = (props) => {
   // the loading state, default is false
@@ -38,6 +39,12 @@ const StatisticsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent successfully",
+        visibilityTime: 3000,
+      });
       await fetchDataStatistic();
     } catch (error) {
       console.log(
@@ -56,6 +63,12 @@ const StatisticsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent successfully",
+        visibilityTime: 3000,
+      });
       await fetchDataStatistic();
     } catch (error) {
       console.log(
@@ -74,6 +87,12 @@ const StatisticsTab = (props) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent successfully",
+        visibilityTime: 3000,
+      });
       await fetchDataStatistic();
     } catch (error) {
       console.log(

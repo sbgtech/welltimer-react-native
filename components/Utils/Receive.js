@@ -452,61 +452,61 @@ export class Receive {
   }
 
   // function listen to receive "ACK" from device to stop loading and show "successfully sent", else show "Error to sent data" and the time given for waiting response to stop loading is 20 seconds.
-  static async ACKReceivedData(device, setters) {
-    const { setLoading, setTitle } = setters;
-    let sent = false;
-    return new Promise(async (resolve, reject) => {
-      setLoading(true);
-      setTitle("Sending...");
-      const timeout = setTimeout(() => {
-        if (!sent) {
-          console.log("Error to send data");
-          setLoading(false);
-          Toast.show({
-            type: "error",
-            text1: "Warning",
-            text2: "Error to send data",
-            visibilityTime: 3000,
-          });
-        }
-        reject({ sent: false });
-      }, 20000);
-      const subscription = await device?.monitorCharacteristicForService(
-        UART_SERVICE_UUID,
-        UART_RX_CHARACTERISTIC_UUID,
-        (error, characteristic) => {
-          clearTimeout(timeout);
-          if (error) {
-            console.log(error);
-            setLoading(false);
-            reject(error);
-            return;
-          }
-          const msg = Buffer.from(characteristic.value, "base64").toString(
-            "utf-8"
-          );
-          if (msg === "ACK\n") {
-            setLoading(false);
-            sent = true;
-            resolve(sent);
-            Toast.show({
-              type: "success",
-              text1: "Success",
-              text2: "Data sent successfully",
-              visibilityTime: 3000,
-            });
-          }
-        }
-      );
-      // Return a function to clean up the subscription
-      return () => {
-        setLoading(false);
-        subscription.remove();
-        clearTimeout(timeout);
-      };
-    }).catch(() => {
-      console.log("Error receiving ACK");
-      return false; // Return false in case of error
-    });
-  }
+  // static async ACKReceivedData(device, setters) {
+  //   const { setLoading, setTitle } = setters;
+  //   let sent = false;
+  //   return new Promise(async (resolve, reject) => {
+  //     setLoading(true);
+  //     setTitle("Sending...");
+  //     const timeout = setTimeout(() => {
+  //       if (!sent) {
+  //         console.log("Error to send data");
+  //         setLoading(false);
+  //         Toast.show({
+  //           type: "error",
+  //           text1: "Warning",
+  //           text2: "Error to send data",
+  //           visibilityTime: 3000,
+  //         });
+  //       }
+  //       reject({ sent: false });
+  //     }, 20000);
+  //     const subscription = await device?.monitorCharacteristicForService(
+  //       UART_SERVICE_UUID,
+  //       UART_RX_CHARACTERISTIC_UUID,
+  //       (error, characteristic) => {
+  //         clearTimeout(timeout);
+  //         if (error) {
+  //           console.log(error);
+  //           setLoading(false);
+  //           reject(error);
+  //           return;
+  //         }
+  //         const msg = Buffer.from(characteristic.value, "base64").toString(
+  //           "utf-8"
+  //         );
+  //         if (msg === "ACK\n") {
+  //           setLoading(false);
+  //           sent = true;
+  //           resolve(sent);
+  //           Toast.show({
+  //             type: "success",
+  //             text1: "Success",
+  //             text2: "Data sent successfully",
+  //             visibilityTime: 3000,
+  //           });
+  //         }
+  //       }
+  //     );
+  //     // Return a function to clean up the subscription
+  //     return () => {
+  //       setLoading(false);
+  //       subscription.remove();
+  //       clearTimeout(timeout);
+  //     };
+  //   }).catch(() => {
+  //     console.log("Error receiving ACK");
+  //     return false; // Return false in case of error
+  //   });
+  // }
 }

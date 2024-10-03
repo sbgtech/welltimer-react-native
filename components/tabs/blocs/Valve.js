@@ -7,6 +7,7 @@ import {
   UART_SERVICE_UUID,
   UART_TX_CHARACTERISTIC_UUID,
 } from "../../Utils/Constants";
+import Toast from "react-native-toast-message";
 
 const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
   const { width } = Dimensions.get("window");
@@ -24,6 +25,12 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent successfully",
+        visibilityTime: 3000,
+      });
       setIsEnabledValve(value);
       await fetchDataSettings();
     } catch (error) {

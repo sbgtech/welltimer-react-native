@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#43455E",
   },
   tabText: {
-    fontSize: 15 * scale,
+    fontSize: 14 * scale,
     fontWeight: "bold",
     color: "#fff", // Customize tab label color
   },

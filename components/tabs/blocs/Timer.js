@@ -69,6 +69,12 @@ const Timer = ({
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Data sent successfully",
+        visibilityTime: 3000,
+      });
       await fetchDataTimer();
     } catch (error) {
       console.log(
