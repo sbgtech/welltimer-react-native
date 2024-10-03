@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import ButtonUI from "./ButtonUI";
 import { styles } from "./tabs/style/styles";
 
-const Item = ({ name, id, onPress, title }) => {
+const Item = ({ name, id, onPress, title, disabled }) => {
   return (
     <View style={styles.itemView}>
       <View style={styles.itemInfo}>
@@ -15,6 +15,7 @@ const Item = ({ name, id, onPress, title }) => {
         title={title}
         btnStyle={styles.btnSendText}
         txtStyle={styles.TextSendStyle}
+        disabled={disabled}
       />
     </View>
   );

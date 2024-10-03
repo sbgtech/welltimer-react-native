@@ -1,21 +1,23 @@
-import React, { useState } from "react";
-import { Text, Pressable, View, ActivityIndicator, Modal } from "react-native";
+import React from "react";
+import { Text, Pressable, View } from "react-native";
 import { styles } from "./tabs/style/styles";
 
 export default function ButtonUI(props) {
-  const { onPress, title, btnStyle, children, txtStyle } = props;
+  const { onPress, title, btnStyle, children, txtStyle, disabled } = props;
 
   return (
     <View>
       <Pressable
         style={({ pressed }) => [
           {
-            opacity: pressed ? 0.5 : 1,
+            opacity: pressed || disabled ? 0.5 : 1,
           },
           styles.buttonStyle,
           btnStyle,
+          disabled && styles.disabledButton, // Add a style for disabled state
         ]}
-        onPress={onPress}
+        onPress={disabled ? null : onPress}
+        disabled={disabled}
       >
         {children ? (
           children

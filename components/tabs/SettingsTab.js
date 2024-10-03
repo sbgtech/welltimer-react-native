@@ -343,15 +343,15 @@ const SettingsTab = (props) => {
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
           Alert.alert("Warning", "The max value must be 100");
-          setTPVoltageMax(""); // Clear or reset the value
+          setCPVoltageMax(""); // Clear or reset the value
         } else {
-          setTPVoltageMax(validText);
+          setCPVoltageMax(validText);
         }
       } else {
-        setTPVoltageMax(""); // Clear or reset the value
+        setCPVoltageMax(""); // Clear or reset the value
       }
     } else {
-      setTPVoltageMax(""); // Handle empty input case
+      setCPVoltageMax(""); // Handle empty input case
     }
   };
 

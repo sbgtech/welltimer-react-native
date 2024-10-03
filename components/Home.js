@@ -27,6 +27,8 @@ export default function Home({ navigation, route }) {
   // create new Set of the discovered devices to set thems into devices array
   const discoveredDevices = new Set();
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   // Request Bluetooth permissions
   // Ask user when he open the app to allow and activate position and bluetooth
   const requestBluetoothPermission = async () => {
@@ -149,6 +151,7 @@ export default function Home({ navigation, route }) {
   const connectToDevice = async (selectedDevice) => {
     if (!selectedDevice) return; // if not exist any device selected
     try {
+      setIsButtonDisabled(true); // Disable button before connecting
       // connect to selected device
       await selectedDevice
         .connect()
@@ -175,6 +178,8 @@ export default function Home({ navigation, route }) {
         text2: "Error connecting to device",
         visibilityTime: 3000,
       });
+    } finally {
+      setIsButtonDisabled(false); // Re-enable button after operation
     }
   };
 
@@ -184,6 +189,7 @@ export default function Home({ navigation, route }) {
       id={item.id}
       onPress={() => connectToDevice(item)}
       title={"Connect"}
+      disabled={isButtonDisabled}
     />
   );
 
