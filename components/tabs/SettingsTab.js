@@ -25,7 +25,7 @@ const SettingsTab = (props) => {
   const [valveA, setValveA] = useState(0);
   // display the name of the productionMethod based on the received index
   const [productionMethodIndex, setProductionMethodIndex] = useState(null);
-  const productionMethod = ["Timer mode", "Intermit mode", "Trigger mode"];
+  const productionMethod = ["Timer mode"];
   // prepare variables to set them the received data
   const [missrunMax, setMissrunMax] = useState("");
   const [falseArrivalsIndex, setFalseArrivalsIndex] = useState(null);
@@ -57,7 +57,7 @@ const SettingsTab = (props) => {
 
   // handle change missrunMax value
   const handleChangeMissrunMax = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -65,7 +65,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setMissrunMax("");
         } else {
           setMissrunMax(validText);
@@ -81,7 +81,7 @@ const SettingsTab = (props) => {
 
   // handle change wellDepth value
   const handleChangeWellDepth = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -89,7 +89,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setWellDepth("");
         } else {
           setWellDepth(validText);
@@ -105,7 +105,7 @@ const SettingsTab = (props) => {
 
   // handle change hiloHight value
   const handleChangeHiLoHigh = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -113,7 +113,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setHiLoHigh("");
         } else {
           setHiLoHigh(validText);
@@ -129,7 +129,7 @@ const SettingsTab = (props) => {
 
   // handle change hiloLow value
   const handleChangeHiLoLow = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -137,7 +137,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setHiLoLow("");
         } else {
           setHiLoLow(validText);
@@ -153,7 +153,7 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMax value
   const handleChangeLPSensorMax = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
 
@@ -163,7 +163,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setLPSensorMax("");
         } else {
           setLPSensorMax(validText);
@@ -179,7 +179,7 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMin value
   const handleChangeLPSensorMin = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
 
@@ -189,7 +189,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setLPSensorMin("");
         } else {
           setLPSensorMin(validText);
@@ -205,7 +205,7 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMax value
   const handleChangeLPVoltageMax = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -225,7 +225,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setLPVoltageMax(""); // Clear or reset the value
         } else {
           setLPVoltageMax(validText);
@@ -240,7 +240,7 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMin value
   const handleChangeLPVoltageMin = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -260,7 +260,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setLPVoltageMin(""); // Clear or reset the value
         } else {
           setLPVoltageMin(validText);
@@ -275,7 +275,7 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMax value
   const handleChangeCPSensorMax = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -283,7 +283,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setCPSensorMax("");
         } else {
           setCPSensorMax(validText);
@@ -299,7 +299,7 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMin value
   const handleChangeCPSensorMin = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -307,7 +307,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setCPSensorMin("");
         } else {
           setCPSensorMin(validText);
@@ -323,7 +323,7 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMax value
   const handleChangeCPVoltageMax = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -343,7 +343,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setCPVoltageMax(""); // Clear or reset the value
         } else {
           setCPVoltageMax(validText);
@@ -358,7 +358,7 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMin value
   const handleChangeCPVoltageMin = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -378,7 +378,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setCPVoltageMin(""); // Clear or reset the value
         } else {
           setCPVoltageMin(validText);
@@ -393,7 +393,7 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMax value
   const handleChangeTPSensorMax = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -401,7 +401,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setTPSensorMax("");
         } else {
           setTPSensorMax(validText);
@@ -417,7 +417,7 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMin value
   const handleChangeTPSensorMin = (text) => {
-    const MAX_VALUE = 65535;
+    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
       // Ensure there is only one decimal point
@@ -425,7 +425,7 @@ const SettingsTab = (props) => {
       // Check if the number is within the range
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 65535");
+          Alert.alert("Warning", "The max value must be 9999");
           setTPSensorMin("");
         } else {
           setTPSensorMin(validText);
@@ -441,7 +441,7 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMax value
   const handleChangeTPVoltageMax = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -461,7 +461,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setTPVoltageMax(""); // Clear or reset the value
         } else {
           setTPVoltageMax(validText);
@@ -476,7 +476,7 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMin value
   const handleChangeTPVoltageMin = (text) => {
-    const MAX_VALUE = 100;
+    const MAX_VALUE = 10;
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -496,7 +496,7 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 100");
+          Alert.alert("Warning", "The max value must be 10");
           setTPVoltageMin(""); // Clear or reset the value
         } else {
           setTPVoltageMin(validText);
@@ -584,7 +584,7 @@ const SettingsTab = (props) => {
     try {
       const arr = JSON.stringify([
         3,
-        100,
+        10,
         LPTypeIndex,
         101,
         Number(LPSensorMax),
@@ -776,7 +776,10 @@ const SettingsTab = (props) => {
   };
 
   return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
+    <KeyboardAwareScrollView
+      extraScrollHeight={15} // Space above the keyboard
+      keyboardShouldPersistTaps="handled"
+    >
       <RefreshBtn onPress={() => onRefreshSettings()} />
       <Valve
         connectedDevice={props.connectedDevice}

@@ -160,12 +160,6 @@ export default function Home({ navigation, route }) {
           // success to connect to device
           console.log("Connected to", device.name);
           // showing toast for successfully connected
-          Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: "Connected to " + device.name,
-            visibilityTime: 3000,
-          });
           navigation.navigate("DeviceSettings"); // navigate to device settings page
         });
     } catch (error) {

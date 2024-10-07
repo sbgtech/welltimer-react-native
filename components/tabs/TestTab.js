@@ -25,8 +25,12 @@ import {
 } from "../Utils/Constants";
 import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
+import PIN_modal from "./blocs/PIN_modal";
 
 const TestTab = (props) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pin, setPin] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   // state for the writing message, default empty
   const [message, setMessage] = useState("");
   // the loading state, default is false
@@ -94,6 +98,22 @@ const TestTab = (props) => {
       setMessage("");
     } else {
       Alert.alert("Warning", "Data required");
+    }
+  };
+
+  useEffect(() => {
+    Alert.alert("Warning", "Advanced usage only");
+    setModalVisible(true);
+  }, []);
+
+  const handleSubmitPIN = () => {
+    // Replace '1234' with your desired PIN
+    if (pin === "7707") {
+      setIsAuthenticated(true);
+      setModalVisible(false);
+    } else {
+      Alert.alert("Incorrect PIN", "Please try again.");
+      setPin("");
     }
   };
 
@@ -178,34 +198,58 @@ const TestTab = (props) => {
         styles.marginBottomContainer,
       ]}
     >
-      <View style={styles.box}>
-        <View>
-          <Text style={styles.testTitle}>Test mode :</Text>
-        </View>
-        <FlatList
-          style={styles.itemsList}
-          data={dataArray}
-          renderItem={renderItem}
-          ListEmptyComponent={handleEmpty}
-          keyExtractor={(item, index) => index.toString()}
+      <View>
+        <PIN_modal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          pin={pin}
+          setPin={setPin}
+          handleSubmitPIN={handleSubmitPIN}
         />
-        <View style={styles.testContainer}>
-          <TextInput
-            style={styles.testInput}
-            value={message}
-            onChangeText={onMessageChanged}
-            placeholder="Message..."
+      </View>
+      {isAuthenticated ? (
+        <View style={styles.box}>
+          <View>
+            <Text style={styles.testTitle}>Test mode :</Text>
+          </View>
+          <FlatList
+            style={styles.itemsList}
+            data={dataArray}
+            renderItem={renderItem}
+            ListEmptyComponent={handleEmpty}
+            keyExtractor={(item, index) => index.toString()}
           />
-          <ButtonUI
-            onPress={async () => await onSendMessageSubmit()}
-            title={<Ionicons name="send" size={25 * scale} color="white" />}
-            btnStyle={styles.btnSend}
-            txtStyle={styles.TextSendStyle}
-            loading={false}
+          <View style={styles.testContainer}>
+            <TextInput
+              style={styles.testInput}
+              value={message}
+              onChangeText={onMessageChanged}
+              placeholder="Message..."
+            />
+            <ButtonUI
+              onPress={async () => await onSendMessageSubmit()}
+              title={<Ionicons name="send" size={25 * scale} color="white" />}
+              btnStyle={styles.btnSend}
+              txtStyle={styles.TextSendStyle}
+              loading={false}
+            />
+          </View>
+          <Loading loading={loading} title={title} />
+        </View>
+      ) : (
+        <View style={styles.emptyPINContainer}>
+          <Text style={styles.emptyPINText}>Advanced usage only</Text>
+          <Image
+            alt="App Logo"
+            resizeMode="contain"
+            style={{
+              width: 200,
+              height: 200,
+            }}
+            source={require("../../assets/pin.png")}
           />
         </View>
-        <Loading loading={loading} title={title} />
-      </View>
+      )}
     </Animated.View>
   );
 };

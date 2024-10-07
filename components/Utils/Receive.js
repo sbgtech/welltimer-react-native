@@ -147,6 +147,7 @@ export class Receive {
           const str = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
+          console.log(str);
           const firstIndexValue = str.charAt(0); // Getting the character at index 0
           const pageIndex = str.charAt(1); // Getting the character at index 0
           const lastIndexValue = str[str.length - 2]; // Accessing the last character
@@ -389,7 +390,7 @@ export class Receive {
           const msg = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          if (msg !== "ACK\n") {
+          if (msg !== "NACK\n") {
             setDataArray((prevArray) => [
               ...prevArray,
               { date: Date.now(), data: msg, type: "RX" },

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import { View, Text, Alert } from "react-native";
 import ButtonUI from "../ButtonUI";
 import Tab from "./Tab";
@@ -12,6 +12,7 @@ import { BleManager } from "react-native-ble-plx";
 import { UART_SERVICE_UUID } from "../Utils/Constants";
 import { styles } from "./style/styles";
 import { Receive } from "../Utils/Receive";
+import Toast from "react-native-toast-message";
 
 const bleManager = new BleManager();
 
@@ -48,19 +49,8 @@ const TabView = ({ navigation }) => {
   // function to set active page to the variable when pressing on the page
   const handleTabPress = (index) => {
     setActiveTab(index);
-    // sendReq();
   };
 
-  // This function will be called when the screen gains focus
-  // const handleBackButtonClick = useCallback(() => {
-  //   // Display an alert or perform any action when the back button is pressed
-  //   Alert.alert("Back Button Clicked", "You clicked the back arrow!");
-  // }, []);
-
-  // // Use the focus effect hook to trigger the callback when the screen gains focus
-  // useFocusEffect(handleBackButtonClick);
-
-  // useEffect used for handling side effects in component like data fetching, event listeners, subscriptions, timers, updating state or manually changing the DOM that can’t be done during rendering
   useEffect(() => {
     // verify the device is connected or not
     const checkDeviceConnection = async () => {
@@ -68,22 +58,33 @@ const TabView = ({ navigation }) => {
         UART_SERVICE_UUID,
       ]);
       if (connectedDevices.length > 0) {
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Connected to " + connectedDevices[0].name,
+          visibilityTime: 3000,
+        });
         setConnectedDevice(connectedDevices[0]);
         Receive.sendReqToGetData(connectedDevice, activeTab);
       } else {
         Alert.alert(
-          "Warning",
-          "The device is disconnected",
+          "Device Not Allowed",
+          "Device Type Must be WellTimer",
           [
             {
               text: "Cancel",
-              onPress: () => console.log("Canceled"),
+              onPress: () => {
+                navigation.removeListener(),
+                  navigation.navigate("Home", {
+                    scanning: true,
+                  });
+              },
               style: "cancel",
             },
             {
               text: "OK",
               onPress: () => {
-                navigation.removeListener,
+                navigation.removeListener(),
                   navigation.navigate("Home", {
                     scanning: true,
                   });
@@ -109,7 +110,7 @@ const TabView = ({ navigation }) => {
         "The BLE device has been disconnected."
       );
       setConnectedDevice(null); // Optionally reset device state
-      navigation.removeListener;
+      navigation.removeListener();
       navigation.navigate("Home", { scanning: true });
     };
 
@@ -157,7 +158,7 @@ const TabView = ({ navigation }) => {
         await connectedDevice.cancelConnection();
         console.log("Disconnected successfully");
         setConnectedDevice(null);
-        navigation.removeListener;
+        navigation.removeListener();
         navigation.navigate("Home", { scanning: true });
       } else {
         console.log("No device connected");

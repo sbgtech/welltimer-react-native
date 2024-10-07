@@ -35,6 +35,7 @@ const TimerTab = (props) => {
 
   // Initial load, call TimerReceivedData function with the corresponding data of timers
   useEffect(() => {
+    console.log("first");
     // fetcha data if the device is connected
     if (props.connectedDevice) {
       const cleanup = fetchDataTimer();
@@ -45,6 +46,10 @@ const TimerTab = (props) => {
   // function run when clicking on refresh button
   const onRefreshTimer = () => {
     try {
+      setReceivedOpenTimer("");
+      setReceivedShutinTimer("");
+      setReceivedAfterflowTimer("");
+      setReceivedMandatoryTimer("");
       // call function to send request to device to get data
       Receive.sendReqToGetData(props.connectedDevice, 1);
       // start receiving data

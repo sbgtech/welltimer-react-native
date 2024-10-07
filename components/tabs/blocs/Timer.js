@@ -116,6 +116,7 @@ const Timer = ({
             value={hourValue}
             onChangeText={handleChangeHour}
             maxLength={2}
+            selectTextOnFocus={true}
           />
           <Text style={styles.dotTimer}>:</Text>
           <TextInput
@@ -124,6 +125,7 @@ const Timer = ({
             value={minValue}
             onChangeText={handleChangeMin}
             maxLength={2}
+            selectTextOnFocus={true}
           />
           <Text style={styles.dotTimer}>:</Text>
           <TextInput
@@ -132,6 +134,7 @@ const Timer = ({
             value={secValue}
             onChangeText={handleChangeSec}
             maxLength={2}
+            selectTextOnFocus={true}
           />
           <ButtonUI
             onPress={() => handleSendTimer()}

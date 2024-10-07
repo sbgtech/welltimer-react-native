@@ -1,8 +1,8 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width, height } = Dimensions.get("window");
-const marginBottomAndroid = height * 0.09; // Adjust 0.05 as needed for your layout
-const marginBottomIOS = height * 0.05; // Adjust 0.05 as needed for your layout
+const marginBottomAndroid = height * 0.01; // Adjust 0.05 as needed for your layout
+const marginBottomIOS = height * 0.01; // Adjust 0.05 as needed for your layout
 const scale = width / 450;
 
 export const styles = StyleSheet.create({
@@ -68,10 +68,43 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff", // Customize tab label color
   },
+  // PIN_modal.js
+  PINContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  },
+  PINContent: {
+    width: "85%",
+    padding: 24 * scale,
+    backgroundColor: "white",
+    alignItems: "center",
+    position: "relative",
+  },
+  PINTitle: {
+    fontSize: 24 * scale,
+    fontWeight: "bold",
+    marginBottom: 24 * scale,
+  },
+  PINinput: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 10 * scale,
+    marginBottom: 16 * scale,
+    borderWidth: 0.5,
+    width: "100%",
+    maxWidth: "100%",
+    height: 40 * scale,
+  },
+  closeIconContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
   // testtab.js
   containerTestTab: {
     flex: 1,
-    padding: 16 * scale,
+    padding: 10 * scale,
   },
   contentContainer: {
     flex: 1,
@@ -160,6 +193,13 @@ export const styles = StyleSheet.create({
     fontStyle: "italic",
     fontWeight: "bold",
     color: "#b5b5b5",
+  },
+  //
+  emptyPINContainer: { justifyContent: "center", alignItems: "center" },
+  emptyPINText: {
+    fontSize: 22 * scale,
+    fontWeight: "bold",
+    color: "#35374B",
   },
   // table.js
   tableContainer: {
