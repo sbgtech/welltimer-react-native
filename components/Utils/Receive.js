@@ -390,14 +390,14 @@ export class Receive {
           const msg = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          if (msg !== "NACK\n") {
-            setDataArray((prevArray) => [
-              ...prevArray,
-              { date: Date.now(), data: msg, type: "RX" },
-            ]);
-            setLoading(false);
-            setDataReceived(true); // Update dataReceived state
-          }
+          // if (msg !== "NACK\n") {
+          setDataArray((prevArray) => [
+            ...prevArray,
+            { date: Date.now(), data: msg, type: "RX" },
+          ]);
+          setLoading(false);
+          setDataReceived(true); // Update dataReceived state
+          // }
         }
       );
       // Return a function to clean up the subscription

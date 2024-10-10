@@ -28,6 +28,7 @@ import Loading from "./blocs/Loading";
 import PIN_modal from "./blocs/PIN_modal";
 
 const TestTab = (props) => {
+  const { setActiveTab, navigation, connectedDevice } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [pin, setPin] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -93,7 +94,7 @@ const TestTab = (props) => {
   const onSendMessageSubmit = async () => {
     if (message !== "") {
       // call sentData function with two inputs (device and writting message)
-      await sendData(props.connectedDevice, message + "\n");
+      await sendData(connectedDevice, message + "\n");
       // empty the variable
       setMessage("");
     } else {
@@ -102,12 +103,11 @@ const TestTab = (props) => {
   };
 
   useEffect(() => {
-    Alert.alert("Warning", "Advanced usage only");
     setModalVisible(true);
   }, []);
 
   const handleSubmitPIN = () => {
-    // Replace '1234' with your desired PIN
+    // Replace '7707' with your desired PIN
     if (pin === "7707") {
       setIsAuthenticated(true);
       setModalVisible(false);
@@ -138,7 +138,7 @@ const TestTab = (props) => {
     if (!isSubscribed) {
       receiveData();
     }
-  }, [loading, dataReceived, isSubscribed, props.connectedDevice, receiveData]);
+  }, [loading, dataReceived, isSubscribed, connectedDevice, receiveData]);
 
   // function used to get the data and type of this data as parameters
   const addObject = (data, type) => {
@@ -153,7 +153,7 @@ const TestTab = (props) => {
     if (!isSubscribed) {
       setIsSubscribed(true);
       // call TestReceivedData function
-      Receive.TestReceivedData(props.connectedDevice, {
+      Receive.TestReceivedData(connectedDevice, {
         setDataArray,
         setLoading,
         setDataReceived,
@@ -205,6 +205,8 @@ const TestTab = (props) => {
           pin={pin}
           setPin={setPin}
           handleSubmitPIN={handleSubmitPIN}
+          navigation={navigation}
+          setActiveTab={setActiveTab}
         />
       </View>
       {isAuthenticated ? (
@@ -247,6 +249,13 @@ const TestTab = (props) => {
               height: 200,
             }}
             source={require("../../assets/pin.png")}
+          />
+          <ButtonUI
+            onPress={() =>
+              navigation.navigate("DeviceSettings", { initialTab: 0 })
+            }
+            title="Go to Device Settings"
+            btnStyle={styles.btnSendText}
           />
         </View>
       )}

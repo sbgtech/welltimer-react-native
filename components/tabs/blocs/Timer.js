@@ -58,6 +58,15 @@ const Timer = ({
   };
 
   const handleSendTimer = async () => {
+    if (hourValue === "" || minValue === "" || secValue === "") {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields (hours, minutes, and seconds) must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    }
     try {
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);

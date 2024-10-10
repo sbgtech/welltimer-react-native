@@ -18,6 +18,8 @@ const PIN_modal = ({
   pin,
   setPin,
   handleSubmitPIN,
+  navigation,
+  setActiveTab,
 }) => {
   return (
     <Modal
@@ -31,7 +33,16 @@ const PIN_modal = ({
           <View style={styles.PINContent}>
             <TouchableOpacity
               style={styles.closeIconContainer}
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                setModalVisible(false);
+                setTimeout(() => {
+                  console.log(setActiveTab);
+                  setActiveTab(0);
+                  navigation.navigate("DeviceSettings", {
+                    initialTab: 0,
+                  });
+                }, 300);
+              }}
             >
               <AntDesign
                 name="closesquare"

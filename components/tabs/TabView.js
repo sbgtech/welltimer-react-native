@@ -16,7 +16,7 @@ import Toast from "react-native-toast-message";
 
 const bleManager = new BleManager();
 
-const TabView = ({ navigation }) => {
+const TabView = ({ navigation, initialTab }) => {
   // set the connected welltimer to this variable
   const [connectedDevice, setConnectedDevice] = useState(null);
   const isFocused = useIsFocused();
@@ -40,11 +40,17 @@ const TabView = ({ navigation }) => {
     },
     {
       label: "Test",
-      content: <TestTab connectedDevice={connectedDevice} />,
+      content: (
+        <TestTab
+          connectedDevice={connectedDevice}
+          navigation={navigation}
+          setActiveTab={setActiveTab}
+        />
+      ),
     },
   ];
   // variable used for known the current page, default is the first page (index 0)
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   // function to set active page to the variable when pressing on the page
   const handleTabPress = (index) => {
@@ -130,19 +136,6 @@ const TabView = ({ navigation }) => {
     }
   }, [activeTab, connectedDevice]); // Send request whenever activeTab changes (call useEffect whenever activeTab changes)
 
-  // useEffect(() => {
-  //   const handleBackPress = (e) => {
-  //     // Notify when back button is pressed
-  //     disconnectFromDevice();
-  //     Alert.alert("Navigation", "Back arrow pressed!");
-  //   };
-
-  //   const unsubscribe = navigation.addListener("beforeRemove", handleBackPress);
-
-  //   // Clean up the event listener
-  //   return () => unsubscribe();
-  // }, [navigation]);
-
   useEffect(() => {
     if (!isFocused) {
       // Code to run when the screen is focused
@@ -216,7 +209,16 @@ const TabView = ({ navigation }) => {
           />
         ))}
       </View>
-      <View style={styles.contentContainer}>{tabs[activeTab].content}</View>
+      <View style={styles.contentContainer}>
+        {tabs[activeTab].label === "Test" && (
+          <TestTab
+            connectedDevice={connectedDevice}
+            navigation={navigation}
+            setActiveTab={setActiveTab}
+          />
+        )}
+        {tabs[activeTab].label !== "Test" && tabs[activeTab].content}
+      </View>
     </View>
   );
 };

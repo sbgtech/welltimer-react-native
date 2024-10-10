@@ -160,7 +160,7 @@ export default function Home({ navigation, route }) {
           // success to connect to device
           console.log("Connected to", device.name);
           // showing toast for successfully connected
-          navigation.navigate("DeviceSettings"); // navigate to device settings page
+          navigation.navigate("DeviceSettings", { initialTab: 0 }); // navigate to device settings page
         });
     } catch (error) {
       // error connecting to device

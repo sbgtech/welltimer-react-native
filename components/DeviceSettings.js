@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import TabView from "./tabs/TabView";
 
-const DeviceSettings = ({ navigation }) => {
+const DeviceSettings = ({ navigation, route }) => {
+  console.log("first", route.params?.initialTab);
+  const initialTab = route.params?.initialTab || 0;
+
+  useEffect(() => {
+    initialTab == 0;
+    console.log("wa");
+  }, [route.params?.initialTab]);
+
   return (
     <View style={styles.container}>
-      <TabView navigation={navigation} />
+      <TabView navigation={navigation} initialTab={initialTab} />
     </View>
   );
 };

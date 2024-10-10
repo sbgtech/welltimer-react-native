@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Alert } from "react-native";
+import { View, Text, TextInput, Alert, Dimensions } from "react-native";
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
 import Dropdown from "./blocs/Dropdown";
@@ -17,6 +17,7 @@ import Toast from "react-native-toast-message";
 
 const SettingsTab = (props) => {
   // declare initial states
+  const { height } = Dimensions.get("window");
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
@@ -57,22 +58,19 @@ const SettingsTab = (props) => {
 
   // handle change missrunMax value
   const handleChangeMissrunMax = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setMissrunMax("");
-        } else {
-          setMissrunMax(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setMissrunMax("");
+      } else {
+        setMissrunMax(validText);
       }
     } else {
       setMissrunMax("");
@@ -81,22 +79,19 @@ const SettingsTab = (props) => {
 
   // handle change wellDepth value
   const handleChangeWellDepth = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setWellDepth("");
-        } else {
-          setWellDepth(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setWellDepth("");
+      } else {
+        setWellDepth(validText);
       }
     } else {
       setWellDepth("");
@@ -105,22 +100,19 @@ const SettingsTab = (props) => {
 
   // handle change hiloHight value
   const handleChangeHiLoHigh = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setHiLoHigh("");
-        } else {
-          setHiLoHigh(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setHiLoHigh("");
+      } else {
+        setHiLoHigh(validText);
       }
     } else {
       setHiLoHigh("");
@@ -129,22 +121,19 @@ const SettingsTab = (props) => {
 
   // handle change hiloLow value
   const handleChangeHiLoLow = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setHiLoLow("");
-        } else {
-          setHiLoLow(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setHiLoLow("");
+      } else {
+        setHiLoLow(validText);
       }
     } else {
       setHiLoLow("");
@@ -153,24 +142,19 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMax value
   const handleChangeLPSensorMax = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-
-      // Ensure there is only one decimal point
-
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setLPSensorMax("");
-        } else {
-          setLPSensorMax(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setLPSensorMax("");
+      } else {
+        setLPSensorMax(validText);
       }
     } else {
       setLPSensorMax("");
@@ -179,24 +163,19 @@ const SettingsTab = (props) => {
 
   // handle change LPSensorMin value
   const handleChangeLPSensorMin = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-
-      // Ensure there is only one decimal point
-
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setLPSensorMin("");
-        } else {
-          setLPSensorMin(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setLPSensorMin("");
+      } else {
+        setLPSensorMin(validText);
       }
     } else {
       setLPSensorMin("");
@@ -205,7 +184,8 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMax value
   const handleChangeLPVoltageMax = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -213,9 +193,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -225,7 +209,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setLPVoltageMax(""); // Clear or reset the value
         } else {
           setLPVoltageMax(validText);
@@ -275,22 +264,19 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMax value
   const handleChangeCPSensorMax = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setCPSensorMax("");
-        } else {
-          setCPSensorMax(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setCPSensorMax("");
+      } else {
+        setCPSensorMax(validText);
       }
     } else {
       setCPSensorMax("");
@@ -299,22 +285,19 @@ const SettingsTab = (props) => {
 
   // handle change CPSensorMin value
   const handleChangeCPSensorMin = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setCPSensorMin("");
-        } else {
-          setCPSensorMin(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setCPSensorMin("");
+      } else {
+        setCPSensorMin(validText);
       }
     } else {
       setCPSensorMin("");
@@ -393,22 +376,19 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMax value
   const handleChangeTPSensorMax = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setTPSensorMax("");
-        } else {
-          setTPSensorMax(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setTPSensorMax("");
+      } else {
+        setTPSensorMax(validText);
       }
     } else {
       setTPSensorMax("");
@@ -417,22 +397,19 @@ const SettingsTab = (props) => {
 
   // handle change TPSensorMin value
   const handleChangeTPSensorMin = (text) => {
-    const MAX_VALUE = 9999;
     if (text) {
       const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-      // Ensure there is only one decimal point
-      const numericValue = parseFloat(validText);
-      // Check if the number is within the range
-      if (!isNaN(numericValue)) {
-        if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 9999");
-          setTPSensorMin("");
-        } else {
-          setTPSensorMin(validText);
-        }
-      } else {
-        // If the conversion failed, reset to empty or default value
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
         setTPSensorMin("");
+      } else {
+        setTPSensorMin(validText);
       }
     } else {
       setTPSensorMin("");
@@ -511,6 +488,15 @@ const SettingsTab = (props) => {
 
   // send array of prod method, missrun max, false arrivals and well depth values to device with their addresses
   const handleSendFirstBloc = async () => {
+    if (missrunMax === "" || wellDepth === "") {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields (Missrun max and Well depth) must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    }
     try {
       const arr = JSON.stringify([
         3,
@@ -547,40 +533,74 @@ const SettingsTab = (props) => {
 
   // send array of HiLo values to device
   const handleSendHiLo = async () => {
-    try {
-      const arr = JSON.stringify([
-        3,
-        122,
-        hiLoModeIndex,
-        123,
-        Number(hiLoHigh),
-        124,
-        Number(hiLoLow),
-      ]);
-      console.log(arr);
-      const buffer = Buffer.from(arr + "\n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
+    if (hiLoHigh === "" || hiLoLow === "") {
+      console.log(1);
       Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent successfully",
+        type: "error",
+        text1: "Error",
+        text2: "All fields (HiLo high and HiLo low) must be filled",
         visibilityTime: 3000,
       });
-      await fetchDataSettings();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
+      return; // Exit the function if validation fails
+    } else if (hiLoLow > hiLoHigh) {
+      console.log(2);
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "The max value must be more than min value",
+        visibilityTime: 3000,
+      });
+    } else {
+      console.log(3);
+      try {
+        const arr = JSON.stringify([
+          3,
+          122,
+          hiLoModeIndex,
+          123,
+          Number(hiLoHigh),
+          124,
+          Number(hiLoLow),
+        ]);
+        console.log(arr);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
     }
   };
 
   // send array of CP values to device
   const handleSendLP = async () => {
+    if (
+      LPSensorMax === "" ||
+      LPSensorMin === "" ||
+      LPVoltageMax === "" ||
+      LPVoltageMin === ""
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields (LP sensor and LP Voltage) must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    }
     try {
       const arr = JSON.stringify([
         3,
@@ -619,6 +639,20 @@ const SettingsTab = (props) => {
 
   // send array of CP values to device
   const handleSendCP = async () => {
+    if (
+      CPSensorMax === "" ||
+      CPSensorMin === "" ||
+      CPVoltageMax === "" ||
+      CPVoltageMin === ""
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields (CP sensor and CP Voltage) must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    }
     try {
       const arr = JSON.stringify([
         3,
@@ -657,6 +691,20 @@ const SettingsTab = (props) => {
 
   // send array of TP values to device
   const handleSendTP = async () => {
+    if (
+      TPSensorMax === "" ||
+      TPSensorMin === "" ||
+      TPVoltageMax === "" ||
+      TPVoltageMin === ""
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields (TP sensor and TP Voltage) must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    }
     try {
       const arr = JSON.stringify([
         3,
@@ -777,8 +825,10 @@ const SettingsTab = (props) => {
 
   return (
     <KeyboardAwareScrollView
-      extraScrollHeight={15} // Space above the keyboard
+      extraScrollHeight={height * 0.2} // Space above the keyboard
       keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      enableResetScrollToCoords={false}
     >
       <RefreshBtn onPress={() => onRefreshSettings()} />
       <Valve
@@ -805,7 +855,7 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={missrunMax.toString()}
             onChangeText={handleChangeMissrunMax}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>Detect false arrivals :</Text>
           <Dropdown
@@ -819,7 +869,7 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={wellDepth.toString()}
             onChangeText={handleChangeWellDepth}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -843,14 +893,14 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={hiLoHigh.toString()}
             onChangeText={handleChangeHiLoHigh}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
           <TextInput
             style={styles.inputSettings}
             value={hiLoLow.toString()}
             onChangeText={handleChangeHiLoLow}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <View style={styles.containerBtnText}>
             <ButtonUI
@@ -874,14 +924,14 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={LPSensorMax.toString()}
             onChangeText={handleChangeLPSensorMax}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={LPSensorMin.toString()}
             onChangeText={handleChangeLPSensorMin}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>LP voltage max (V) :</Text>
           <TextInput
@@ -919,14 +969,14 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={CPSensorMax.toString()}
             onChangeText={handleChangeCPSensorMax}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={CPSensorMin.toString()}
             onChangeText={handleChangeCPSensorMin}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>CP voltage max (V) :</Text>
           <TextInput
@@ -964,14 +1014,14 @@ const SettingsTab = (props) => {
             style={styles.inputSettings}
             value={TPSensorMax.toString()}
             onChangeText={handleChangeTPSensorMax}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
           <TextInput
             style={styles.inputSettings}
             value={TPSensorMin.toString()}
             onChangeText={handleChangeTPSensorMin}
-            keyboardType="numbers-and-punctuation"
+            keyboardType="numeric"
           />
           <Text style={styles.titleSettings}>TP voltage max (V) :</Text>
           <TextInput

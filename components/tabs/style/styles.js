@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width, height } = Dimensions.get("window");
-const marginBottomAndroid = height * 0.01; // Adjust 0.05 as needed for your layout
+const marginBottomAndroid = height * 0.09; // Adjust 0.05 as needed for your layout
 const marginBottomIOS = height * 0.01; // Adjust 0.05 as needed for your layout
 const scale = width / 450;
 

@@ -35,7 +35,6 @@ const TimerTab = (props) => {
 
   // Initial load, call TimerReceivedData function with the corresponding data of timers
   useEffect(() => {
-    console.log("first");
     // fetcha data if the device is connected
     if (props.connectedDevice) {
       const cleanup = fetchDataTimer();
@@ -68,14 +67,12 @@ const TimerTab = (props) => {
 
   return (
     <KeyboardAwareScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: "center",
-      }}
+      extraScrollHeight={135} // Space above the keyboard
       keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      enableResetScrollToCoords={false}
     >
-      <View style={[styles.container, styles.marginBottomContainer]}>
+      <View style={styles.container}>
         <RefreshBtn onPress={() => onRefreshTimer()} />
         <Timer
           connectedDevice={props.connectedDevice}
