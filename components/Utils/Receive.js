@@ -147,7 +147,6 @@ export class Receive {
           const str = Buffer.from(characteristic.value, "base64").toString(
             "utf-8"
           );
-          console.log(str);
           const firstIndexValue = str.charAt(0); // Getting the character at index 0
           const pageIndex = str.charAt(1); // Getting the character at index 0
           const lastIndexValue = str[str.length - 2]; // Accessing the last character
@@ -246,7 +245,6 @@ export class Receive {
             Number(pageIndex) == 3
           ) {
             const msg = JSON.parse(str);
-            console.log(msg);
             //
             setValveA(msg[1]);
             //
@@ -446,7 +444,6 @@ export class Receive {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      console.log("req sent : ", data);
     } catch (error) {
       console.log("Error to sent request for receiving data.");
     }

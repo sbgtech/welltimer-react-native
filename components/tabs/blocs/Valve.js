@@ -18,7 +18,6 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
   const handleSendValveValue = async (value) => {
     try {
       const arr = JSON.stringify([3, 1, Number(value)]);
-      console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,

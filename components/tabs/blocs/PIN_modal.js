@@ -36,7 +36,6 @@ const PIN_modal = ({
               onPress={() => {
                 setModalVisible(false);
                 setTimeout(() => {
-                  console.log(setActiveTab);
                   setActiveTab(0);
                   navigation.navigate("DeviceSettings", {
                     initialTab: 0,

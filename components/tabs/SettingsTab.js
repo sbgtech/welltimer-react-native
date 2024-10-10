@@ -509,7 +509,6 @@ const SettingsTab = (props) => {
         125,
         Number(wellDepth),
       ]);
-      console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
@@ -559,7 +558,6 @@ const SettingsTab = (props) => {
           124,
           Number(hiLoLow),
         ]);
-        console.log(arr);
         const buffer = Buffer.from(arr + "\n", "utf-8");
         await props.connectedDevice?.writeCharacteristicWithResponseForService(
           UART_SERVICE_UUID,
@@ -626,7 +624,6 @@ const SettingsTab = (props) => {
           117,
           Number(LPVoltageMin * 10),
         ]);
-        console.log(arr);
         const buffer = Buffer.from(arr + "\n", "utf-8");
         await props.connectedDevice?.writeCharacteristicWithResponseForService(
           UART_SERVICE_UUID,
@@ -693,7 +690,6 @@ const SettingsTab = (props) => {
           119,
           Number(CPVoltageMin * 10),
         ]);
-        console.log(arr);
         const buffer = Buffer.from(arr + "\n", "utf-8");
         await props.connectedDevice?.writeCharacteristicWithResponseForService(
           UART_SERVICE_UUID,
@@ -760,7 +756,6 @@ const SettingsTab = (props) => {
           121,
           Number(TPVoltageMin * 10),
         ]);
-        console.log(arr);
         const buffer = Buffer.from(arr + "\n", "utf-8");
         await props.connectedDevice?.writeCharacteristicWithResponseForService(
           UART_SERVICE_UUID,

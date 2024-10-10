@@ -11,7 +11,6 @@ const Dropdown = (props) => {
         data={props.list}
         defaultValueByIndex={props.selectedIndex}
         onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
           props.setSelectedIndex(index);
         }}
         renderButton={(selectedItem, isOpened) => {

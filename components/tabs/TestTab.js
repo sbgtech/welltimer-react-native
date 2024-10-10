@@ -58,7 +58,6 @@ const TestTab = (props) => {
   // set to message state the value in the input text
   const onMessageChanged = (e) => {
     setMessage(e);
-    console.log(e);
   };
 
   // function for sending data only for testing mode
@@ -249,13 +248,6 @@ const TestTab = (props) => {
               height: 200,
             }}
             source={require("../../assets/pin.png")}
-          />
-          <ButtonUI
-            onPress={() =>
-              navigation.navigate("DeviceSettings", { initialTab: 0 })
-            }
-            title="Go to Device Settings"
-            btnStyle={styles.btnSendText}
           />
         </View>
       )}

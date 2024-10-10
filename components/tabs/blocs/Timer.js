@@ -71,7 +71,6 @@ const Timer = ({
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
       const arr = JSON.stringify([2, address, totalSeconds]);
-      console.log(arr);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
