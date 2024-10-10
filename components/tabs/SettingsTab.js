@@ -534,24 +534,21 @@ const SettingsTab = (props) => {
   // send array of HiLo values to device
   const handleSendHiLo = async () => {
     if (hiLoHigh === "" || hiLoLow === "") {
-      console.log(1);
       Toast.show({
         type: "error",
         text1: "Error",
         text2: "All fields (HiLo high and HiLo low) must be filled",
-        visibilityTime: 3000,
+        visibilityTime: 4000,
       });
       return; // Exit the function if validation fails
     } else if (hiLoLow > hiLoHigh) {
-      console.log(2);
       Toast.show({
         type: "error",
         text1: "Warning",
-        text2: "The max value must be more than min value",
-        visibilityTime: 3000,
+        text2: "The HiLo high value must be more than HiLo low value",
+        visibilityTime: 4000,
       });
     } else {
-      console.log(3);
       try {
         const arr = JSON.stringify([
           3,
@@ -597,43 +594,58 @@ const SettingsTab = (props) => {
         type: "error",
         text1: "Error",
         text2: "All fields (LP sensor and LP Voltage) must be filled",
-        visibilityTime: 3000,
+        visibilityTime: 4000,
       });
       return; // Exit the function if validation fails
-    }
-    try {
-      const arr = JSON.stringify([
-        3,
-        10,
-        LPTypeIndex,
-        101,
-        Number(LPSensorMax),
-        102,
-        Number(LPSensorMin),
-        116,
-        Number(LPVoltageMax * 10),
-        117,
-        Number(LPVoltageMin * 10),
-      ]);
-      console.log(arr);
-      const buffer = Buffer.from(arr + "\n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
+    } else if (LPSensorMin > LPSensorMax) {
       Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent successfully",
-        visibilityTime: 3000,
+        type: "error",
+        text1: "Warning",
+        text2: "The LP Sensor max must be more than LP Sensor min",
+        visibilityTime: 4000,
       });
-      await fetchDataSettings();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
+    } else if (LPVoltageMin > LPVoltageMax) {
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "The LP Voltage max must be more than LP Voltage min",
+        visibilityTime: 4000,
+      });
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          10,
+          LPTypeIndex,
+          101,
+          Number(LPSensorMax),
+          102,
+          Number(LPSensorMin),
+          116,
+          Number(LPVoltageMax * 10),
+          117,
+          Number(LPVoltageMin * 10),
+        ]);
+        console.log(arr);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
     }
   };
 
@@ -652,40 +664,55 @@ const SettingsTab = (props) => {
         visibilityTime: 3000,
       });
       return; // Exit the function if validation fails
-    }
-    try {
-      const arr = JSON.stringify([
-        3,
-        103,
-        CPTypeIndex,
-        104,
-        Number(CPSensorMax),
-        105,
-        Number(CPSensorMin),
-        118,
-        Number(CPVoltageMax * 10),
-        119,
-        Number(CPVoltageMin * 10),
-      ]);
-      console.log(arr);
-      const buffer = Buffer.from(arr + "\n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
+    } else if (CPSensorMin > CPSensorMax) {
       Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent successfully",
-        visibilityTime: 3000,
+        type: "error",
+        text1: "Warning",
+        text2: "The CP Sensor max must be more than CP Sensor min",
+        visibilityTime: 4000,
       });
-      await fetchDataSettings();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
+    } else if (CPVoltageMin > CPVoltageMax) {
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "The CP Voltage max must be more than CP Voltage min",
+        visibilityTime: 4000,
+      });
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          103,
+          CPTypeIndex,
+          104,
+          Number(CPSensorMax),
+          105,
+          Number(CPSensorMin),
+          118,
+          Number(CPVoltageMax * 10),
+          119,
+          Number(CPVoltageMin * 10),
+        ]);
+        console.log(arr);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
     }
   };
 
@@ -704,40 +731,55 @@ const SettingsTab = (props) => {
         visibilityTime: 3000,
       });
       return; // Exit the function if validation fails
-    }
-    try {
-      const arr = JSON.stringify([
-        3,
-        106,
-        TPTypeIndex,
-        107,
-        Number(TPSensorMax),
-        108,
-        Number(TPSensorMin),
-        120,
-        Number(TPVoltageMax * 10),
-        121,
-        Number(TPVoltageMin * 10),
-      ]);
-      console.log(arr);
-      const buffer = Buffer.from(arr + "\n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
-        UART_SERVICE_UUID,
-        UART_TX_CHARACTERISTIC_UUID,
-        buffer.toString("base64")
-      );
+    } else if (TPSensorMin > TPSensorMax) {
       Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Data sent successfully",
-        visibilityTime: 3000,
+        type: "error",
+        text1: "Warning",
+        text2: "The TP Sensor max must be more than TP Sensor min",
+        visibilityTime: 4000,
       });
-      await fetchDataSettings();
-    } catch (error) {
-      console.log(
-        "Error with writeCharacteristicWithResponseForService :",
-        error
-      );
+    } else if (TPVoltageMin > TPVoltageMax) {
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "The TP Voltage max must be more than TP Voltage min",
+        visibilityTime: 4000,
+      });
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          106,
+          TPTypeIndex,
+          107,
+          Number(TPSensorMax),
+          108,
+          Number(TPSensorMin),
+          120,
+          Number(TPVoltageMax * 10),
+          121,
+          Number(TPVoltageMin * 10),
+        ]);
+        console.log(arr);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
     }
   };
 
