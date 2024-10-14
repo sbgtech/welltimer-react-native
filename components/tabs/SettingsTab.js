@@ -229,7 +229,8 @@ const SettingsTab = (props) => {
 
   // handle change LPVoltageMin value
   const handleChangeLPVoltageMin = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -237,9 +238,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -249,7 +254,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setLPVoltageMin(""); // Clear or reset the value
         } else {
           setLPVoltageMin(validText);
@@ -306,7 +316,8 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMax value
   const handleChangeCPVoltageMax = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -314,9 +325,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -326,7 +341,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setCPVoltageMax(""); // Clear or reset the value
         } else {
           setCPVoltageMax(validText);
@@ -341,7 +361,8 @@ const SettingsTab = (props) => {
 
   // handle change CPVoltageMin value
   const handleChangeCPVoltageMin = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -349,9 +370,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -361,7 +386,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setCPVoltageMin(""); // Clear or reset the value
         } else {
           setCPVoltageMin(validText);
@@ -418,7 +448,8 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMax value
   const handleChangeTPVoltageMax = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -426,9 +457,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -438,7 +473,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setTPVoltageMax(""); // Clear or reset the value
         } else {
           setTPVoltageMax(validText);
@@ -453,7 +493,8 @@ const SettingsTab = (props) => {
 
   // handle change TPVoltageMin value
   const handleChangeTPVoltageMin = (text) => {
-    const MAX_VALUE = 10;
+    const MAX_VALUE = 9.9;
+
     if (text) {
       // Remove all non-numeric characters except decimal points
       let validText = text.replace(/[^0-9.]/g, "");
@@ -461,9 +502,13 @@ const SettingsTab = (props) => {
       // Find the position of the first decimal point
       const decimalIndex = validText.indexOf(".");
 
-      // If there's a decimal point, truncate the string to one decimal place
+      // Allow only one digit before and one digit after the decimal point
       if (decimalIndex !== -1) {
-        validText = validText.substring(0, decimalIndex + 2); // Keep only one digit after the decimal point
+        // Keep one digit before the decimal and one after
+        validText = validText.substring(0, decimalIndex + 2);
+      } else {
+        // Ensure only one digit before the decimal point
+        validText = validText.substring(0, 1);
       }
 
       // Remove any additional decimal points
@@ -473,7 +518,12 @@ const SettingsTab = (props) => {
 
       if (!isNaN(numericValue)) {
         if (numericValue > MAX_VALUE) {
-          Alert.alert("Warning", "The max value must be 10");
+          Toast.show({
+            type: "error",
+            text1: "Warning",
+            text2: "The max value must be 9.9",
+            visibilityTime: 3000,
+          });
           setTPVoltageMin(""); // Clear or reset the value
         } else {
           setTPVoltageMin(validText);
