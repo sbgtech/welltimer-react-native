@@ -449,6 +449,29 @@ export class Receive {
     }
   }
 
+  // function for sending device id and phone type (android or ios)
+  static async sendIden(connectedDevice, id) {
+    try {
+      let data = "";
+      if (Platform.OS === "android") {
+        console.log("android");
+        data = `BLEID:${id},TYPE:ANDROID \n`;
+      } else {
+        console.log("ios");
+        data = `BLEID:${id},TYPE:IOS \n`;
+      }
+      console.log(data);
+      const buffer = Buffer.from(data, "utf-8");
+      await connectedDevice?.writeCharacteristicWithResponseForService(
+        UART_SERVICE_UUID,
+        UART_TX_CHARACTERISTIC_UUID,
+        buffer.toString("base64")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // function listen to receive "ACK" from device to stop loading and show "successfully sent", else show "Error to sent data" and the time given for waiting response to stop loading is 20 seconds.
   // static async ACKReceivedData(device, setters) {
   //   const { setLoading, setTitle } = setters;

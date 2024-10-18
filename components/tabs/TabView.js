@@ -72,6 +72,7 @@ const TabView = ({ navigation, initialTab }) => {
         });
         setConnectedDevice(connectedDevices[0]);
         Receive.sendReqToGetData(connectedDevice, activeTab);
+        Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
       } else {
         Alert.alert(
           "Device Not Allowed",
