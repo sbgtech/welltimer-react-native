@@ -109,7 +109,7 @@ export default function Home({ navigation, route }) {
   useEffect(() => {
     // Check if parameters exist and update state accordingly
     if (route.params && route.params.scanning) {
-      setScanning(true);
+      setScanning(false);
       scanForDevices();
     }
   }, [route.params]); // Depend on route.params

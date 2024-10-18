@@ -71,8 +71,10 @@ const TabView = ({ navigation, initialTab }) => {
           visibilityTime: 3000,
         });
         setConnectedDevice(connectedDevices[0]);
-        Receive.sendReqToGetData(connectedDevice, activeTab);
-        Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
+        await Receive.sendReqToGetData(connectedDevice, activeTab);
+        setTimeout(async () => {
+          await Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
+        }, 500);
       } else {
         Alert.alert(
           "Device Not Allowed",
@@ -83,7 +85,7 @@ const TabView = ({ navigation, initialTab }) => {
               onPress: () => {
                 navigation.removeListener(),
                   navigation.navigate("Home", {
-                    scanning: true,
+                    scanning: false,
                   });
               },
               style: "cancel",
@@ -93,7 +95,7 @@ const TabView = ({ navigation, initialTab }) => {
               onPress: () => {
                 navigation.removeListener(),
                   navigation.navigate("Home", {
-                    scanning: true,
+                    scanning: false,
                   });
               },
             },
@@ -118,7 +120,7 @@ const TabView = ({ navigation, initialTab }) => {
       );
       setConnectedDevice(null); // Optionally reset device state
       navigation.removeListener();
-      navigation.navigate("Home", { scanning: true });
+      navigation.navigate("Home", { scanning: false });
     };
 
     // If device is connected, listen for disconnection events
@@ -153,7 +155,7 @@ const TabView = ({ navigation, initialTab }) => {
         console.log("Disconnected successfully");
         setConnectedDevice(null);
         navigation.removeListener();
-        navigation.navigate("Home", { scanning: true });
+        navigation.navigate("Home", { scanning: false });
       } else {
         console.log("No device connected");
       }

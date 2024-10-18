@@ -460,13 +460,14 @@ export class Receive {
         console.log("ios");
         data = `BLEID:${id},TYPE:IOS \n`;
       }
-      console.log(data);
       const buffer = Buffer.from(data, "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
+      console.log("ID and TYPE sent successfully!");
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
