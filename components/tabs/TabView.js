@@ -19,6 +19,7 @@ const bleManager = new BleManager();
 const TabView = ({ navigation, initialTab }) => {
   // set the connected welltimer to this variable
   const [connectedDevice, setConnectedDevice] = useState(null);
+  const [wellName, setWellName] = useState(null);
   const isFocused = useIsFocused();
   // the existed pages for config welltimer after connected to it
   const tabs = [
@@ -75,6 +76,7 @@ const TabView = ({ navigation, initialTab }) => {
         setTimeout(async () => {
           await Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
         }, 500);
+        await Receive.ReceiveWellName(connectedDevices[0], setWellName);
       } else {
         Alert.alert(
           "Device Not Allowed",
@@ -185,12 +187,14 @@ const TabView = ({ navigation, initialTab }) => {
     <View style={styles.container}>
       <View style={styles.deviceBloc}>
         <View>
-          <Text style={styles.deviceTitle}>Connected Devices:</Text>
+          <Text style={styles.wellName}>{wellName}</Text>
         </View>
         {connectedDevice ? (
           <View key={connectedDevice.id}>
-            <Text style={styles.deviceInfo}>Name: {connectedDevice.name}</Text>
-            <Text style={styles.deviceInfo}>ID: {connectedDevice.id}</Text>
+            <Text style={styles.deviceInfo}>
+              Device : {connectedDevice.name}
+            </Text>
+            <Text style={styles.deviceInfo}>ID : {connectedDevice.id}</Text>
             <ButtonUI
               onPress={() => handleDisconnect()}
               title={"Disconnect"}

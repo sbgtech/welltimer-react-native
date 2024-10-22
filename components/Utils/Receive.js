@@ -7,6 +7,33 @@ import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
 
 export class Receive {
+  // function listen to receive wellName
+  static async ReceiveWellName(device, setWellName) {
+    // Monitor characteristic for service
+    const subscription = device?.monitorCharacteristicForService(
+      UART_SERVICE_UUID,
+      UART_RX_CHARACTERISTIC_UUID,
+      (error, characteristic) => {
+        if (error) {
+          console.log("Characteristic monitoring error:", error);
+          return;
+        }
+        // Check if data is received
+        const str = Buffer.from(characteristic.value, "base64").toString(
+          "utf-8"
+        );
+        if (str.includes("wellname")) {
+          let result = str.split(" ").slice(1).join(" ").trim();
+          setWellName(result);
+        }
+      }
+    );
+    // Return a function to clean up the subscription
+    return () => {
+      subscription.remove();
+    };
+  }
+
   // function listen to receive data for well status page
   static async WellStatusReceivedData(device, setters) {
     const {
@@ -454,10 +481,8 @@ export class Receive {
     try {
       let data = "";
       if (Platform.OS === "android") {
-        console.log("android");
         data = `BLEID:${id},TYPE:ANDROID \n`;
       } else {
-        console.log("ios");
         data = `BLEID:${id},TYPE:IOS \n`;
       }
       const buffer = Buffer.from(data, "utf-8");
@@ -466,7 +491,6 @@ export class Receive {
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
       );
-      console.log("ID and TYPE sent successfully!");
       console.log(data);
     } catch (error) {
       console.log(error);

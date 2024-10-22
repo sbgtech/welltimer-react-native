@@ -128,7 +128,13 @@ export const styles = StyleSheet.create({
     marginRight: 10 * scale,
     marginTop: 6 * scale,
   },
-  deviceTitle: { color: "#7d7d7d", fontWeight: "bold", fontSize: 16 * scale },
+  wellName: {
+    color: "#7d7d7d",
+    fontWeight: "bold",
+    fontSize: 20 * scale,
+    textAlign: "center",
+    marginBottom: 6 * scale,
+  },
   deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
   itemsList: {
     backgroundColor: "#fff",
