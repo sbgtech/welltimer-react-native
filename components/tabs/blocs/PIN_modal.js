@@ -46,7 +46,7 @@ const PIN_modal = ({
               <AntDesign
                 name="closesquare"
                 size={28}
-                color="#35374B"
+                color="#0055a4"
                 style={styles.closeIcon}
               />
             </TouchableOpacity>

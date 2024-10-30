@@ -9,7 +9,7 @@ const Loading = (props) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.waitingMsg}>{props.title}</Text>
-            <ActivityIndicator color={"#35374B"} size={"large"} />
+            <ActivityIndicator color={"#000"} size={"large"} />
           </View>
         </View>
       </Modal>

@@ -208,7 +208,7 @@ export default function Home({ navigation, route }) {
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.HomeTitle}>Available devices :</Text>
         <Text style={styles.HomeCountDevices}>({devices.length})</Text>
-        {scanning && <ActivityIndicator size="small" color="#35374B" />}
+        {scanning && <ActivityIndicator size="small" color="#0055a4" />}
       </View>
       <FlatList
         contentContainerStyle={{

@@ -187,8 +187,13 @@ const TabView = ({ navigation, initialTab }) => {
     <View style={styles.container}>
       <View style={styles.deviceBloc}>
         <View>
-          <Text style={styles.wellName}>{wellName}</Text>
+          {wellName ? (
+            <Text style={styles.wellName}>{wellName}</Text>
+          ) : (
+            <Text style={styles.wellName}>RECON device</Text>
+          )}
         </View>
+
         {connectedDevice ? (
           <View key={connectedDevice.id}>
             <Text style={styles.deviceInfo}>

@@ -57,11 +57,11 @@ export const styles = StyleSheet.create({
     paddingVertical: 14 * scale,
     borderBottomWidth: 4 * scale,
     borderBottomColor: "transparent",
-    backgroundColor: "#35374B",
+    backgroundColor: "#0055a4",
   },
   activeTab: {
-    borderBottomColor: "#fff", // Active tab indicator color
-    backgroundColor: "#43455E",
+    borderBottomColor: "#d7c300", // Active tab indicator color
+    backgroundColor: "#0a4b87",
   },
   tabText: {
     fontSize: 14 * scale,
@@ -129,11 +129,11 @@ export const styles = StyleSheet.create({
     marginTop: 6 * scale,
   },
   wellName: {
-    color: "#7d7d7d",
+    color: "#000",
     fontWeight: "bold",
     fontSize: 20 * scale,
     textAlign: "center",
-    marginBottom: 6 * scale,
+    marginBottom: 2 * scale,
   },
   deviceInfo: { fontSize: 14 * scale, color: "#7d7d7d" },
   itemsList: {
@@ -192,7 +192,7 @@ export const styles = StyleSheet.create({
   emptyText: {
     fontSize: 22 * scale,
     fontWeight: "bold",
-    color: "#35374B",
+    color: "#0055a4",
   },
   emptyTextHome: {
     fontSize: 20 * scale,
@@ -205,7 +205,7 @@ export const styles = StyleSheet.create({
   emptyPINText: {
     fontSize: 22 * scale,
     fontWeight: "bold",
-    color: "#35374B",
+    color: "#0055a4",
   },
   // table.js
   tableContainer: {
@@ -224,7 +224,7 @@ export const styles = StyleSheet.create({
     fontSize: 16 * scale,
   },
   tableHeader: {
-    backgroundColor: "#35374B",
+    backgroundColor: "#0055a4",
   },
   tableHeaderText: {
     fontWeight: "bold",
@@ -238,7 +238,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 4 * scale,
-    backgroundColor: "#35374B",
+    backgroundColor: "#0055a4",
   },
   buttonTextStyle: {
     color: "#fff",
@@ -260,7 +260,7 @@ export const styles = StyleSheet.create({
   waitingMsg: {
     fontSize: 20 * scale,
     fontWeight: "bold",
-    color: "#35374B",
+    color: "#000",
   },
   closeButton: {
     position: "absolute",
