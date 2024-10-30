@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Welltimer",
-    "slug": "expo-bare",
+    "name": "RECON Mobile",
+    "slug": "recon-mobile",
     "version": "1.0.0",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
@@ -11,18 +11,18 @@
       "backgroundColor": "#ffffff"
     },
     "android": {
-      "package": "com.sbgdev.expobare",
+      "package": "com.reconmobile",
       "permissions": [
         "android.permission.BLUETOOTH",
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.BLUETOOTH_CONNECT"
       ]
     },
-    "label": "WELLTIMER",
+    "label": "RECON Mobile",
     "ios": {
-      "bundleIdentifier": "com.sbgdev.expobare",
+      "bundleIdentifier": "com.reconmobile",
       "infoPlist": {
-        "CFBundleName": "WELLTIMER"
+        "CFBundleName": "RECONmobile"
       }
     },
     "plugins": [
@@ -30,7 +30,10 @@
         "@config-plugins/react-native-ble-plx",
         {
           "isBackgroundEnabled": true,
-          "modes": ["peripheral", "central"],
+          "modes": [
+            "peripheral",
+            "central"
+          ],
           "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
         }
       ],
@@ -38,7 +41,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "ea8faba7-1479-4e9d-ac7a-16f6f40b16fa"
+        "projectId": "10bf1946-a8ef-404c-a13d-2678e6b65f31"
       }
     }
   }
