@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput } from "react-native";
+import { Text, View, TextInput, useWindowDimensions } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "../style/styles";
@@ -17,6 +17,7 @@ const Timer = ({
   address,
   fetchDataTimer,
 }) => {
+  const { width } = useWindowDimensions();
   const [hourValue, setHourValue] = useState("");
   const [minValue, setMinValue] = useState("");
   const [secValue, setSecValue] = useState("");
@@ -105,7 +106,7 @@ const Timer = ({
   }, [totalSec]);
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapper(width)}>
       <View
         style={{
           flexDirection: "row",
@@ -118,38 +119,42 @@ const Timer = ({
 
       <View style={styles.rangeWrapper}>
         <View style={styles.containerRange}>
-          <TextInput
-            style={styles.inputTimer}
-            keyboardType="numeric"
-            value={hourValue}
-            onChangeText={handleChangeHour}
-            maxLength={2}
-            selectTextOnFocus={true}
-          />
-          <Text style={styles.dotTimer}>:</Text>
-          <TextInput
-            style={styles.inputTimer}
-            keyboardType="numeric"
-            value={minValue}
-            onChangeText={handleChangeMin}
-            maxLength={2}
-            selectTextOnFocus={true}
-          />
-          <Text style={styles.dotTimer}>:</Text>
-          <TextInput
-            style={styles.inputTimer}
-            keyboardType="numeric"
-            value={secValue}
-            onChangeText={handleChangeSec}
-            maxLength={2}
-            selectTextOnFocus={true}
-          />
-          <ButtonUI
-            onPress={() => handleSendTimer()}
-            title={"Send"}
-            btnStyle={styles.btnSendText}
-            txtStyle={styles.TextSendStyle}
-          />
+          <View style={styles.timersInput}>
+            <TextInput
+              style={styles.inputTimer}
+              keyboardType="numeric"
+              value={hourValue}
+              onChangeText={handleChangeHour}
+              maxLength={2}
+              selectTextOnFocus={true}
+            />
+            <Text style={styles.dotTimer}>:</Text>
+            <TextInput
+              style={styles.inputTimer}
+              keyboardType="numeric"
+              value={minValue}
+              onChangeText={handleChangeMin}
+              maxLength={2}
+              selectTextOnFocus={true}
+            />
+            <Text style={styles.dotTimer}>:</Text>
+            <TextInput
+              style={styles.inputTimer}
+              keyboardType="numeric"
+              value={secValue}
+              onChangeText={handleChangeSec}
+              maxLength={2}
+              selectTextOnFocus={true}
+            />
+          </View>
+          <View style={styles.TimersbtnContainer}>
+            <ButtonUI
+              onPress={() => handleSendTimer()}
+              title={"Send"}
+              btnStyle={styles.btnSendText}
+              txtStyle={styles.TextSendStyle}
+            />
+          </View>
         </View>
       </View>
     </View>

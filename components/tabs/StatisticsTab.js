@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, Text, TextInput } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  useWindowDimensions,
+} from "react-native";
 import { styles } from "./style/styles";
 import { Receive } from "../Utils/Receive";
 import ButtonUI from "../ButtonUI";
@@ -13,6 +19,7 @@ import {
 import Toast from "react-native-toast-message";
 
 const StatisticsTab = (props) => {
+  const { width } = useWindowDimensions();
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
@@ -159,90 +166,92 @@ const StatisticsTab = (props) => {
   return (
     <ScrollView>
       <RefreshBtn onPress={() => onRefreshStatistic()} />
-      <View style={[styles.wrapper, styles.marginBottomContainer]}>
+      <View style={[styles.statisticWrapper, styles.marginBottomContainer]}>
         <Text style={styles.valveTitle}>Arrival statistics</Text>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>Arrivals today :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Arrivals week :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Arrivals total :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={arrivalsTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetArrivals()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+        <View style={styles.statisticSectionContainer(width)}>
+          <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
+            <Text style={styles.titleSettings}>Arrivals today :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={arrivalsToday.toString()}
+              editable={false}
             />
+            <Text style={styles.titleSettings}>Arrivals week :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={arrivalsWeek.toString()}
+              editable={false}
+            />
+            <Text style={styles.titleSettings}>Arrivals total :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={arrivalsTotal.toString()}
+              editable={false}
+            />
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleResetArrivals()}
+                title={"Reset"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>Missrun today :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Missrun week :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>Missrun total :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={missrunTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetMissrun()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+          <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
+            <Text style={styles.titleSettings}>Missrun today :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={missrunToday.toString()}
+              editable={false}
             />
+            <Text style={styles.titleSettings}>Missrun week :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={missrunWeek.toString()}
+              editable={false}
+            />
+            <Text style={styles.titleSettings}>Missrun total :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={missrunTotal.toString()}
+              editable={false}
+            />
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleResetMissrun()}
+                title={"Reset"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>OnTime today (sec) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeToday.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>OnTime week (hour) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeWeek.toString()}
-            editable={false}
-          />
-          <Text style={styles.titleSettings}>OnTime total (hour) :</Text>
-          <TextInput
-            style={styles.inputSettingsDisabled}
-            value={onTimeTotal.toString()}
-            editable={false}
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleResetOnTime()}
-              title={"Reset"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+          <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
+            <Text style={styles.titleSettings}>OnTime today (sec) :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={onTimeToday.toString()}
+              editable={false}
             />
+            <Text style={styles.titleSettings}>OnTime week (hour) :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={onTimeWeek.toString()}
+              editable={false}
+            />
+            <Text style={styles.titleSettings}>OnTime total (hour) :</Text>
+            <TextInput
+              style={styles.inputSettingsDisabled}
+              value={onTimeTotal.toString()}
+              editable={false}
+            />
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleResetOnTime()}
+                title={"Reset"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
         </View>
       </View>

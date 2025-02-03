@@ -7,7 +7,7 @@ import {
   FlatList,
   Image,
   Alert,
-  Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import Animated, {
   useAnimatedKeyboard,
@@ -44,8 +44,9 @@ const TestTab = (props) => {
   // initialize an array of sent and received data
   const [dataArray, setDataArray] = useState([]);
   // get auto width of used device
-  const { width } = Dimensions.get("window");
-  const scale = width / 450;
+  const { width } = useWindowDimensions();
+  const scale =
+    width < 600 ? width / 420 : width > 850 ? width / 900 : width / 500;
 
   // used this variable for the color of the screen (dark mode or light mode, default is light)
   const colorScheme = useColorScheme();
@@ -106,7 +107,6 @@ const TestTab = (props) => {
   }, []);
 
   const handleSubmitPIN = () => {
-    // Replace '7707' with your desired PIN
     if (pin === "7707") {
       setIsAuthenticated(true);
       setModalVisible(false);
@@ -220,7 +220,7 @@ const TestTab = (props) => {
             ListEmptyComponent={handleEmpty}
             keyExtractor={(item, index) => index.toString()}
           />
-          <View style={styles.testContainer}>
+          <View style={styles.testContainer(width)}>
             <TextInput
               style={styles.testInput}
               value={message}
@@ -229,7 +229,7 @@ const TestTab = (props) => {
             />
             <ButtonUI
               onPress={async () => await onSendMessageSubmit()}
-              title={<Ionicons name="send" size={25 * scale} color="white" />}
+              title={<Ionicons name="send" size={20 * scale} color="white" />}
               btnStyle={styles.btnSend}
               txtStyle={styles.TextSendStyle}
               loading={false}

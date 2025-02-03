@@ -12,14 +12,12 @@ import ButtonUI from "../../ButtonUI";
 import { styles } from "../style/styles";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const PIN_modal = ({
+const Login_modal = ({
   modalVisible,
   setModalVisible,
   pin,
   setPin,
   handleSubmitPIN,
-  navigation,
-  setActiveTab,
 }) => {
   return (
     <Modal
@@ -35,12 +33,6 @@ const PIN_modal = ({
               style={styles.closeIconContainer}
               onPress={() => {
                 setModalVisible(false);
-                setTimeout(() => {
-                  setActiveTab(0);
-                  navigation.navigate("DeviceSettings", {
-                    initialTab: 0,
-                  });
-                }, 300);
               }}
             >
               <AntDesign
@@ -74,4 +66,4 @@ const PIN_modal = ({
   );
 };
 
-export default PIN_modal;
+export default Login_modal;

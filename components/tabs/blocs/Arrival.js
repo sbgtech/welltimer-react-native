@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Text, View, ScrollView } from "react-native";
+import React from "react";
+import { Text, View, ScrollView, useWindowDimensions } from "react-native";
 import { styles } from "../style/styles";
 import { Receive } from "../../Utils/Receive";
 
 const Arrival = ({ arrivals }) => {
+  const { width } = useWindowDimensions();
   const formattedTimeArrivals = (value) => {
     if (Number(value) == 65535) {
       return "FAIL";
@@ -14,19 +15,21 @@ const Arrival = ({ arrivals }) => {
     }
   };
   return (
-    <ScrollView style={styles.arrivalWrapper} nestedScrollEnabled={true}>
-      {arrivals.map((data, index) => {
-        // const { formattedHours, formattedMinutes, formattedSeconds } =
-        //   formattedTimeArrivals(data.value);
-        return (
-          <View key={index} style={styles.arrivalItems}>
-            <Text style={styles.arrivalName}>{data.name}</Text>
-            <Text style={styles.arrivalValue}>
-              {formattedTimeArrivals(data.value)}
-            </Text>
-          </View>
-        );
-      })}
+    <ScrollView style={styles.arrivalWrapper(width)} nestedScrollEnabled={true}>
+      <View style={styles.arrivalItemsContainer(width)}>
+        {arrivals.map((data, index) => {
+          // const { formattedHours, formattedMinutes, formattedSeconds } =
+          //   formattedTimeArrivals(data.value);
+          return (
+            <View key={index} style={styles.arrivalItems(width)}>
+              <Text style={styles.arrivalName}>{data.name}</Text>
+              <Text style={styles.arrivalValue}>
+                {formattedTimeArrivals(data.value)}
+              </Text>
+            </View>
+          );
+        })}
+      </View>
     </ScrollView>
   );
 };

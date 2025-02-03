@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { styles } from "../style/styles";
 
 const Table = ({ header, data }) => {
+  const { width } = useWindowDimensions();
   return (
     <View style={styles.tableContainer}>
       {/* Table Header */}
@@ -15,14 +16,16 @@ const Table = ({ header, data }) => {
       </View>
 
       {/* Table Data */}
-      {data.map((rowData, index) => (
-        <View key={index} style={styles.tableRow}>
-          <Text style={[styles.tableCell, { fontWeight: "bold" }]}>
-            {rowData.column1}
-          </Text>
-          <Text style={styles.tableCell}>{rowData.column2}</Text>
-        </View>
-      ))}
+      <View style={styles.dataTableContainer(width)}>
+        {data.map((rowData, index) => (
+          <View key={index} style={styles.tableRow(width)}>
+            <Text style={[styles.tableCell, { fontWeight: "bold" }]}>
+              {rowData.column1}
+            </Text>
+            <Text style={styles.tableCell}>{rowData.column2}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };

@@ -13,6 +13,7 @@ import { BleManager } from "react-native-ble-plx";
 import ButtonUI from "./ButtonUI";
 import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
+import Login_modal from "./tabs/blocs/Login_modal";
 
 // create new instance for the BleManager module
 const bleManager = new BleManager();
@@ -28,6 +29,21 @@ export default function Home({ navigation, route }) {
   const discoveredDevices = new Set();
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [pin, setPin] = useState("");
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // const handleSubmitPIN = async () => {
+  //   if (pin === "7707") {
+  //     setIsAuthenticated(true);
+  //     setModalVisible(false);
+  //     await connectToDevice();
+  //     console.log("Successfully logged in");
+  //   } else {
+  //     Alert.alert("Incorrect PIN", "Please try again.");
+  //     setPin("");
+  //   }
+  // };
 
   // Request Bluetooth permissions
   // Ask user when he open the app to allow and activate position and bluetooth
@@ -147,8 +163,15 @@ export default function Home({ navigation, route }) {
     }
   };
 
+  // function to display the modal after clicking connect
+  // const displayLoginModal = async () => {
+  //   setModalVisible(true);
+  // };
   // function allow user to connect to device
-  const connectToDevice = async (selectedDevice) => {
+  const connectToDevice = async () => {
+    // if (isAuthenticated) {
+    // navigation.navigate("DeviceSettings", { initialTab: 0 });
+    // }
     if (!selectedDevice) return; // if not exist any device selected
     try {
       setIsButtonDisabled(true); // Disable button before connecting
@@ -201,6 +224,9 @@ export default function Home({ navigation, route }) {
         onPress={() => {
           setScanning(!scanning);
         }}
+        // onPress={() => {
+        //   connectToDevice();
+        // }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
         btnStyle={styles.btnSendText}
         txtStyle={styles.TextSendStyle}
@@ -221,6 +247,13 @@ export default function Home({ navigation, route }) {
         onRefresh={scanForDevices}
         ListEmptyComponent={handleEmpty}
       />
+      {/* <Login_modal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        pin={pin}
+        setPin={setPin}
+        handleSubmitPIN={handleSubmitPIN}
+      /> */}
     </View>
   );
 }

@@ -14,7 +14,7 @@ export default function ButtonUI(props) {
           },
           styles.buttonStyle,
           btnStyle,
-          disabled && styles.disabledButton, // Add a style for disabled state
+          disabled, // Add a style for disabled state
         ]}
         onPress={disabled ? null : onPress}
         disabled={disabled}

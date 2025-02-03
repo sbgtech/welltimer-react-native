@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Dimensions } from "react-native";
+import { Text, View, useWindowDimensions } from "react-native";
 import Toggle from "react-native-toggle-element";
 import { styles } from "../style/styles";
 import { Buffer } from "buffer";
@@ -10,8 +10,9 @@ import {
 import Toast from "react-native-toast-message";
 
 const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
-  const { width } = Dimensions.get("window");
-  const scale = width / 450;
+  const { width } = useWindowDimensions();
+  const scale =
+    width < 600 ? width / 500 : width > 850 ? width / 1000 : width / 750;
   const [isEnabledValve, setIsEnabledValve] = useState(status);
 
   // sent data of valve
@@ -53,7 +54,7 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.valveWrapper}>
       <View style={styles.onOffStatus}>
         <Text style={styles.valveTitle}>{title}</Text>
         <Toggle

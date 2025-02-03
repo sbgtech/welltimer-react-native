@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, useWindowDimensions } from "react-native";
 import Arrival from "./blocs/Arrival";
 import { styles } from "./style/styles";
 import Table from "./blocs/Table";
@@ -8,6 +8,7 @@ import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
 
 const WellStatus = (props) => {
+  const { width } = useWindowDimensions();
   // declare initial states
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
@@ -64,6 +65,10 @@ const WellStatus = (props) => {
     }
   };
 
+  useEffect(() => {
+    console.log(width);
+  }, [width]);
+
   // Initial load, call WellStatusReceivedData function with the corresponding data
   useEffect(() => {
     // fetcha data if the device is connected
@@ -105,29 +110,29 @@ const WellStatus = (props) => {
     <ScrollView>
       <View style={[styles.container, styles.marginBottomContainer]}>
         <RefreshBtn onPress={() => onRefreshWellStatus()} />
-        <View style={styles.statusContainer}>
-          <View style={styles.statusWrapper}>
+        <View style={styles.statusContainer(width)}>
+          <View style={styles.statusWrapper(width)}>
             <Text style={styles.statusText}>Plunger state</Text>
             <Text style={styles.statusValue}>
               {plungerState[plungerStateIndex]}
             </Text>
           </View>
 
-          <View style={styles.statusWrapper}>
+          <View style={styles.statusWrapper(width)}>
             <Text style={styles.statusText}>System clock</Text>
             <Text style={styles.statusValue}>
               {systemClock !== null ? Receive.convertToHMS(systemClock) : null}
             </Text>
           </View>
-          <View style={styles.statusWrapper}>
+          <View style={styles.statusWrapper(width)}>
             <Text style={styles.statusText}>Line (PSI)</Text>
             <Text style={styles.statusValue}>{line}</Text>
           </View>
-          <View style={styles.statusWrapper}>
+          <View style={styles.statusWrapper(width)}>
             <Text style={styles.statusText}>Tubing (PSI)</Text>
             <Text style={styles.statusValue}>{tubing}</Text>
           </View>
-          <View style={styles.statusWrapper}>
+          <View style={styles.statusWrapper(width)}>
             <Text style={styles.statusText}>Casing (PSI)</Text>
             <Text style={styles.statusValue}>{casing}</Text>
           </View>

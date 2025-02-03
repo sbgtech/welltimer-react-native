@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import TabView from "./tabs/TabView";
+import { styles } from "./tabs/style/styles";
 
 const DeviceSettings = ({ navigation, route }) => {
   const initialTab = route.params?.initialTab || 0;
@@ -15,13 +16,5 @@ const DeviceSettings = ({ navigation, route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 1, // Adjust as needed
-  },
-});
 
 export default DeviceSettings;

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Alert, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  useWindowDimensions,
+  Dimensions,
+} from "react-native";
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
 import Dropdown from "./blocs/Dropdown";
@@ -18,6 +24,7 @@ import Toast from "react-native-toast-message";
 const SettingsTab = (props) => {
   // declare initial states
   const { height } = Dimensions.get("window");
+  const { width } = useWindowDimensions();
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
@@ -927,210 +934,223 @@ const SettingsTab = (props) => {
         status={valveA === 1 ? true : false}
       />
 
-      <View style={[styles.wrapper, styles.marginBottomContainer]}>
+      <View style={[styles.settingsWrapper, styles.marginBottomContainer]}>
         <Text style={styles.valveTitle}>Controller configuration</Text>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>Production method :</Text>
-          <Dropdown
-            dropdownTitle={"Select mode"}
-            list={productionMethod}
-            selectedIndex={productionMethodIndex}
-            setSelectedIndex={setProductionMethodIndex}
-          />
-          <Text style={styles.titleSettings}>Missrun max :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={missrunMax.toString()}
-            onChangeText={handleChangeMissrunMax}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>Detect false arrivals :</Text>
-          <Dropdown
-            dropdownTitle={"Select option"}
-            list={falseArrivals_hiLoMode}
-            selectedIndex={falseArrivalsIndex}
-            setSelectedIndex={setFalseArrivalsIndex}
-          />
-          <Text style={styles.titleSettings}>Well depth :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={wellDepth.toString()}
-            onChangeText={handleChangeWellDepth}
-            keyboardType="numeric"
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleSendFirstBloc()}
-              title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
+        <View style={styles.settingsSectionContainer(width)}>
+          <View style={styles.settingsSection(width)}>
+            <View>
+              <Text style={styles.titleSettings}>Production method :</Text>
+              <Dropdown
+                dropdownTitle={"Select mode"}
+                list={productionMethod}
+                selectedIndex={productionMethodIndex}
+                setSelectedIndex={setProductionMethodIndex}
+              />
+              <Text style={styles.titleSettings}>Missrun max :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={missrunMax.toString()}
+                onChangeText={handleChangeMissrunMax}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>Detect false arrivals :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={falseArrivals_hiLoMode}
+                selectedIndex={falseArrivalsIndex}
+                setSelectedIndex={setFalseArrivalsIndex}
+              />
+              <Text style={styles.titleSettings}>Well depth :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={wellDepth.toString()}
+                onChangeText={handleChangeWellDepth}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendFirstBloc()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>HiLo mode enable :</Text>
-          <Dropdown
-            dropdownTitle={"Select option"}
-            list={falseArrivals_hiLoMode}
-            selectedIndex={hiLoModeIndex}
-            setSelectedIndex={setHiLoModeIndex}
-          />
-          <Text style={styles.titleSettings}>HiLo high Threshold :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={hiLoHigh.toString()}
-            onChangeText={handleChangeHiLoHigh}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={hiLoLow.toString()}
-            onChangeText={handleChangeHiLoLow}
-            keyboardType="numeric"
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleSendHiLo()}
-              title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
+          <View style={styles.settingsSection(width)}>
+            <View>
+              <Text style={styles.titleSettings}>LP Sensor type :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={LP_CP_TP_type}
+                selectedIndex={LPTypeIndex}
+                setSelectedIndex={setLPTypeIndex}
+              />
+              <Text style={styles.titleSettings}>LP Sensor max (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={LPSensorMax.toString()}
+                onChangeText={handleChangeLPSensorMax}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={LPSensorMin.toString()}
+                onChangeText={handleChangeLPSensorMin}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>LP voltage max (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={LPVoltageMax.toString()}
+                onChangeText={handleChangeLPVoltageMax}
+                keyboardType="numbers-and-punctuation"
+              />
+              <Text style={styles.titleSettings}>LP voltage min (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={LPVoltageMin.toString()}
+                onChangeText={handleChangeLPVoltageMin}
+                keyboardType="numbers-and-punctuation"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendLP()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>LP Sensor type :</Text>
-          <Dropdown
-            dropdownTitle={"Select option"}
-            list={LP_CP_TP_type}
-            selectedIndex={LPTypeIndex}
-            setSelectedIndex={setLPTypeIndex}
-          />
-          <Text style={styles.titleSettings}>LP Sensor max (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={LPSensorMax.toString()}
-            onChangeText={handleChangeLPSensorMax}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={LPSensorMin.toString()}
-            onChangeText={handleChangeLPSensorMin}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>LP voltage max (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={LPVoltageMax.toString()}
-            onChangeText={handleChangeLPVoltageMax}
-            keyboardType="numbers-and-punctuation"
-          />
-          <Text style={styles.titleSettings}>LP voltage min (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={LPVoltageMin.toString()}
-            onChangeText={handleChangeLPVoltageMin}
-            keyboardType="numbers-and-punctuation"
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleSendLP()}
-              title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
+          <View style={styles.settingsSection(width)}>
+            <View>
+              <Text style={styles.titleSettings}>HiLo mode enable :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={falseArrivals_hiLoMode}
+                selectedIndex={hiLoModeIndex}
+                setSelectedIndex={setHiLoModeIndex}
+              />
+              <Text style={styles.titleSettings}>HiLo high Threshold :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={hiLoHigh.toString()}
+                onChangeText={handleChangeHiLoHigh}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={hiLoLow.toString()}
+                onChangeText={handleChangeHiLoLow}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendHiLo()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>CP Sensor type :</Text>
-          <Dropdown
-            dropdownTitle={"Select option"}
-            list={LP_CP_TP_type}
-            selectedIndex={CPTypeIndex}
-            setSelectedIndex={setCPTypeIndex}
-          />
-          <Text style={styles.titleSettings}>CP Sensor max (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={CPSensorMax.toString()}
-            onChangeText={handleChangeCPSensorMax}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={CPSensorMin.toString()}
-            onChangeText={handleChangeCPSensorMin}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>CP voltage max (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={CPVoltageMax.toString()}
-            onChangeText={handleChangeCPVoltageMax}
-            keyboardType="numbers-and-punctuation"
-          />
-          <Text style={styles.titleSettings}>CP voltage min (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={CPVoltageMin.toString()}
-            onChangeText={handleChangeCPVoltageMin}
-            keyboardType="numbers-and-punctuation"
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleSendCP()}
-              title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
+
+          <View style={styles.settingsSection(width)}>
+            <View>
+              <Text style={styles.titleSettings}>CP Sensor type :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={LP_CP_TP_type}
+                selectedIndex={CPTypeIndex}
+                setSelectedIndex={setCPTypeIndex}
+              />
+              <Text style={styles.titleSettings}>CP Sensor max (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={CPSensorMax.toString()}
+                onChangeText={handleChangeCPSensorMax}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={CPSensorMin.toString()}
+                onChangeText={handleChangeCPSensorMin}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>CP voltage max (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={CPVoltageMax.toString()}
+                onChangeText={handleChangeCPVoltageMax}
+                keyboardType="numbers-and-punctuation"
+              />
+              <Text style={styles.titleSettings}>CP voltage min (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={CPVoltageMin.toString()}
+                onChangeText={handleChangeCPVoltageMin}
+                keyboardType="numbers-and-punctuation"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendCP()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
-        </View>
-        <View style={[styles.rangeWrapper, styles.settingsSection]}>
-          <Text style={styles.titleSettings}>TP Sensor type :</Text>
-          <Dropdown
-            dropdownTitle={"Select option"}
-            list={LP_CP_TP_type}
-            selectedIndex={TPTypeIndex}
-            setSelectedIndex={setTPTypeIndex}
-          />
-          <Text style={styles.titleSettings}>TP Sensor max (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={TPSensorMax.toString()}
-            onChangeText={handleChangeTPSensorMax}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={TPSensorMin.toString()}
-            onChangeText={handleChangeTPSensorMin}
-            keyboardType="numeric"
-          />
-          <Text style={styles.titleSettings}>TP voltage max (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={TPVoltageMax.toString()}
-            onChangeText={handleChangeTPVoltageMax}
-            keyboardType="numbers-and-punctuation"
-          />
-          <Text style={styles.titleSettings}>TP voltage min (V) :</Text>
-          <TextInput
-            style={styles.inputSettings}
-            value={TPVoltageMin.toString()}
-            onChangeText={handleChangeTPVoltageMin}
-            keyboardType="numbers-and-punctuation"
-          />
-          <View style={styles.containerBtnText}>
-            <ButtonUI
-              onPress={() => handleSendTP()}
-              title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
-            />
+          <View style={styles.settingsSection(width)}>
+            <View>
+              <Text style={styles.titleSettings}>TP Sensor type :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={LP_CP_TP_type}
+                selectedIndex={TPTypeIndex}
+                setSelectedIndex={setTPTypeIndex}
+              />
+              <Text style={styles.titleSettings}>TP Sensor max (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={TPSensorMax.toString()}
+                onChangeText={handleChangeTPSensorMax}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={TPSensorMin.toString()}
+                onChangeText={handleChangeTPSensorMin}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>TP voltage max (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={TPVoltageMax.toString()}
+                onChangeText={handleChangeTPVoltageMax}
+                keyboardType="numbers-and-punctuation"
+              />
+              <Text style={styles.titleSettings}>TP voltage min (V) :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={TPVoltageMin.toString()}
+                onChangeText={handleChangeTPVoltageMin}
+                keyboardType="numbers-and-punctuation"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendTP()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
           </View>
         </View>
       </View>

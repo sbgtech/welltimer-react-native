@@ -106,7 +106,6 @@ const TabView = ({ navigation, initialTab }) => {
         );
       }
     };
-
     checkDeviceConnection();
   }, []);
 
