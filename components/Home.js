@@ -168,7 +168,7 @@ export default function Home({ navigation, route }) {
   //   setModalVisible(true);
   // };
   // function allow user to connect to device
-  const connectToDevice = async () => {
+  const connectToDevice = async (selectedDevice) => {
     // if (isAuthenticated) {
     // navigation.navigate("DeviceSettings", { initialTab: 0 });
     // }
