@@ -7,6 +7,7 @@ import {
   PermissionsAndroid,
   Platform,
   Alert,
+  useWindowDimensions,
 } from "react-native";
 import Item from "./Item";
 import { BleManager } from "react-native-ble-plx";
@@ -19,6 +20,9 @@ import Login_modal from "./tabs/blocs/Login_modal";
 const bleManager = new BleManager();
 
 export default function Home({ navigation, route }) {
+  const { width } = useWindowDimensions();
+  const scale =
+    width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
   // initialize the state of bluetooth in the mobile, default Unknown
   const [bluetoothState, setBluetoothState] = useState("Unknown");
   // create scanning state of the devices, default is not scanning yet
@@ -100,10 +104,10 @@ export default function Home({ navigation, route }) {
         setBluetoothState(state);
         if (state !== "PoweredOn") {
           // if bluetooth or posiition are deactivates, it show an alert to activate them
-          Alert.alert(
-            "Info",
-            "Please make sure to activate Bluetooth and position for better usage."
-          );
+          // Alert.alert(
+          //   "Info",
+          //   "Please make sure to activate Bluetooth and position for better usage."
+          // );
         }
       }, true);
       return () => subscription.remove(); // Clean up listener on unmount
@@ -170,35 +174,43 @@ export default function Home({ navigation, route }) {
   // function allow user to connect to device
   const connectToDevice = async (selectedDevice) => {
     // if (isAuthenticated) {
-    // navigation.navigate("DeviceSettings", { initialTab: 0 });
+    navigation.navigate("DeviceSettings", { initialTab: 0 });
     // }
-    if (!selectedDevice) return; // if not exist any device selected
-    try {
-      setIsButtonDisabled(true); // Disable button before connecting
-      // connect to selected device
-      await selectedDevice
-        .connect()
-        .then((device) => device.discoverAllServicesAndCharacteristics()) // discovering services and characteristics of device
-        .then((device) => {
-          // success to connect to device
-          console.log("Connected to", device.name);
-          // showing toast for successfully connected
-          navigation.navigate("DeviceSettings", { initialTab: 0 }); // navigate to device settings page
-        });
-    } catch (error) {
-      // error connecting to device
-      console.error("Error connecting to device:", error);
-      // showing toast for error connected
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Error connecting to device",
-        visibilityTime: 3000,
-      });
-    } finally {
-      setIsButtonDisabled(false); // Re-enable button after operation
-    }
+    // if (!selectedDevice) return; // if not exist any device selected
+    // try {
+    //   setIsButtonDisabled(true); // Disable button before connecting
+    //   // connect to selected device
+    //   await selectedDevice
+    //     .connect()
+    //     .then((device) => device.discoverAllServicesAndCharacteristics()) // discovering services and characteristics of device
+    //     .then((device) => {
+    //       // success to connect to device
+    //       console.log("Connected to", device.name);
+    //       // showing toast for successfully connected
+    //       navigation.navigate("DeviceSettings", { initialTab: 0 }); // navigate to device settings page
+    //     });
+    // } catch (error) {
+    //   // error connecting to device
+    //   console.error("Error connecting to device:", error);
+    //   // showing toast for error connected
+    //   Toast.show({
+    //     type: "error",
+    //     text1: "Error",
+    //     text2: "Error connecting to device",
+    //     visibilityTime: 3000,
+    //   });
+    // } finally {
+    //   setIsButtonDisabled(false); // Re-enable button after operation
+    // }
   };
+
+  useEffect(() => {
+    console.log("this is width", width);
+  }, [width]);
+
+  useEffect(() => {
+    console.log("this is scale", scale);
+  }, [scale]);
 
   const renderItem = ({ item }) => (
     <Item
@@ -213,27 +225,30 @@ export default function Home({ navigation, route }) {
   const handleEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTextHome}> No available devices yet!</Text>
+        <Text style={styles.emptyTextHome(scale)}>
+          {" "}
+          No available devices yet!
+        </Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.HomeView}>
+    <View style={styles.HomeView(scale)}>
       <ButtonUI
-        onPress={() => {
-          setScanning(!scanning);
-        }}
         // onPress={() => {
-        //   connectToDevice();
+        //   setScanning(!scanning);
         // }}
+        onPress={() => {
+          connectToDevice();
+        }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
-        btnStyle={styles.btnSendText}
-        txtStyle={styles.TextSendStyle}
+        btnStyle={styles.HomeBtnSendText(scale)}
+        txtStyle={styles.HomeTextSendStyle(scale)}
       />
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.HomeTitle}>Available devices :</Text>
-        <Text style={styles.HomeCountDevices}>({devices.length})</Text>
+        <Text style={styles.HomeTitle(scale)}>Available devices :</Text>
+        <Text style={styles.HomeCountDevices(scale)}>({devices.length})</Text>
         {scanning && <ActivityIndicator size="small" color="#0055a4" />}
       </View>
       <FlatList

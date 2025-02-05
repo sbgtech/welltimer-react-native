@@ -60,11 +60,29 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
         <Toggle
           value={isEnabledValve}
           onPress={(newState) => handleSwitchChange(newState)}
-          thumbActiveComponent={<Text style={{ color: "#fff" }}>ON</Text>}
-          thumbInActiveComponent={<Text style={{ color: "#fff" }}>OFF</Text>}
+          thumbActiveComponent={
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: width < 600 ? 14 : width > 980 ? 20 : 16,
+              }}
+            >
+              ON
+            </Text>
+          }
+          thumbInActiveComponent={
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: width < 600 ? 14 : width > 980 ? 20 : 16,
+              }}
+            >
+              OFF
+            </Text>
+          }
           thumbButton={{
-            width: 60 * scale,
-            height: 60 * scale,
+            width: width < 600 ? 50 : width > 980 ? 85 : 60,
+            height: width < 600 ? 50 : width > 980 ? 85 : 60,
             radius: 0,
             activeBackgroundColor: "#349E43",
             inActiveBackgroundColor: "#a3a3a3",
@@ -74,9 +92,9 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
             inActiveBackgroundColor: "#ddd",
             borderActiveColor: "#45D058",
             borderInActiveColor: "#ddd",
-            borderWidth: 5 * scale,
-            width: 180 * scale,
-            height: 40 * scale,
+            borderWidth: width < 600 ? 5 : width > 980 ? 7 : 6,
+            width: width < 600 ? 140 : width > 980 ? 260 : 180,
+            height: width < 600 ? 30 : width > 980 ? 50 : 34,
             radius: 0,
           }}
         />

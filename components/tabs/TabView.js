@@ -60,53 +60,53 @@ const TabView = ({ navigation, initialTab }) => {
 
   useEffect(() => {
     // verify the device is connected or not
-    const checkDeviceConnection = async () => {
-      const connectedDevices = await bleManager.connectedDevices([
-        UART_SERVICE_UUID,
-      ]);
-      if (connectedDevices.length > 0) {
-        Toast.show({
-          type: "success",
-          text1: "Success",
-          text2: "Connected to " + connectedDevices[0].name,
-          visibilityTime: 3000,
-        });
-        setConnectedDevice(connectedDevices[0]);
-        await Receive.sendReqToGetData(connectedDevice, activeTab);
-        setTimeout(async () => {
-          await Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
-        }, 500);
-        await Receive.ReceiveWellName(connectedDevices[0], setWellName);
-      } else {
-        Alert.alert(
-          "Device Not Allowed",
-          "Device Type Must be WellTimer",
-          [
-            {
-              text: "Cancel",
-              onPress: () => {
-                navigation.removeListener(),
-                  navigation.navigate("Home", {
-                    scanning: false,
-                  });
-              },
-              style: "cancel",
-            },
-            {
-              text: "OK",
-              onPress: () => {
-                navigation.removeListener(),
-                  navigation.navigate("Home", {
-                    scanning: false,
-                  });
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-      }
-    };
-    checkDeviceConnection();
+    // const checkDeviceConnection = async () => {
+    //   const connectedDevices = await bleManager.connectedDevices([
+    //     UART_SERVICE_UUID,
+    //   ]);
+    //   if (connectedDevices.length > 0) {
+    //     Toast.show({
+    //       type: "success",
+    //       text1: "Success",
+    //       text2: "Connected to " + connectedDevices[0].name,
+    //       visibilityTime: 3000,
+    //     });
+    //     setConnectedDevice(connectedDevices[0]);
+    //     await Receive.sendReqToGetData(connectedDevice, activeTab);
+    //     setTimeout(async () => {
+    //       await Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
+    //     }, 500);
+    //     await Receive.ReceiveWellName(connectedDevices[0], setWellName);
+    //   } else {
+    //     Alert.alert(
+    //       "Device Not Allowed",
+    //       "Device Type Must be WellTimer",
+    //       [
+    //         {
+    //           text: "Cancel",
+    //           onPress: () => {
+    //             navigation.removeListener(),
+    //               navigation.navigate("Home", {
+    //                 scanning: false,
+    //               });
+    //           },
+    //           style: "cancel",
+    //         },
+    //         {
+    //           text: "OK",
+    //           onPress: () => {
+    //             navigation.removeListener(),
+    //               navigation.navigate("Home", {
+    //                 scanning: false,
+    //               });
+    //           },
+    //         },
+    //       ],
+    //       { cancelable: false }
+    //     );
+    //   }
+    // };
+    // checkDeviceConnection();
   }, []);
 
   useEffect(() => {

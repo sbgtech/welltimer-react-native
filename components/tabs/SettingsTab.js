@@ -937,7 +937,7 @@ const SettingsTab = (props) => {
       <View style={[styles.settingsWrapper, styles.marginBottomContainer]}>
         <Text style={styles.valveTitle}>Controller configuration</Text>
         <View style={styles.settingsSectionContainer(width)}>
-          <View style={styles.settingsSection(width)}>
+          <View style={[styles.settingsSection(width)]}>
             <View>
               <Text style={styles.titleSettings}>Production method :</Text>
               <Dropdown
@@ -977,7 +977,40 @@ const SettingsTab = (props) => {
               />
             </View>
           </View>
-          <View style={styles.settingsSection(width)}>
+          <View style={[styles.settingsSection(width)]}>
+            <View>
+              <Text style={styles.titleSettings}>HiLo mode enable :</Text>
+              <Dropdown
+                dropdownTitle={"Select option"}
+                list={falseArrivals_hiLoMode}
+                selectedIndex={hiLoModeIndex}
+                setSelectedIndex={setHiLoModeIndex}
+              />
+              <Text style={styles.titleSettings}>HiLo high Threshold :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={hiLoHigh.toString()}
+                onChangeText={handleChangeHiLoHigh}
+                keyboardType="numeric"
+              />
+              <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
+              <TextInput
+                style={styles.inputSettings}
+                value={hiLoLow.toString()}
+                onChangeText={handleChangeHiLoLow}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.containerBtnText}>
+              <ButtonUI
+                onPress={() => handleSendHiLo()}
+                title={"Send"}
+                btnStyle={styles.btnSendText}
+                txtStyle={styles.TextSendStyle}
+              />
+            </View>
+          </View>
+          <View style={[styles.settingsSection(width)]}>
             <View>
               <Text style={styles.titleSettings}>LP Sensor type :</Text>
               <Dropdown
@@ -1024,41 +1057,7 @@ const SettingsTab = (props) => {
               />
             </View>
           </View>
-          <View style={styles.settingsSection(width)}>
-            <View>
-              <Text style={styles.titleSettings}>HiLo mode enable :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={falseArrivals_hiLoMode}
-                selectedIndex={hiLoModeIndex}
-                setSelectedIndex={setHiLoModeIndex}
-              />
-              <Text style={styles.titleSettings}>HiLo high Threshold :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={hiLoHigh.toString()}
-                onChangeText={handleChangeHiLoHigh}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={hiLoLow.toString()}
-                onChangeText={handleChangeHiLoLow}
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendHiLo()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-
-          <View style={styles.settingsSection(width)}>
+          <View style={[styles.settingsSection(width)]}>
             <View>
               <Text style={styles.titleSettings}>CP Sensor type :</Text>
               <Dropdown
@@ -1105,7 +1104,7 @@ const SettingsTab = (props) => {
               />
             </View>
           </View>
-          <View style={styles.settingsSection(width)}>
+          <View style={[styles.settingsSection(width)]}>
             <View>
               <Text style={styles.titleSettings}>TP Sensor type :</Text>
               <Dropdown
@@ -1152,6 +1151,7 @@ const SettingsTab = (props) => {
               />
             </View>
           </View>
+          <View style={[styles.emptySettingsSection(width)]}></View>
         </View>
       </View>
       <Loading loading={loading} title={title} />

@@ -188,7 +188,7 @@ const StatisticsTab = (props) => {
               value={arrivalsTotal.toString()}
               editable={false}
             />
-            <View style={styles.containerBtnText}>
+            <View style={styles.StatisticContainerBtnText}>
               <ButtonUI
                 onPress={() => handleResetArrivals()}
                 title={"Reset"}
@@ -216,7 +216,7 @@ const StatisticsTab = (props) => {
               value={missrunTotal.toString()}
               editable={false}
             />
-            <View style={styles.containerBtnText}>
+            <View style={styles.StatisticContainerBtnText}>
               <ButtonUI
                 onPress={() => handleResetMissrun()}
                 title={"Reset"}
@@ -244,7 +244,7 @@ const StatisticsTab = (props) => {
               value={onTimeTotal.toString()}
               editable={false}
             />
-            <View style={styles.containerBtnText}>
+            <View style={styles.StatisticContainerBtnText}>
               <ButtonUI
                 onPress={() => handleResetOnTime()}
                 title={"Reset"}

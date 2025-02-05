@@ -66,6 +66,10 @@ const TimerTab = (props) => {
     }
   };
 
+  useEffect(() => {
+    console.log(width);
+  }, [width]);
+
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={135} // Space above the keyboard

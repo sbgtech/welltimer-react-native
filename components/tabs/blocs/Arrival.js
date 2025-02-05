@@ -29,6 +29,7 @@ const Arrival = ({ arrivals }) => {
             </View>
           );
         })}
+        <View style={styles.emptyArrivalItems(width)}></View>
       </View>
     </ScrollView>
   );
