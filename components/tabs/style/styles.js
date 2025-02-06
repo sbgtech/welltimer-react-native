@@ -3,8 +3,8 @@ import { Dimensions, Platform } from "react-native";
 const { width, height } = Dimensions.get("window");
 const marginBottomAndroid = height * 0.09; // Adjust 0.05 as needed for your layout
 const marginBottomIOS = height * 0.01; // Adjust 0.05 as needed for your layout
-// const scale =
-//   width < 600 ? width / 420 : width > 850 ? width / 1200 : width / 800;
+const scale =
+  width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
 
 export const styles = {
   // In the most tabs
@@ -26,7 +26,7 @@ export const styles = {
   // RefreshBtn.js
   refreshBtn: {
     paddingHorizontal: 12,
-    height: 45,
+    height: width < 600 ? 36 : width > 950 ? 44 : 44,
     maxHeight: 90,
   },
   // WellStatusTab.js
@@ -59,17 +59,17 @@ export const styles = {
   }),
   // WellStatusTab.js
   emptyStatusWrapper: (width) => ({
-    padding: width > 600 ? 10 : 7,
-    margin: width < 600 ? 2 : 4,
+    padding: width > 600 ? 0 : 7,
+    margin: width < 600 ? 0 : 4,
     width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
   }),
   // WellStatusTab.js
   statusText: {
-    fontSize: 18,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // WellStatusTab.js
   statusValue: {
-    fontSize: 18,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // WellStatusTab.js
   arrivalContainer: {
@@ -105,27 +105,23 @@ export const styles = {
   }),
   // Arrival.js
   emptyArrivalItems: (width) => ({
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignItems: "center",
-    // padding: 8,
     margin: width < 600 ? 2 : 4,
     // backgroundColor: "#ffffff",
     width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
   }),
   // Arrival.js
   arrivalName: {
-    fontSize: 18,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // Arrival.js
   arrivalValue: {
-    fontSize: 18,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // WellStatusTab.js
   telemetryDataContainer: {
     marginHorizontal: 26,
     marginTop: 16,
-    padding: 16,
+    padding: 14,
     backgroundColor: "#eeeeee",
   },
   // Table.js
@@ -143,7 +139,7 @@ export const styles = {
     color: "#fff",
     textAlign: "center",
     padding: 10,
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // Table.js
   dataTableContainer: (width) => ({
@@ -163,7 +159,7 @@ export const styles = {
   tableCell: {
     padding: 10,
     borderColor: "#D4D4D4",
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
 
   /* ------------------------------------------- */
@@ -221,10 +217,10 @@ export const styles = {
     borderColor: "grey",
     fontWeight: "bold",
     color: "#7d7d7d",
-    fontSize: width < 600 ? 16 : 20,
-    width: width < 600 ? 55 : 60,
+    fontSize: width < 600 ? 15 : width > 950 ? 20 : 17,
+    width: width < 600 ? 53 : 57,
     maxWidth: 90,
-    height: width < 600 ? 45 : 50,
+    height: width < 600 ? 43 : 47,
     maxHeight: 90,
   },
   // Timer.js
@@ -237,27 +233,27 @@ export const styles = {
     width: width < 600 ? "auto" : width > 850 ? "30%" : "auto",
   },
   // Timer.js
-  TimerbtnSendText: {
-    paddingHorizontal: 12,
-    height: width < 600 ? 45 : 50,
-    maxHeight: 90,
-    width: "100%",
-  },
+  // TimerbtnSendText: {
+  //   paddingHorizontal: 12,
+  //   height: width < 600 ? 45 : 50,
+  //   maxHeight: 90,
+  //   width: "100%",
+  // },
   // Timer.js
-  TimerTextSendStyle: {
-    fontSize: width < 600 ? 16 : 20,
-    padding: 4,
-  },
+  // TimerTextSendStyle: {
+  //   fontSize: width < 600 ? 16 : 20,
+  //   padding: 4,
+  // },
   // Timer.js - SettingsTab.js - Statistics.js
   btnSendText: {
     paddingHorizontal: 12,
-    height: width < 600 ? 45 : 50,
+    height: width < 600 ? 36 : width > 950 ? 42 : 42,
     maxHeight: 90,
     width: "100%",
   },
   // Timer.js - SettingsTab.js - Statistics.js
   TextSendStyle: {
-    fontSize: width < 600 ? 16 : 20,
+    fontSize: width < 600 ? 14 : 20,
     padding: 4,
   },
   /* ------------------------------------------- */
@@ -287,10 +283,10 @@ export const styles = {
   settingsSection: (width) => ({
     flexDirection: "column",
     justifyContent: "space-between",
-    // gap: width < 600 ? 0 : 2,
+    gap: width < 600 ? 8 : 0,
     // height: width < 600 ? "auto" : 450,
-    height: width < 600 ? "auto" : width > 950 ? 470 : 460,
-    maxHeight: width < 600 ? "auto" : width > 950 ? 470 : 460,
+    height: width < 600 ? "auto" : width > 950 ? 485 : 470,
+    maxHeight: width < 600 ? "auto" : width > 950 ? 485 : 470,
     width: width < 600 ? "100%" : width > 950 ? width / 3.4 : width / 2.3,
     backgroundColor: "#ddd",
     padding: width * 0.01,
@@ -298,20 +294,12 @@ export const styles = {
   }),
   // SettingsTab.js
   emptySettingsSection: (width) => ({
-    // flexDirection: "column",
-    // justifyContent: "space-between",
-    // gap: width < 600 ? 0 : 2,
-    // height: width < 600 ? "auto" : 450,
-    // height: width < 600 ? "auto" : width > 950 ? 470 : 460,
-    // maxHeight: width < 600 ? "auto" : width > 950 ? 470 : 460,
     width: width < 600 ? "100%" : width > 950 ? width / 3.4 : width / 2.3,
     backgroundColor: "#ddd",
-    // padding: width * 0.01,
-    // marginBottom: 0,
   }),
   // SettingsTab.js - StatisticsTab.js
   titleSettings: {
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
     fontWeight: "bold",
     marginTop: 10,
   },
@@ -323,7 +311,7 @@ export const styles = {
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 34 : width > 950 ? 40 : 40,
   },
   // SettingsTab.js
   containerBtnText: {
@@ -381,14 +369,14 @@ export const styles = {
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 34 : width > 950 ? 40 : 40,
   },
   // Statistics.js
   StatisticContainerBtnText: {
-    marginVertical: 10,
+    marginTop: 14,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 34 : width > 950 ? 40 : 40,
   },
   /* --------------------------------------- */
   // TestTab.js
@@ -695,7 +683,7 @@ export const styles = {
     paddingHorizontal: 12,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 34 : width > 950 ? 40 : 40,
     marginVertical: 2,
   },
   // Dropdown.js

@@ -104,10 +104,10 @@ export default function Home({ navigation, route }) {
         setBluetoothState(state);
         if (state !== "PoweredOn") {
           // if bluetooth or posiition are deactivates, it show an alert to activate them
-          // Alert.alert(
-          //   "Info",
-          //   "Please make sure to activate Bluetooth and position for better usage."
-          // );
+          Alert.alert(
+            "Info",
+            "Please make sure to activate Bluetooth and position for better usage."
+          );
         }
       }, true);
       return () => subscription.remove(); // Clean up listener on unmount
@@ -174,34 +174,34 @@ export default function Home({ navigation, route }) {
   // function allow user to connect to device
   const connectToDevice = async (selectedDevice) => {
     // if (isAuthenticated) {
-    navigation.navigate("DeviceSettings", { initialTab: 0 });
+    // navigation.navigate("DeviceSettings", { initialTab: 0 });
     // }
-    // if (!selectedDevice) return; // if not exist any device selected
-    // try {
-    //   setIsButtonDisabled(true); // Disable button before connecting
-    //   // connect to selected device
-    //   await selectedDevice
-    //     .connect()
-    //     .then((device) => device.discoverAllServicesAndCharacteristics()) // discovering services and characteristics of device
-    //     .then((device) => {
-    //       // success to connect to device
-    //       console.log("Connected to", device.name);
-    //       // showing toast for successfully connected
-    //       navigation.navigate("DeviceSettings", { initialTab: 0 }); // navigate to device settings page
-    //     });
-    // } catch (error) {
-    //   // error connecting to device
-    //   console.error("Error connecting to device:", error);
-    //   // showing toast for error connected
-    //   Toast.show({
-    //     type: "error",
-    //     text1: "Error",
-    //     text2: "Error connecting to device",
-    //     visibilityTime: 3000,
-    //   });
-    // } finally {
-    //   setIsButtonDisabled(false); // Re-enable button after operation
-    // }
+    if (!selectedDevice) return; // if not exist any device selected
+    try {
+      setIsButtonDisabled(true); // Disable button before connecting
+      // connect to selected device
+      await selectedDevice
+        .connect()
+        .then((device) => device.discoverAllServicesAndCharacteristics()) // discovering services and characteristics of device
+        .then((device) => {
+          // success to connect to device
+          console.log("Connected to", device.name);
+          // showing toast for successfully connected
+          navigation.navigate("DeviceSettings", { initialTab: 0 }); // navigate to device settings page
+        });
+    } catch (error) {
+      // error connecting to device
+      console.error("Error connecting to device:", error);
+      // showing toast for error connected
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Error connecting to device",
+        visibilityTime: 3000,
+      });
+    } finally {
+      setIsButtonDisabled(false); // Re-enable button after operation
+    }
   };
 
   useEffect(() => {
@@ -236,12 +236,12 @@ export default function Home({ navigation, route }) {
   return (
     <View style={styles.HomeView(scale)}>
       <ButtonUI
-        // onPress={() => {
-        //   setScanning(!scanning);
-        // }}
         onPress={() => {
-          connectToDevice();
+          setScanning(!scanning);
         }}
+        // onPress={() => {
+        //   connectToDevice();
+        // }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
         btnStyle={styles.HomeBtnSendText(scale)}
         txtStyle={styles.HomeTextSendStyle(scale)}

@@ -10,7 +10,7 @@ import Loading from "./blocs/Loading";
 const WellStatus = (props) => {
   const { width } = useWindowDimensions();
   const scale =
-    width < 600 ? width / 420 : width > 850 ? width / 1200 : width / 800;
+    width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
   // declare initial states
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
@@ -33,28 +33,7 @@ const WellStatus = (props) => {
   const [line, setLine] = useState();
   const [tubing, setTubing] = useState();
   const [casing, setCasing] = useState();
-  const [arrivals, setArrivals] = useState([
-    { name: "Arrival 1", value: 25000 },
-    { name: "Arrival 2", value: 14785 },
-    { name: "Arrival 3", value: 89523 },
-    { name: "Arrival 4", value: 25000 },
-    { name: "Arrival 5", value: 41257 },
-    { name: "Arrival 6", value: 12896 },
-    { name: "Arrival 7", value: 25000 },
-    { name: "Arrival 8", value: 42589 },
-    { name: "Arrival 9", value: 25000 },
-    { name: "Arrival 10", value: 45588 },
-    { name: "Arrival 11", value: 25000 },
-    { name: "Arrival 12", value: 12348 },
-    { name: "Arrival 13", value: 25000 },
-    { name: "Arrival 14", value: 25000 },
-    { name: "Arrival 15", value: 25000 },
-    { name: "Arrival 16", value: 25000 },
-    { name: "Arrival 17", value: 75524 },
-    { name: "Arrival 18", value: 25000 },
-    { name: "Arrival 19", value: 74568 },
-    { name: "Arrival 20", value: 56745 },
-  ]);
+  const [arrivals, setArrivals] = useState([]);
   const [uniqueID, setUniqueID] = useState();
   const [fwVersion, setFwVersion] = useState();
   const [battery, setBattery] = useState();
