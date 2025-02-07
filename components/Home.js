@@ -236,12 +236,12 @@ export default function Home({ navigation, route }) {
   return (
     <View style={styles.HomeView(scale)}>
       <ButtonUI
-        // onPress={() => {
-        //   setScanning(!scanning);
-        // }}
         onPress={() => {
-          connectToDevice();
+          setScanning(!scanning);
         }}
+        // onPress={() => {
+        //   connectToDevice();
+        // }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
         btnStyle={styles.HomeBtnSendText(scale)}
         txtStyle={styles.HomeTextSendStyle(scale)}
