@@ -45,8 +45,8 @@ const TestTab = (props) => {
   const [dataArray, setDataArray] = useState([]);
   // get auto width of used device
   const { width } = useWindowDimensions();
-  const scale =
-    width < 600 ? width / 420 : width > 850 ? width / 900 : width / 500;
+  // const scale =
+  //   width < 600 ? width / 420 : width > 1100 ? width / 1300 : width / 900;
 
   // used this variable for the color of the screen (dark mode or light mode, default is light)
   const colorScheme = useColorScheme();
@@ -229,7 +229,13 @@ const TestTab = (props) => {
             />
             <ButtonUI
               onPress={async () => await onSendMessageSubmit()}
-              title={<Ionicons name="send" size={20 * scale} color="white" />}
+              title={
+                <Ionicons
+                  name="send"
+                  size={width < 600 ? 20 : 30}
+                  color="white"
+                />
+              }
               btnStyle={styles.btnSend}
               txtStyle={styles.TextSendStyle}
               loading={false}

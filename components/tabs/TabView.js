@@ -185,12 +185,17 @@ const TabView = ({ navigation, initialTab }) => {
   return (
     <View style={styles.container}>
       <View style={styles.deviceBloc}>
-        <View>
-          {wellName ? (
-            <Text style={styles.wellName}>{wellName}</Text>
-          ) : (
-            <Text style={styles.wellName}>RECON device</Text>
-          )}
+        <View style={styles.nameVersionBloc}>
+          <View>
+            {wellName ? (
+              <Text style={styles.wellName}>{wellName}</Text>
+            ) : (
+              <Text style={styles.wellName}>RECON device</Text>
+            )}
+          </View>
+          <View>
+            <Text style={styles.version}>Prod 3-07FEB2025@04:40.PM</Text>
+          </View>
         </View>
 
         {connectedDevice ? (

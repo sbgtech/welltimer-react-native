@@ -22,7 +22,7 @@ const bleManager = new BleManager();
 export default function Home({ navigation, route }) {
   const { width } = useWindowDimensions();
   const scale =
-    width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
+    width < 600 ? width / 420 : width > 1100 ? width / 1300 : width / 900;
   // initialize the state of bluetooth in the mobile, default Unknown
   const [bluetoothState, setBluetoothState] = useState("Unknown");
   // create scanning state of the devices, default is not scanning yet
@@ -236,12 +236,12 @@ export default function Home({ navigation, route }) {
   return (
     <View style={styles.HomeView(scale)}>
       <ButtonUI
-        onPress={() => {
-          setScanning(!scanning);
-        }}
         // onPress={() => {
-        //   connectToDevice();
+        //   setScanning(!scanning);
         // }}
+        onPress={() => {
+          connectToDevice();
+        }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
         btnStyle={styles.HomeBtnSendText(scale)}
         txtStyle={styles.HomeTextSendStyle(scale)}

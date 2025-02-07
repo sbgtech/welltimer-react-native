@@ -177,7 +177,7 @@ export const styles = {
   wrapper: (width) => ({
     padding: 12,
     backgroundColor: "#eeeeee",
-    width: width < 600 ? "auto" : width > 980 ? width / 3.4 : width / 2.3,
+    width: width < 600 ? "auto" : width > 1100 ? width / 3.4 : width / 2.3,
   }),
 
   // Timer.js - statisticsTab.js
@@ -216,11 +216,11 @@ export const styles = {
     borderWidth: 0.5,
     borderColor: "grey",
     fontWeight: "bold",
-    color: "#7d7d7d",
+    color: "#000",
     fontSize: width < 600 ? 15 : width > 950 ? 20 : 17,
     width: width < 600 ? 53 : 57,
     maxWidth: 90,
-    height: width < 600 ? 43 : 47,
+    height: width < 600 ? 36 : 42,
     maxHeight: 90,
   },
   // Timer.js
@@ -253,8 +253,8 @@ export const styles = {
   },
   // Timer.js - SettingsTab.js - Statistics.js
   TextSendStyle: {
-    fontSize: width < 600 ? 14 : 20,
-    padding: 4,
+    fontSize: width < 600 ? 14 : width > 950 ? 22 : 20,
+    padding: 2,
   },
   /* ------------------------------------------- */
   // SettingsTab.js
@@ -312,6 +312,8 @@ export const styles = {
     width: "100%",
     maxWidth: "100%",
     height: width < 600 ? 34 : width > 950 ? 40 : 40,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    color: "#000",
   },
   // SettingsTab.js
   containerBtnText: {
@@ -363,13 +365,15 @@ export const styles = {
   }),
   // StatisticsTab.js
   inputSettingsDisabled: {
-    backgroundColor: "#eeeeee",
+    backgroundColor: "#F5F5F5",
     paddingHorizontal: 10,
     marginVertical: 2,
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
     height: width < 600 ? 34 : width > 950 ? 40 : 40,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    color: "#000",
   },
   // Statistics.js
   StatisticContainerBtnText: {
@@ -389,18 +393,19 @@ export const styles = {
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+    gap: 4,
   },
   // TestTab.js
   testTitle: {
-    fontSize: 28,
+    fontSize: width < 600 ? 28 : width > 950 ? 32 : 28,
     fontWeight: "bold",
   },
   // TestTab.js
   itemsList: {
     backgroundColor: "#fff",
     paddingVertical: 4,
-    marginHorizontal: 5,
-    marginVertical: 16,
+    // marginHorizontal: 5,
+    // marginVertical: 16,
     borderWidth: 0.5,
   },
   // TestTab.js
@@ -425,25 +430,25 @@ export const styles = {
   },
   // TestTab.js
   emptyText: {
-    fontSize: 22,
+    fontSize: width < 600 ? 22 : width > 950 ? 30 : 26,
     fontWeight: "bold",
     color: "#0055a4",
   },
   // TestTab.js
   itemType: {
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
     fontWeight: "bold",
     color: "#7d7d7d",
   },
   // TestTab.js
   itemData: {
-    fontSize: 18,
+    fontSize: width < 600 ? 18 : width > 950 ? 22 : 20,
     fontWeight: "bold",
   },
   // TestTab.js
   itemDate: {
     color: "#7d7d7d",
-    fontSize: 14,
+    fontSize: width < 600 ? 14 : width > 950 ? 18 : 16,
   },
   // TestTab.js
   testContainer: (width) => ({
@@ -451,18 +456,19 @@ export const styles = {
     alignItems: "center",
     justifyContent: "flex-start",
     gap: width < 600 ? 6 : 10,
-    padding: 4,
-    height: width < 600 ? 50 : width > 900 ? 60 : 60,
+    paddingVertical: 4,
+    height: width < 600 ? 50 : width > 900 ? 70 : 60,
     width: "100%",
   }),
   // TestTab.js
   testInput: {
     backgroundColor: "#ddd",
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: width < 600 ? 8 : 0,
+    paddingHorizontal: width < 600 ? 10 : 8,
     borderWidth: 0.5,
     flex: 1,
     height: "100%",
+    fontSize: width < 600 ? 18 : width > 950 ? 24 : 22,
   },
   // TestTab.js
   btnSend: {
@@ -475,7 +481,7 @@ export const styles = {
   emptyPINContainer: { justifyContent: "center", alignItems: "center" },
   // TestTab.js
   emptyPINText: {
-    fontSize: 22,
+    fontSize: width < 600 ? 22 : width > 950 ? 30 : 26,
     fontWeight: "bold",
     color: "#0055a4",
   },
@@ -561,7 +567,7 @@ export const styles = {
   },
   // Tab.js
   tabText: {
-    fontSize: width < 600 ? 14 : 18,
+    fontSize: width < 600 ? 14 : width > 950 ? 22 : 18,
     fontWeight: "bold",
     color: "#fff", // Customize tab label color
   },
@@ -589,7 +595,7 @@ export const styles = {
   },
   // PIN_modal.js
   PINTitle: {
-    fontSize: 24,
+    fontSize: width < 600 ? 24 : width > 950 ? 30 : 26,
     fontWeight: "bold",
     marginBottom: 24,
   },
@@ -601,7 +607,8 @@ export const styles = {
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 40 : 42,
+    fontSize: width < 600 ? 18 : width > 950 ? 24 : 22,
   },
   /* ---------------------------- */
   // TabView.js
@@ -610,16 +617,30 @@ export const styles = {
     marginVertical: 10,
   },
   // TabView.js
+  nameVersionBloc: {
+    flexDirection: width < 600 ? "column" : "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  // TabView.js
+  version: {
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: width < 600 ? 14 : width > 950 ? 24 : 22,
+    // textAlign: "center",
+    // marginBottom: 2,
+  },
+  // TabView.js
   wellName: {
     color: "#000",
     fontWeight: "bold",
-    fontSize: width < 600 ? 18 : 22,
-    textAlign: "center",
+    fontSize: width < 600 ? 18 : width > 950 ? 26 : 22,
+    // textAlign: "center",
     marginBottom: 2,
   },
   // TabView.js
   deviceInfo: {
-    fontSize: width < 600 ? 14 : 18,
+    fontSize: width < 600 ? 14 : width > 950 ? 22 : 18,
     color: "#7d7d7d",
   },
   // TabView.js
@@ -649,7 +670,7 @@ export const styles = {
   // ButtonUI.js
   buttonTextStyle: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 22 : 20,
     padding: 4,
   },
   /* ------------------------------- */
@@ -689,11 +710,11 @@ export const styles = {
   // Dropdown.js
   dropdownButtonTxtStyle: {
     flex: 1,
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
   },
   // Dropdown.js
   dropdownButtonArrowStyle: {
-    fontSize: 20,
+    fontSize: width < 600 ? 18 : width > 950 ? 22 : 20,
   },
   // Dropdown.js
   dropdownItemStyle: {
@@ -707,7 +728,7 @@ export const styles = {
   // Dropdown.js
   dropdownItemTxtStyle: {
     flex: 1,
-    fontSize: 16,
+    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
     fontWeight: "500",
     color: "#151E26",
   },

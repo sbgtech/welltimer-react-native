@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  useWindowDimensions,
 } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import { styles } from "../style/styles";
@@ -21,6 +22,7 @@ const PIN_modal = ({
   navigation,
   setActiveTab,
 }) => {
+  const { width } = useWindowDimensions();
   return (
     <Modal
       animationType="slide"
@@ -45,7 +47,7 @@ const PIN_modal = ({
             >
               <AntDesign
                 name="closesquare"
-                size={28}
+                size={width < 600 ? 28 : 38}
                 color="#0055a4"
                 style={styles.closeIcon}
               />
