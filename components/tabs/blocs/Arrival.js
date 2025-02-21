@@ -22,8 +22,8 @@ const Arrival = ({ arrivals }) => {
           //   formattedTimeArrivals(data.value);
           return (
             <View key={index} style={styles.arrivalItems(width)}>
-              <Text style={styles.arrivalName}>{data.name}</Text>
-              <Text style={styles.arrivalValue}>
+              <Text style={styles.arrivalName(width)}>{data.name}</Text>
+              <Text style={styles.arrivalValue(width)}>
                 {formattedTimeArrivals(data.value)}
               </Text>
             </View>

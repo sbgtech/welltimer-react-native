@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  useWindowDimensions,
 } from "react-native";
 import ButtonUI from "../../ButtonUI";
 import { styles } from "../style/styles";
@@ -19,6 +20,7 @@ const Login_modal = ({
   setPin,
   handleSubmitPIN,
 }) => {
+  const { width } = useWindowDimensions();
   return (
     <Modal
       animationType="slide"
@@ -56,8 +58,8 @@ const Login_modal = ({
             <ButtonUI
               onPress={() => handleSubmitPIN()}
               title={"Submit"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+              btnStyle={styles.btnSendText(width)}
+              txtStyle={styles.TextSendStyle(width)}
             />
           </View>
         </View>

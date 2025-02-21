@@ -54,7 +54,7 @@ export class Receive {
     return new Promise((resolve, reject) => {
       // Set loading to true at the start
       setLoading(true);
-      setTitle("Uploading...");
+      setTitle("Loading...");
       // Set a timeout for the operation
       const timeout = setTimeout(() => {
         if (!dataReceived) {
@@ -147,7 +147,7 @@ export class Receive {
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
-      setTitle("Uploading...");
+      setTitle("Loading...");
       const timeout = setTimeout(() => {
         if (!received) {
           console.log("Data not received within 7 seconds timer");
@@ -208,6 +208,7 @@ export class Receive {
   static async SettingsReceivedData(device, setters) {
     const {
       setValveA,
+      setValveB,
       setProductionMethodIndex,
       setMissrunMax,
       setFalseArrivalsIndex,
@@ -215,6 +216,20 @@ export class Receive {
       setHiLoModeIndex,
       setHiLoHigh,
       setHiLoLow,
+      setPidOverrideIndex,
+      setPidSP,
+      setPidKP,
+      setPidKI,
+      setPidKD,
+      setPidINIT,
+      setPidDB,
+      setPidLL,
+      setAutocatcherIndex,
+      setAutocatcherDelay,
+      setBValveTwinIndex,
+      setReceivedPressureSourceIndex,
+      setReceivedPressureMaxPSI,
+      setReceivedPressureMinPSI,
       setLPTypeIndex,
       setLPSensorMax,
       setLPSensorMin,
@@ -236,7 +251,7 @@ export class Receive {
     let received = false;
     return new Promise(async (resolve, reject) => {
       setLoading(true);
-      setTitle("Uploading...");
+      setTitle("Loading...");
       const timeout = setTimeout(() => {
         if (!received) {
           console.log("Data not received within 7 seconds settings");
@@ -274,6 +289,7 @@ export class Receive {
             const msg = JSON.parse(str);
             //
             setValveA(msg[1]);
+            setValveB(msg[35]);
             //
             setProductionMethodIndex(msg[2]);
             setMissrunMax(msg[3]);
@@ -301,6 +317,24 @@ export class Receive {
             setTPSensorMin(msg[21]);
             setTPVoltageMax(msg[22] / 10);
             setTPVoltageMin(msg[23] / 10);
+            //
+            setPidOverrideIndex(msg[24]);
+            setPidSP(msg[25]);
+            setPidKP(msg[26]);
+            setPidKI(msg[27]);
+            setPidKD(msg[28]);
+            setPidINIT(msg[29]);
+            setPidDB(msg[30]);
+            setPidLL(msg[31]);
+            //
+            setAutocatcherIndex(msg[32]);
+            setAutocatcherDelay(msg[33]);
+            //
+            setBValveTwinIndex(msg[34]);
+            //
+            setReceivedPressureSourceIndex(msg[36]);
+            setReceivedPressureMaxPSI(msg[37]);
+            setReceivedPressureMinPSI(msg[38]);
             //
             setLoading(false);
             received = true;
@@ -337,7 +371,7 @@ export class Receive {
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
-      setTitle("Uploading...");
+      setTitle("Loading...");
       const timeout = setTimeout(() => {
         if (!received) {
           console.log("Data not received within 7 seconds settings");

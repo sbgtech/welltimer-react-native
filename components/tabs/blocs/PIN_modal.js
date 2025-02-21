@@ -32,7 +32,7 @@ const PIN_modal = ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.PINContainer}>
-          <View style={styles.PINContent}>
+          <View style={styles.PINContent(width)}>
             <TouchableOpacity
               style={styles.closeIconContainer}
               onPress={() => {
@@ -47,14 +47,16 @@ const PIN_modal = ({
             >
               <AntDesign
                 name="closesquare"
-                size={width < 600 ? 28 : 38}
+                size={
+                  width < 600 ? 26 : width < 800 ? 28 : width < 950 ? 38 : 38
+                }
                 color="#0055a4"
                 style={styles.closeIcon}
               />
             </TouchableOpacity>
-            <Text style={styles.PINTitle}>Enter PIN</Text>
+            <Text style={styles.PINTitle(width)}>Enter PIN</Text>
             <TextInput
-              style={styles.PINinput}
+              style={styles.PINinput(width)}
               placeholder="Enter your PIN"
               secureTextEntry
               value={pin}
@@ -66,8 +68,8 @@ const PIN_modal = ({
             <ButtonUI
               onPress={() => handleSubmitPIN()}
               title={"Submit"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+              btnStyle={styles.btnSendText(width)}
+              txtStyle={styles.TextSendStyle(width)}
             />
           </View>
         </View>

@@ -1,14 +1,15 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, useWindowDimensions, TouchableOpacity } from "react-native";
 import { styles } from "./style/styles";
 
 const Tab = ({ label, isActive, onPress }) => {
+  const { width } = useWindowDimensions();
   return (
     <TouchableOpacity
-      style={[styles.tab, isActive ? styles.activeTab : null]}
+      style={[styles.tab(width), isActive ? styles.activeTab : null]}
       onPress={onPress}
     >
-      <Text style={styles.tabText}>{label}</Text>
+      <Text style={styles.tabText(width)}>{label}</Text>
     </TouchableOpacity>
   );
 };

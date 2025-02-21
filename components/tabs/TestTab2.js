@@ -1,14 +1,20 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  Text,
   View,
   TextInput,
+  useColorScheme,
   FlatList,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
   Image,
   Alert,
+  useWindowDimensions,
 } from "react-native";
+import Animated, {
+  useAnimatedKeyboard,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import ButtonUI from "../ButtonUI";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import Moment from "moment";
 import { Buffer } from "buffer";
 import Toast from "react-native-toast-message";
@@ -20,9 +26,8 @@ import {
 import { Receive } from "../Utils/Receive";
 import Loading from "./blocs/Loading";
 import PIN_modal from "./blocs/PIN_modal";
-import ButtonUI from "../ButtonUI";
 
-const TestTab2 = (props) => {
+const TestTab = (props) => {
   const { setActiveTab, navigation, connectedDevice } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [pin, setPin] = useState("");
@@ -41,8 +46,15 @@ const TestTab2 = (props) => {
   // get auto width of used device
   const { width } = useWindowDimensions();
 
-  const flatListRef = useRef();
+  // used this variable for the color of the screen (dark mode or light mode, default is light)
+  const colorScheme = useColorScheme();
+  // used for set padding when the keyboard shown
+  const keyboard = useAnimatedKeyboard();
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: -keyboard.height.value }],
+  }));
 
+  // set to message state the value in the input text
   const onMessageChanged = (e) => {
     setMessage(e);
   };
@@ -146,22 +158,16 @@ const TestTab2 = (props) => {
     }
   }, [isSubscribed]);
 
-  useEffect(() => {
-    flatListRef.current?.scrollToEnd({ animated: true });
-  }, [dataArray]);
-
   const renderItem = ({ item }) => (
     <View style={styles.msgViewContainer}>
       <View style={styles.msgView}>
-        <Text style={styles.itemType(width)}>{item.type} :</Text>
+        <Text style={styles.itemType}>{item.type} :</Text>
       </View>
       <View style={styles.msgView}>
-        <Text style={styles.itemData(width)}>{item.data}</Text>
+        <Text style={styles.itemData}>{item.data}</Text>
       </View>
       <View style={styles.msgView}>
-        <Text style={styles.itemDate(width)}>
-          {Moment(item.date).format("lll")}
-        </Text>
+        <Text style={styles.itemDate}>{Moment(item.date).format("lll")}</Text>
       </View>
     </View>
   );
@@ -169,11 +175,11 @@ const TestTab2 = (props) => {
   const handleEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText(width)}> No Data present!</Text>
+        <Text style={styles.emptyText}> No Data present!</Text>
         <Image
           alt="App Logo"
           resizeMode="contain"
-          style={styles.emptyImg(width)}
+          style={{ width: width / 2, height: width / 2 }}
           source={require("../../assets/no-data.png")}
         />
       </View>
@@ -181,7 +187,14 @@ const TestTab2 = (props) => {
   };
 
   return (
-    <View style={styles.containerTestTab}>
+    <Animated.View
+      style={[
+        styles.containerTestTab,
+        animatedStyles,
+        { backgroundColor: colorScheme === "light" ? "#fff" : "#fff" },
+        styles.marginBottomContainer,
+      ]}
+    >
       <View>
         <PIN_modal
           modalVisible={modalVisible}
@@ -195,35 +208,38 @@ const TestTab2 = (props) => {
       </View>
       {isAuthenticated ? (
         <View style={styles.box}>
-          {/* Title */}
-          <View>
-            <Text style={styles.testTitle(width)}>Test mode :</Text>
-          </View>
-          {/* Input area */}
-          <View style={styles.inputTestContainer(width)}>
-            <TextInput
-              style={styles.testInput(width)}
-              placeholder="Type a message..."
-              value={message}
-              onChangeText={onMessageChanged}
-            />
-            <ButtonUI
-              onPress={async () => await onSendMessageSubmit()}
-              title={"Send"}
-              btnStyle={styles.btnSend(width)}
-              txtStyle={styles.sendButtonText(width)}
-              loading={false}
-            />
-          </View>
-          {/* FlatList to display messages */}
+          {/* <View>
+            <Text style={styles.testTitle}>Test mode :</Text>
+          </View> */}
           <FlatList
-            ref={flatListRef}
+            style={styles.itemsList}
             data={dataArray}
             renderItem={renderItem}
             ListEmptyComponent={handleEmpty}
             keyExtractor={(item, index) => index.toString()}
-            contentContainerStyle={styles.flatListContainer}
           />
+          <View style={styles.testContainer(width)}>
+            <TextInput
+              style={styles.testInput}
+              value={message}
+              onChangeText={onMessageChanged}
+              placeholder="Message..."
+            />
+            <ButtonUI
+              onPress={async () => await onSendMessageSubmit()}
+              title={
+                <Ionicons
+                  name="send"
+                  size={width < 600 ? 20 : 30}
+                  color="white"
+                />
+              }
+              btnStyle={styles.btnSend}
+              txtStyle={styles.TextSendStyle}
+              loading={false}
+            />
+          </View>
+          <Loading loading={loading} title={title} />
         </View>
       ) : (
         <View style={styles.emptyPINContainer}>
@@ -239,9 +255,8 @@ const TestTab2 = (props) => {
           />
         </View>
       )}
-      <Loading loading={loading} title={title} />
-    </View>
+    </Animated.View>
   );
 };
 
-export default TestTab2;
+export default TestTab;

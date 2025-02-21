@@ -170,21 +170,21 @@ const StatisticsTab = (props) => {
         <Text style={styles.valveTitle}>Arrival statistics</Text>
         <View style={styles.statisticSectionContainer(width)}>
           <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
-            <Text style={styles.titleSettings}>Arrivals today :</Text>
+            <Text style={styles.titleSettings(width)}>Arrivals today :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={arrivalsToday.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>Arrivals week :</Text>
+            <Text style={styles.titleSettings(width)}>Arrivals week :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={arrivalsWeek.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>Arrivals total :</Text>
+            <Text style={styles.titleSettings(width)}>Arrivals total :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={arrivalsTotal.toString()}
               editable={false}
             />
@@ -192,27 +192,27 @@ const StatisticsTab = (props) => {
               <ButtonUI
                 onPress={() => handleResetArrivals()}
                 title={"Reset"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
+                btnStyle={styles.btnSendText(width)}
+                txtStyle={styles.TextSendStyle(width)}
               />
             </View>
           </View>
           <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
-            <Text style={styles.titleSettings}>Missrun today :</Text>
+            <Text style={styles.titleSettings(width)}>Missrun today :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={missrunToday.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>Missrun week :</Text>
+            <Text style={styles.titleSettings(width)}>Missrun week :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={missrunWeek.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>Missrun total :</Text>
+            <Text style={styles.titleSettings(width)}>Missrun total :</Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={missrunTotal.toString()}
               editable={false}
             />
@@ -220,27 +220,33 @@ const StatisticsTab = (props) => {
               <ButtonUI
                 onPress={() => handleResetMissrun()}
                 title={"Reset"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
+                btnStyle={styles.btnSendText(width)}
+                txtStyle={styles.TextSendStyle(width)}
               />
             </View>
           </View>
           <View style={[styles.rangeWrapper, styles.statisticSection(width)]}>
-            <Text style={styles.titleSettings}>OnTime today (sec) :</Text>
+            <Text style={styles.titleSettings(width)}>
+              OnTime today (sec) :
+            </Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={onTimeToday.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>OnTime week (hour) :</Text>
+            <Text style={styles.titleSettings(width)}>
+              OnTime week (hour) :
+            </Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={onTimeWeek.toString()}
               editable={false}
             />
-            <Text style={styles.titleSettings}>OnTime total (hour) :</Text>
+            <Text style={styles.titleSettings(width)}>
+              OnTime total (hour) :
+            </Text>
             <TextInput
-              style={styles.inputSettingsDisabled}
+              style={styles.inputSettingsDisabled(width)}
               value={onTimeTotal.toString()}
               editable={false}
             />
@@ -248,8 +254,8 @@ const StatisticsTab = (props) => {
               <ButtonUI
                 onPress={() => handleResetOnTime()}
                 title={"Reset"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
+                btnStyle={styles.btnSendText(width)}
+                txtStyle={styles.TextSendStyle(width)}
               />
             </View>
           </View>

@@ -5,6 +5,7 @@ import {
   TextInput,
   useWindowDimensions,
   Dimensions,
+  StyleSheet,
 } from "react-native";
 import { styles } from "./style/styles";
 import ButtonUI from "../ButtonUI";
@@ -21,19 +22,28 @@ import {
 } from "../Utils/Constants";
 import Toast from "react-native-toast-message";
 
-const SettingsTab = (props) => {
+const SettingsTab2 = (props) => {
   // declare initial states
   const { height } = Dimensions.get("window");
   const { width } = useWindowDimensions();
+  const cardMinWidth =
+    width < 600 ? width : width > 950 ? width / 3.4 : width / 2.3;
+  const numColumns = Math.max(1, Math.floor(width / cardMinWidth));
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
   const [title, setTitle] = useState("");
-  // value of valve, default 0 (OFF)
+  // value of valve A, default 0 (OFF)
   const [valveA, setValveA] = useState(0);
+  // value of valve B, default 0 (OFF)
+  const [valveB, setValveB] = useState(0);
   // display the name of the productionMethod based on the received index
   const [productionMethodIndex, setProductionMethodIndex] = useState(null);
-  const productionMethod = ["Timer mode"];
+  const productionMethod = [
+    "Timer mode",
+    "Timer Intermit mode",
+    "Pressure Intermit mode",
+  ];
   // prepare variables to set them the received data
   const [missrunMax, setMissrunMax] = useState("");
   const [falseArrivalsIndex, setFalseArrivalsIndex] = useState(null);
@@ -43,6 +53,24 @@ const SettingsTab = (props) => {
   const [hiLoModeIndex, setHiLoModeIndex] = useState(null);
   const [hiLoHigh, setHiLoHigh] = useState("");
   const [hiLoLow, setHiLoLow] = useState("");
+  // states of PID
+  const [pidOverrideIndex, setPidOverrideIndex] = useState(null);
+  const [pidSP, setPidSP] = useState("");
+  const [pidKP, setPidKP] = useState("");
+  const [pidKI, setPidKI] = useState("");
+  const [pidKD, setPidKD] = useState("");
+  const [pidINIT, setPidINIT] = useState("");
+  const [pidDB, setPidDB] = useState("");
+  const [pidLL, setPidLL] = useState("");
+  // states of AUTOCATCHER
+  const [autocatcherIndex, setAutocatcherIndex] = useState(null);
+  const [autocatcherDelay, setAutocatcherDelay] = useState("");
+  const [BValveTwinIndex, setBValveTwinIndex] = useState(null);
+  // declare initial states for the source, max pis and min psi for pressure intermit mode
+  const [receivedPressureSourceIndex, setReceivedPressureSourceIndex] =
+    useState(null);
+  const [receivedPressureMaxPSI, setReceivedPressureMaxPSI] = useState("");
+  const [receivedPressureMinPSI, setReceivedPressureMinPSI] = useState("");
   // states of LP
   const LP_CP_TP_type = ["Voltage"];
   const [LPTypeIndex, setLPTypeIndex] = useState(null);
@@ -144,6 +172,216 @@ const SettingsTab = (props) => {
       }
     } else {
       setHiLoLow("");
+    }
+  };
+
+  // handle change pid SP value
+  const handleChangePidSP = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
+        setPidSP("");
+      } else {
+        setPidSP(validText);
+      }
+    } else {
+      setPidSP("");
+    }
+  };
+
+  // handle change pid KP value
+  const handleChangePidKP = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidKP("");
+      } else {
+        setPidKP(validText);
+      }
+    } else {
+      setPidKP("");
+    }
+  };
+
+  // handle change pid KI value
+  const handleChangePidKI = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidKI("");
+      } else {
+        setPidKI(validText);
+      }
+    } else {
+      setPidKI("");
+    }
+  };
+
+  // handle change pid KD value
+  const handleChangePidKD = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidKD("");
+      } else {
+        setPidKD(validText);
+      }
+    } else {
+      setPidKD("");
+    }
+  };
+
+  // handle change pid INIT value
+  const handleChangePidINIT = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidINIT("");
+      } else {
+        setPidINIT(validText);
+      }
+    } else {
+      setPidINIT("");
+    }
+  };
+
+  // handle change pid DB value
+  const handleChangePidDB = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidDB("");
+      } else {
+        setPidDB(validText);
+      }
+    } else {
+      setPidDB("");
+    }
+  };
+
+  // handle change pid LL value
+  const handleChangePidLL = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setPidLL("");
+      } else {
+        setPidLL(validText);
+      }
+    } else {
+      setPidLL("");
+    }
+  };
+
+  // handle change AUTOCATCHER Delay value
+  const handleChangeAutocatcherDelay = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setAutocatcherDelay("");
+      } else {
+        setAutocatcherDelay(validText);
+      }
+    } else {
+      setAutocatcherDelay("");
+    }
+  };
+
+  // handle change Max PSI value
+  const handleChangeMaxPSI = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
+        setReceivedPressureMaxPSI("");
+      } else {
+        setReceivedPressureMaxPSI(validText);
+      }
+    } else {
+      setReceivedPressureMaxPSI("");
+    }
+  };
+
+  // handle change Min PSI value
+  const handleChangeMinPSI = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 4
+      if (validText.length > 4) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 4 digits",
+          visibilityTime: 3000,
+        });
+        setReceivedPressureMinPSI("");
+      } else {
+        setReceivedPressureMinPSI(validText);
+      }
+    } else {
+      setReceivedPressureMinPSI("");
     }
   };
 
@@ -566,6 +804,7 @@ const SettingsTab = (props) => {
         125,
         Number(wellDepth),
       ]);
+      console.log("index is ", productionMethodIndex);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
@@ -597,7 +836,7 @@ const SettingsTab = (props) => {
         visibilityTime: 4000,
       });
       return; // Exit the function if validation fails
-    } else if (hiLoLow > hiLoHigh) {
+    } else if (Number(hiLoLow) > Number(hiLoHigh)) {
       Toast.show({
         type: "error",
         text1: "Warning",
@@ -637,7 +876,163 @@ const SettingsTab = (props) => {
     }
   };
 
-  // send array of CP values to device
+  // send array of PID values to device
+  const handleSendPID = async () => {
+    if (
+      pidSP === "" ||
+      pidKP === "" ||
+      pidKI === "" ||
+      pidKD === "" ||
+      pidINIT === "" ||
+      pidDB === "" ||
+      pidLL === ""
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields of PID must be filled",
+        visibilityTime: 4000,
+      });
+      return; // Exit the function if validation fails
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          133,
+          pidOverrideIndex,
+          134,
+          Number(pidSP),
+          135,
+          Number(pidKP),
+          136,
+          Number(pidKI),
+          137,
+          Number(pidKD),
+          138,
+          Number(pidINIT),
+          139,
+          Number(pidDB),
+          140,
+          Number(pidLL),
+        ]);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
+    }
+  };
+
+  // send array of AUTOCATCHER values to device
+  const handleSendAutocatcher = async () => {
+    if (autocatcherDelay === "") {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "All fields of AUTOCATCHER must be filled",
+        visibilityTime: 4000,
+      });
+      return; // Exit the function if validation fails
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          141,
+          autocatcherIndex,
+          143,
+          Number(autocatcherDelay),
+          158,
+          BValveTwinIndex,
+        ]);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
+    }
+  };
+
+  // send array of Pressure Intermit values to device
+  const handleSendPressureIntermit = async () => {
+    if (receivedPressureMaxPSI === "" || receivedPressureMinPSI === "") {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Max PSI & Min PSI must be filled",
+        visibilityTime: 3000,
+      });
+      return; // Exit the function if validation fails
+    } else if (
+      Number(receivedPressureMinPSI) > Number(receivedPressureMaxPSI)
+    ) {
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "The Max PSI must be more than Min PSI",
+        visibilityTime: 4000,
+      });
+    } else {
+      try {
+        const arr = JSON.stringify([
+          3,
+          159,
+          receivedPressureSourceIndex,
+          160,
+          Number(receivedPressureMaxPSI),
+          161,
+          Number(receivedPressureMinPSI),
+        ]);
+        const buffer = Buffer.from(arr + "\n", "utf-8");
+        await props.connectedDevice?.writeCharacteristicWithResponseForService(
+          UART_SERVICE_UUID,
+          UART_TX_CHARACTERISTIC_UUID,
+          buffer.toString("base64")
+        );
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Data sent successfully",
+          visibilityTime: 3000,
+        });
+        await fetchDataSettings();
+      } catch (error) {
+        console.log(
+          "Error with writeCharacteristicWithResponseForService :",
+          error
+        );
+      }
+    }
+  };
+
+  // send array of LP values to device
   const handleSendLP = async () => {
     if (
       LPSensorMax === "" ||
@@ -652,14 +1047,14 @@ const SettingsTab = (props) => {
         visibilityTime: 4000,
       });
       return; // Exit the function if validation fails
-    } else if (LPSensorMin > LPSensorMax) {
+    } else if (Number(LPSensorMin) > Number(LPSensorMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
         text2: "The LP Sensor max must be more than LP Sensor min",
         visibilityTime: 4000,
       });
-    } else if (LPVoltageMin > LPVoltageMax) {
+    } else if (Number(LPVoltageMin) > Number(LPVoltageMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
@@ -670,7 +1065,7 @@ const SettingsTab = (props) => {
       try {
         const arr = JSON.stringify([
           3,
-          10,
+          100,
           LPTypeIndex,
           101,
           Number(LPSensorMax),
@@ -718,14 +1113,14 @@ const SettingsTab = (props) => {
         visibilityTime: 3000,
       });
       return; // Exit the function if validation fails
-    } else if (CPSensorMin > CPSensorMax) {
+    } else if (Number(CPSensorMin) > Number(CPSensorMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
         text2: "The CP Sensor max must be more than CP Sensor min",
         visibilityTime: 4000,
       });
-    } else if (CPVoltageMin > CPVoltageMax) {
+    } else if (Number(CPVoltageMin) > Number(CPVoltageMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
@@ -784,14 +1179,14 @@ const SettingsTab = (props) => {
         visibilityTime: 3000,
       });
       return; // Exit the function if validation fails
-    } else if (TPSensorMin > TPSensorMax) {
+    } else if (Number(TPSensorMin) > Number(TPSensorMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
         text2: "The TP Sensor max must be more than TP Sensor min",
         visibilityTime: 4000,
       });
-    } else if (TPVoltageMin > TPVoltageMax) {
+    } else if (Number(TPVoltageMin) > Number(TPVoltageMax)) {
       Toast.show({
         type: "error",
         text1: "Warning",
@@ -840,6 +1235,7 @@ const SettingsTab = (props) => {
     try {
       await Receive.SettingsReceivedData(props.connectedDevice, {
         setValveA,
+        setValveB,
         setProductionMethodIndex,
         setMissrunMax,
         setFalseArrivalsIndex,
@@ -847,6 +1243,20 @@ const SettingsTab = (props) => {
         setHiLoModeIndex,
         setHiLoHigh,
         setHiLoLow,
+        setPidOverrideIndex,
+        setPidSP,
+        setPidKP,
+        setPidKI,
+        setPidKD,
+        setPidINIT,
+        setPidDB,
+        setPidLL,
+        setAutocatcherIndex,
+        setAutocatcherDelay,
+        setBValveTwinIndex,
+        setReceivedPressureSourceIndex,
+        setReceivedPressureMaxPSI,
+        setReceivedPressureMinPSI,
         setLPTypeIndex,
         setLPSensorMax,
         setLPSensorMin,
@@ -887,6 +1297,7 @@ const SettingsTab = (props) => {
       // start receiving data
       await Receive.SettingsReceivedData(props.connectedDevice, {
         setValveA,
+        setValveB,
         setProductionMethodIndex,
         setMissrunMax,
         setFalseArrivalsIndex,
@@ -894,6 +1305,20 @@ const SettingsTab = (props) => {
         setHiLoModeIndex,
         setHiLoHigh,
         setHiLoLow,
+        setPidOverrideIndex,
+        setPidSP,
+        setPidKP,
+        setPidKI,
+        setPidKD,
+        setPidINIT,
+        setPidDB,
+        setPidLL,
+        setAutocatcherIndex,
+        setAutocatcherDelay,
+        setBValveTwinIndex,
+        setReceivedPressureSourceIndex,
+        setReceivedPressureMaxPSI,
+        setReceivedPressureMinPSI,
         setLPTypeIndex,
         setLPSensorMax,
         setLPSensorMin,
@@ -917,6 +1342,466 @@ const SettingsTab = (props) => {
     }
   };
 
+  // all settings sections by bloc
+  // production method
+  const card1 = (
+    <View style={styles.settingsSection(width)} key={"card1"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>Production method :</Text>
+        <Dropdown
+          dropdownTitle={"Select mode"}
+          list={productionMethod}
+          selectedIndex={productionMethodIndex}
+          setSelectedIndex={setProductionMethodIndex}
+        />
+        <Text style={styles.titleSettings(width)}>Missrun max :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={missrunMax.toString()}
+          onChangeText={handleChangeMissrunMax}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>Detect false arrivals :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={falseArrivals_hiLoMode}
+          selectedIndex={falseArrivalsIndex}
+          setSelectedIndex={setFalseArrivalsIndex}
+        />
+        <Text style={styles.titleSettings(width)}>Well depth :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={wellDepth.toString()}
+          onChangeText={handleChangeWellDepth}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendFirstBloc()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // PID
+  const card3 = (
+    <View style={styles.settingsSection(width)} key="card3">
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>PID Override :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={falseArrivals_hiLoMode}
+          selectedIndex={pidOverrideIndex}
+          setSelectedIndex={setPidOverrideIndex}
+        />
+        <Text style={styles.titleSettings(width)}>PID Set Point (SP) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={pidSP.toString()}
+          onChangeText={handleChangePidSP}
+          keyboardType="numeric"
+        />
+        <View style={styles.pidInputsContainer}>
+          <View style={styles.pidInputs}>
+            <Text style={styles.titleSettings(width)}>Kp (%) :</Text>
+            <TextInput
+              style={styles.inputSettings(width)}
+              value={pidKP.toString()}
+              onChangeText={handleChangePidKP}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.pidInputs}>
+            <Text style={styles.titleSettings(width)}>Ki (%) :</Text>
+            <TextInput
+              style={styles.inputSettings(width)}
+              value={pidKI.toString()}
+              onChangeText={handleChangePidKI}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+        <View style={styles.pidInputsContainer}>
+          <View style={styles.pidInputs}>
+            <Text style={styles.titleSettings(width)}>Kd (%) :</Text>
+            <TextInput
+              style={styles.inputSettings(width)}
+              value={pidKD.toString()}
+              onChangeText={handleChangePidKD}
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.pidInputs}>
+            <Text style={styles.titleSettings(width)}>INIT (%) :</Text>
+            <TextInput
+              style={styles.inputSettings(width)}
+              value={pidINIT.toString()}
+              onChangeText={handleChangePidINIT}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+        <Text style={styles.titleSettings(width)}>PID Deadband (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={pidDB.toString()}
+          onChangeText={handleChangePidDB}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>PID Low Limit (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={pidLL.toString()}
+          onChangeText={handleChangePidLL}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendPID()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // LP
+  const card6 = (
+    <View style={styles.settingsSection(width)} key="card6">
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>LP Sensor type :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={LP_CP_TP_type}
+          selectedIndex={LPTypeIndex}
+          setSelectedIndex={setLPTypeIndex}
+        />
+        <Text style={styles.titleSettings(width)}>LP Sensor max (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={LPSensorMax.toString()}
+          onChangeText={handleChangeLPSensorMax}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>LP Sensor min (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={LPSensorMin.toString()}
+          onChangeText={handleChangeLPSensorMin}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>LP voltage max (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={LPVoltageMax.toString()}
+          onChangeText={handleChangeLPVoltageMax}
+          keyboardType="numbers-and-punctuation"
+        />
+        <Text style={styles.titleSettings(width)}>LP voltage min (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={LPVoltageMin.toString()}
+          onChangeText={handleChangeLPVoltageMin}
+          keyboardType="numbers-and-punctuation"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendLP()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // CP
+  const card7 = (
+    <View style={styles.settingsSection(width)} key={"card7"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>CP Sensor type :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={LP_CP_TP_type}
+          selectedIndex={CPTypeIndex}
+          setSelectedIndex={setCPTypeIndex}
+        />
+        <Text style={styles.titleSettings(width)}>CP Sensor max (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={CPSensorMax.toString()}
+          onChangeText={handleChangeCPSensorMax}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>CP Sensor min (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={CPSensorMin.toString()}
+          onChangeText={handleChangeCPSensorMin}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>CP voltage max (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={CPVoltageMax.toString()}
+          onChangeText={handleChangeCPVoltageMax}
+          keyboardType="numbers-and-punctuation"
+        />
+        <Text style={styles.titleSettings(width)}>CP voltage min (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={CPVoltageMin.toString()}
+          onChangeText={handleChangeCPVoltageMin}
+          keyboardType="numbers-and-punctuation"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendCP()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // TP
+  const card8 = (
+    <View style={styles.settingsSection(width)} key={"card8"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>TP Sensor type :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={LP_CP_TP_type}
+          selectedIndex={TPTypeIndex}
+          setSelectedIndex={setTPTypeIndex}
+        />
+        <Text style={styles.titleSettings(width)}>TP Sensor max (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={TPSensorMax.toString()}
+          onChangeText={handleChangeTPSensorMax}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>TP Sensor min (PSI) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={TPSensorMin.toString()}
+          onChangeText={handleChangeTPSensorMin}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>TP voltage max (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={TPVoltageMax.toString()}
+          onChangeText={handleChangeTPVoltageMax}
+          keyboardType="numbers-and-punctuation"
+        />
+        <Text style={styles.titleSettings(width)}>TP voltage min (V) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={TPVoltageMin.toString()}
+          onChangeText={handleChangeTPVoltageMin}
+          keyboardType="numbers-and-punctuation"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendTP()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // HILO
+  const card2 = (
+    <View style={styles.settingsSection(width)} key={"card2"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>HiLo mode :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={falseArrivals_hiLoMode}
+          selectedIndex={hiLoModeIndex}
+          setSelectedIndex={setHiLoModeIndex}
+        />
+        <Text style={styles.titleSettings(width)}>HiLo high Threshold :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={hiLoHigh.toString()}
+          onChangeText={handleChangeHiLoHigh}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>HiLo low Threshold :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={hiLoLow.toString()}
+          onChangeText={handleChangeHiLoLow}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendHiLo()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // AUTOCATCHER
+  const card4 = (
+    <View style={styles.settingsSection(width)} key={"card4"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>AUTOCATCHER :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={falseArrivals_hiLoMode}
+          selectedIndex={autocatcherIndex}
+          setSelectedIndex={setAutocatcherIndex}
+        />
+        <Text style={styles.titleSettings(width)}>Delay (sec) :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={autocatcherDelay.toString()}
+          onChangeText={handleChangeAutocatcherDelay}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>B Valve Twin :</Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={falseArrivals_hiLoMode}
+          selectedIndex={BValveTwinIndex}
+          setSelectedIndex={setBValveTwinIndex}
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendAutocatcher()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+  // PRESURE INTERMIT
+  const card5 = (
+    <View style={styles.settingsSection(width)} key={"card5"}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleSettings(width)}>
+          Pressure intermit source :
+        </Text>
+        <Dropdown
+          dropdownTitle={"Select option"}
+          list={["Line", "Tubing", "Casing"]}
+          selectedIndex={receivedPressureSourceIndex}
+          setSelectedIndex={setReceivedPressureSourceIndex}
+        />
+        <Text style={styles.titleSettings(width)}>
+          Pressure intermit Max PSI :
+        </Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={receivedPressureMaxPSI.toString()}
+          onChangeText={handleChangeMaxPSI}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>
+          Pressure intermit Min PSI :
+        </Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={receivedPressureMinPSI.toString()}
+          onChangeText={handleChangeMinPSI}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={styles.containerBtnText}>
+        <ButtonUI
+          onPress={() => handleSendPressureIntermit()}
+          title={"Send"}
+          btnStyle={styles.btnSendText(width)}
+          txtStyle={styles.TextSendStyle(width)}
+        />
+      </View>
+    </View>
+  );
+
+  // render all columns based in width
+  const renderColumns = () => {
+    if (numColumns === 1) {
+      return (
+        <View style={styless.column}>
+          {card1}
+          {card2}
+          {card3}
+          {card4}
+          {card5}
+          {card6}
+          {card7}
+          {card8}
+        </View>
+      );
+    } else if (numColumns === 2) {
+      return (
+        <>
+          <View style={styless.column}>
+            {card1}
+            {card3}
+            {card5}
+            {card7}
+          </View>
+          <View style={styless.column}>
+            {card2}
+            {card4}
+            {card6}
+            {card8}
+          </View>
+        </>
+      );
+    } else if (numColumns === 3) {
+      return (
+        <>
+          <View style={styless.column}>
+            {card1}
+            {card4}
+            {card7}
+          </View>
+          <View style={styless.column}>
+            {card2}
+            {card5}
+            {card8}
+          </View>
+          <View style={styless.column}>
+            {card3}
+            {card6}
+          </View>
+        </>
+      );
+    } else {
+      // For 4 or more columns, assign each card to its own column if possible.
+      return (
+        <>
+          <View style={styless.column}>{card1}</View>
+          <View style={styless.column}>{card2}</View>
+          <View style={styless.column}>{card3}</View>
+          <View style={styless.column}>{card4}</View>
+          <View style={styless.column}>{card5}</View>
+          <View style={styless.column}>{card6}</View>
+          <View style={styless.column}>{card7}</View>
+          <View style={styless.column}>{card8}</View>
+        </>
+      );
+    }
+  };
+
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={height * 0.2} // Space above the keyboard
@@ -925,233 +1810,39 @@ const SettingsTab = (props) => {
       enableResetScrollToCoords={false}
     >
       <RefreshBtn onPress={() => onRefreshSettings()} />
-      <Valve
-        connectedDevice={props.connectedDevice}
-        setLoading={setLoading}
-        setTitle={setTitle}
-        fetchDataSettings={fetchDataSettings}
-        title={"Valve A"}
-        status={valveA === 1 ? true : false}
-      />
+      <View style={styles.valveContainer}>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <Valve
+            connectedDevice={props.connectedDevice}
+            fetchDataSettings={fetchDataSettings}
+            title={"Valve A"}
+            status={valveA === 1 ? true : false}
+            valve={"A"}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <Valve
+            connectedDevice={props.connectedDevice}
+            fetchDataSettings={fetchDataSettings}
+            title={"Valve B"}
+            status={valveB === 1 ? true : false}
+            valve={"B"}
+          />
+        </View>
+      </View>
 
       <View style={[styles.settingsWrapper, styles.marginBottomContainer]}>
         <Text style={styles.valveTitle}>Controller configuration</Text>
         <View style={styles.settingsSectionContainer(width)}>
-          <View style={[styles.settingsSection(width)]}>
-            <View>
-              <Text style={styles.titleSettings}>Production method :</Text>
-              <Dropdown
-                dropdownTitle={"Select mode"}
-                list={productionMethod}
-                selectedIndex={productionMethodIndex}
-                setSelectedIndex={setProductionMethodIndex}
-              />
-              <Text style={styles.titleSettings}>Missrun max :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={missrunMax.toString()}
-                onChangeText={handleChangeMissrunMax}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>Detect false arrivals :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={falseArrivals_hiLoMode}
-                selectedIndex={falseArrivalsIndex}
-                setSelectedIndex={setFalseArrivalsIndex}
-              />
-              <Text style={styles.titleSettings}>Well depth :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={wellDepth.toString()}
-                onChangeText={handleChangeWellDepth}
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendFirstBloc()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-          <View style={[styles.settingsSection(width)]}>
-            <View>
-              <Text style={styles.titleSettings}>HiLo mode enable :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={falseArrivals_hiLoMode}
-                selectedIndex={hiLoModeIndex}
-                setSelectedIndex={setHiLoModeIndex}
-              />
-              <Text style={styles.titleSettings}>HiLo high Threshold :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={hiLoHigh.toString()}
-                onChangeText={handleChangeHiLoHigh}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>HiLo low Threshold :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={hiLoLow.toString()}
-                onChangeText={handleChangeHiLoLow}
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendHiLo()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-          <View style={[styles.settingsSection(width)]}>
-            <View>
-              <Text style={styles.titleSettings}>LP Sensor type :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={LP_CP_TP_type}
-                selectedIndex={LPTypeIndex}
-                setSelectedIndex={setLPTypeIndex}
-              />
-              <Text style={styles.titleSettings}>LP Sensor max (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={LPSensorMax.toString()}
-                onChangeText={handleChangeLPSensorMax}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>LP Sensor min (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={LPSensorMin.toString()}
-                onChangeText={handleChangeLPSensorMin}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>LP voltage max (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={LPVoltageMax.toString()}
-                onChangeText={handleChangeLPVoltageMax}
-                keyboardType="numbers-and-punctuation"
-              />
-              <Text style={styles.titleSettings}>LP voltage min (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={LPVoltageMin.toString()}
-                onChangeText={handleChangeLPVoltageMin}
-                keyboardType="numbers-and-punctuation"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendLP()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-          <View style={[styles.settingsSection(width)]}>
-            <View>
-              <Text style={styles.titleSettings}>CP Sensor type :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={LP_CP_TP_type}
-                selectedIndex={CPTypeIndex}
-                setSelectedIndex={setCPTypeIndex}
-              />
-              <Text style={styles.titleSettings}>CP Sensor max (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={CPSensorMax.toString()}
-                onChangeText={handleChangeCPSensorMax}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>CP Sensor min (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={CPSensorMin.toString()}
-                onChangeText={handleChangeCPSensorMin}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>CP voltage max (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={CPVoltageMax.toString()}
-                onChangeText={handleChangeCPVoltageMax}
-                keyboardType="numbers-and-punctuation"
-              />
-              <Text style={styles.titleSettings}>CP voltage min (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={CPVoltageMin.toString()}
-                onChangeText={handleChangeCPVoltageMin}
-                keyboardType="numbers-and-punctuation"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendCP()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-          <View style={[styles.settingsSection(width)]}>
-            <View>
-              <Text style={styles.titleSettings}>TP Sensor type :</Text>
-              <Dropdown
-                dropdownTitle={"Select option"}
-                list={LP_CP_TP_type}
-                selectedIndex={TPTypeIndex}
-                setSelectedIndex={setTPTypeIndex}
-              />
-              <Text style={styles.titleSettings}>TP Sensor max (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={TPSensorMax.toString()}
-                onChangeText={handleChangeTPSensorMax}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>TP Sensor min (PSI) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={TPSensorMin.toString()}
-                onChangeText={handleChangeTPSensorMin}
-                keyboardType="numeric"
-              />
-              <Text style={styles.titleSettings}>TP voltage max (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={TPVoltageMax.toString()}
-                onChangeText={handleChangeTPVoltageMax}
-                keyboardType="numbers-and-punctuation"
-              />
-              <Text style={styles.titleSettings}>TP voltage min (V) :</Text>
-              <TextInput
-                style={styles.inputSettings}
-                value={TPVoltageMin.toString()}
-                onChangeText={handleChangeTPVoltageMin}
-                keyboardType="numbers-and-punctuation"
-              />
-            </View>
-            <View style={styles.containerBtnText}>
-              <ButtonUI
-                onPress={() => handleSendTP()}
-                title={"Send"}
-                btnStyle={styles.btnSendText}
-                txtStyle={styles.TextSendStyle}
-              />
-            </View>
-          </View>
-          <View style={[styles.emptySettingsSection(width)]}></View>
+          <View style={styless.masonryContainer}>{renderColumns()}</View>
         </View>
       </View>
       <Loading loading={loading} title={title} />
@@ -1159,4 +1850,15 @@ const SettingsTab = (props) => {
   );
 };
 
-export default SettingsTab;
+const styless = StyleSheet.create({
+  masonryContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  column: {
+    flex: 1,
+    marginHorizontal: 4,
+  },
+});
+
+export default SettingsTab2;

@@ -9,7 +9,7 @@ const Table = ({ header, data }) => {
       {/* Table Header */}
       <View style={styles.tableHeader}>
         {header.map((headerTitle, index) => (
-          <Text key={index} style={styles.tableHeaderText}>
+          <Text key={index} style={styles.tableHeaderText(width)}>
             {headerTitle.name}
           </Text>
         ))}
@@ -19,10 +19,10 @@ const Table = ({ header, data }) => {
       <View style={styles.dataTableContainer(width)}>
         {data.map((rowData, index) => (
           <View key={index} style={styles.tableRow(width)}>
-            <Text style={[styles.tableCell, { fontWeight: "bold" }]}>
+            <Text style={[styles.tableCell(width), { fontWeight: "bold" }]}>
               {rowData.column1}
             </Text>
-            <Text style={styles.tableCell}>{rowData.column2}</Text>
+            <Text style={styles.tableCell(width)}>{rowData.column2}</Text>
           </View>
         ))}
       </View>

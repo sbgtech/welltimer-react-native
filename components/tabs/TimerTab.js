@@ -66,10 +66,6 @@ const TimerTab = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(width);
-  }, [width]);
-
   return (
     <KeyboardAwareScrollView
       extraScrollHeight={135} // Space above the keyboard
@@ -83,7 +79,8 @@ const TimerTab = (props) => {
           <Timer
             connectedDevice={props.connectedDevice}
             title={"Open timer"}
-            address={112}
+            address1={200}
+            address2={201}
             totalSec={receivedOpenTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
@@ -91,7 +88,8 @@ const TimerTab = (props) => {
           <Timer
             connectedDevice={props.connectedDevice}
             title={"Shutin timer"}
-            address={113}
+            address1={202}
+            address2={203}
             totalSec={receivedShutinTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
@@ -99,7 +97,8 @@ const TimerTab = (props) => {
           <Timer
             connectedDevice={props.connectedDevice}
             title={"Afterflow timer"}
-            address={114}
+            address1={204}
+            address2={205}
             totalSec={receivedAfterflowTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
@@ -107,7 +106,8 @@ const TimerTab = (props) => {
           <Timer
             connectedDevice={props.connectedDevice}
             title={"Mandatory shutin timer"}
-            address={115}
+            address1={206}
+            address2={207}
             totalSec={receivedMandatoryTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}

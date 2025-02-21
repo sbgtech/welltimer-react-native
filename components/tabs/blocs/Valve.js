@@ -9,16 +9,26 @@ import {
 } from "../../Utils/Constants";
 import Toast from "react-native-toast-message";
 
-const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
+const Valve = ({
+  connectedDevice,
+  title,
+  status,
+  fetchDataSettings,
+  valve,
+}) => {
   const { width } = useWindowDimensions();
-  const scale =
-    width < 600 ? width / 500 : width > 850 ? width / 1000 : width / 750;
   const [isEnabledValve, setIsEnabledValve] = useState(status);
 
-  // sent data of valve
+  // sent data of valve A
   const handleSendValveValue = async (value) => {
     try {
-      const arr = JSON.stringify([3, 1, Number(value)]);
+      let arr;
+      if (valve === "A") {
+        arr = JSON.stringify([3, 1, Number(value)]);
+      }
+      if (valve === "B") {
+        arr = JSON.stringify([3, 2, Number(value)]);
+      }
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
@@ -55,7 +65,7 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
 
   return (
     <View style={styles.valveWrapper}>
-      <View style={styles.onOffStatus}>
+      <View style={styles.onOffStatus(width)}>
         <Text style={styles.valveTitle}>{title}</Text>
         <Toggle
           value={isEnabledValve}
@@ -64,7 +74,8 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
             <Text
               style={{
                 color: "#fff",
-                fontSize: width < 600 ? 14 : width > 980 ? 20 : 16,
+                fontSize:
+                  width < 600 ? 10 : width < 800 ? 10 : width < 950 ? 14 : 18,
               }}
             >
               ON
@@ -74,16 +85,17 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
             <Text
               style={{
                 color: "#fff",
-                fontSize: width < 600 ? 14 : width > 980 ? 20 : 16,
+                fontSize:
+                  width < 600 ? 10 : width < 800 ? 10 : width < 950 ? 14 : 18,
               }}
             >
               OFF
             </Text>
           }
           thumbButton={{
-            width: width < 600 ? 50 : width > 980 ? 85 : 60,
-            height: width < 600 ? 50 : width > 980 ? 85 : 60,
-            radius: 0,
+            width: width < 600 ? 40 : width < 800 ? 38 : width < 950 ? 50 : 60,
+            height: width < 600 ? 40 : width < 800 ? 38 : width < 950 ? 50 : 60,
+            radius: 50,
             activeBackgroundColor: "#349E43",
             inActiveBackgroundColor: "#a3a3a3",
           }}
@@ -93,9 +105,10 @@ const Valve = ({ connectedDevice, title, status, fetchDataSettings }) => {
             borderActiveColor: "#45D058",
             borderInActiveColor: "#ddd",
             borderWidth: width < 600 ? 5 : width > 980 ? 7 : 6,
-            width: width < 600 ? 140 : width > 980 ? 260 : 180,
-            height: width < 600 ? 30 : width > 980 ? 50 : 34,
-            radius: 0,
+            width:
+              width < 600 ? 80 : width < 800 ? 80 : width < 950 ? 100 : 150,
+            height: width < 600 ? 35 : width < 800 ? 32 : width < 950 ? 45 : 55,
+            radius: 50,
           }}
         />
       </View>

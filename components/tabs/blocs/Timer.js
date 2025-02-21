@@ -14,7 +14,8 @@ const Timer = ({
   title,
   totalSec,
   connectedDevice,
-  address,
+  address1,
+  address2,
   fetchDataTimer,
 }) => {
   const { width } = useWindowDimensions();
@@ -58,6 +59,22 @@ const Timer = ({
     }
   };
 
+  const unpackFloatToRegister = (floatValue) => {
+    // Convert the float to a 32-bit integer (using Float32Array and DataView)
+    let buffer = new ArrayBuffer(4);
+    let view = new DataView(buffer);
+    view.setFloat32(0, floatValue, true); // true for little-endian
+
+    // Get the 32-bit integer from the buffer
+    let register32bit = view.getUint32(0, true);
+
+    // Extract the MSB (Most Significant Byte) and LSB (Least Significant Byte)
+    let MSB = (register32bit >> 16) & 0xffff; // Top 16 bits
+    let LSB = register32bit & 0xffff; // Bottom 16 bits
+
+    return { LSB, MSB };
+  };
+
   const handleSendTimer = async () => {
     if (hourValue === "" || minValue === "" || secValue === "") {
       Toast.show({
@@ -71,7 +88,8 @@ const Timer = ({
     try {
       const totalSeconds =
         Number(hourValue) * 3600 + Number(minValue) * 60 + Number(secValue);
-      const arr = JSON.stringify([2, address, totalSeconds]);
+      const { LSB, MSB } = unpackFloatToRegister(totalSeconds);
+      const arr = JSON.stringify([2, address1, LSB, address2, MSB]);
       const buffer = Buffer.from(arr + "\n", "utf-8");
       await connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
@@ -84,6 +102,7 @@ const Timer = ({
         text2: "Data sent successfully",
         visibilityTime: 3000,
       });
+      console.log(arr);
       await fetchDataTimer();
     } catch (error) {
       console.log(
@@ -121,7 +140,7 @@ const Timer = ({
         <View style={styles.containerRange}>
           <View style={styles.timersInput}>
             <TextInput
-              style={styles.inputTimer}
+              style={styles.inputTimer(width)}
               keyboardType="numeric"
               value={hourValue}
               onChangeText={handleChangeHour}
@@ -130,7 +149,7 @@ const Timer = ({
             />
             <Text style={styles.dotTimer}>:</Text>
             <TextInput
-              style={styles.inputTimer}
+              style={styles.inputTimer(width)}
               keyboardType="numeric"
               value={minValue}
               onChangeText={handleChangeMin}
@@ -139,7 +158,7 @@ const Timer = ({
             />
             <Text style={styles.dotTimer}>:</Text>
             <TextInput
-              style={styles.inputTimer}
+              style={styles.inputTimer(width)}
               keyboardType="numeric"
               value={secValue}
               onChangeText={handleChangeSec}
@@ -151,8 +170,8 @@ const Timer = ({
             <ButtonUI
               onPress={() => handleSendTimer()}
               title={"Send"}
-              btnStyle={styles.btnSendText}
-              txtStyle={styles.TextSendStyle}
+              btnStyle={styles.btnSendText(width)}
+              txtStyle={styles.TextSendStyle(width)}
             />
           </View>
         </View>

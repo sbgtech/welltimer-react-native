@@ -3,8 +3,6 @@ import { Dimensions, Platform } from "react-native";
 const { width, height } = Dimensions.get("window");
 const marginBottomAndroid = height * 0.09; // Adjust 0.05 as needed for your layout
 const marginBottomIOS = height * 0.01; // Adjust 0.05 as needed for your layout
-const scale =
-  width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
 
 export const styles = {
   // In the most tabs
@@ -24,11 +22,11 @@ export const styles = {
     marginTop: 16,
   },
   // RefreshBtn.js
-  refreshBtn: {
+  refreshBtn: (width) => ({
     paddingHorizontal: 12,
-    height: width < 600 ? 36 : width > 950 ? 44 : 44,
+    height: width < 600 ? 36 : width < 800 ? 36 : width < 950 ? 44 : 44,
     maxHeight: 90,
-  },
+  }),
   // WellStatusTab.js
   statusContainer: (width) => ({
     marginHorizontal: 26,
@@ -51,26 +49,40 @@ export const styles = {
     flexWrap: width > 600 ? "wrap" : "nowrap",
     justifyContent: "space-between",
     alignItems: width > 600 ? "center" : "baseline",
-    padding: width > 600 ? 10 : 7,
+    padding: width < 600 ? 7 : width < 800 ? 7 : width < 950 ? 10 : 10,
     backgroundColor: "#fff",
     alignContent: "center",
-    margin: width < 600 ? 2 : 4,
-    width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
+    margin: width < 600 ? 2 : width < 800 ? 2 : width < 950 ? 4 : 4,
+    width:
+      width < 600
+        ? "auto"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // WellStatusTab.js
   emptyStatusWrapper: (width) => ({
-    padding: width > 600 ? 0 : 7,
+    // padding: width > 600 ? 0 : 7,
     margin: width < 600 ? 0 : 4,
-    width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
+    width:
+      width < 600
+        ? "auto"
+        : width < 800
+        ? width / 2.5
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // WellStatusTab.js
-  statusText: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+  statusText: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
+  }),
   // WellStatusTab.js
-  statusValue: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+  statusValue: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
+  }),
   // WellStatusTab.js
   arrivalContainer: {
     marginHorizontal: 26,
@@ -99,24 +111,38 @@ export const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: 8,
-    margin: width < 600 ? 2 : 4,
+    margin: 2,
     backgroundColor: "#ffffff",
-    width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
+    width:
+      width < 600
+        ? "auto"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // Arrival.js
   emptyArrivalItems: (width) => ({
     margin: width < 600 ? 2 : 4,
     // backgroundColor: "#ffffff",
-    width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
+    width:
+      width < 600
+        ? "auto"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // Arrival.js
-  arrivalName: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+  arrivalName: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 18 : 20,
+  }),
   // Arrival.js
-  arrivalValue: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+  arrivalValue: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 18 : 20,
+  }),
   // WellStatusTab.js
   telemetryDataContainer: {
     marginHorizontal: 26,
@@ -134,13 +160,13 @@ export const styles = {
     backgroundColor: "#0055a4",
   },
   // Table.js
-  tableHeaderText: {
+  tableHeaderText: (width) => ({
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
-    padding: 10,
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+    padding: width < 600 ? 8 : width < 800 ? 8 : width < 950 ? 10 : 10,
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
+  }),
   // Table.js
   dataTableContainer: (width) => ({
     flexDirection: width > 600 ? "row" : "column",
@@ -153,26 +179,65 @@ export const styles = {
     justifyContent: "space-between",
     borderTopWidth: 3,
     borderColor: "#eeeeee",
-    width: width < 600 ? "auto" : width > 950 ? width / 3.4 : width / 2.3,
+    width:
+      width < 600
+        ? "auto"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // Table.js
-  tableCell: {
+  tableCell: (width) => ({
     padding: 10,
     borderColor: "#D4D4D4",
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
-  },
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
+  }),
 
   /* ------------------------------------------- */
   // TimerTab.js
   timersContainer: (width) => ({
-    height: height,
+    // height: height,
     flexDirection: width > 600 ? "row" : "column",
     flexWrap: width > 600 ? "wrap" : "nowrap",
     justifyContent: width > 600 ? "space-between" : "flex-start",
     gap: width > 600 ? 30 : 20,
     marginHorizontal: 26,
     marginTop: width > 600 ? 25 : 15,
+    marginBottom: width > 600 ? 50 : 50,
   }),
+  // TimerTab.js
+  timerIntermitContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    gap: 30,
+    marginHorizontal: 26,
+    marginTop: 25,
+    marginBottom: 50,
+  },
+  // TimerTab.js
+  pressureIntermitContainer: (width) => ({
+    flexDirection: "column",
+    justifyContent: "space-between",
+    gap: width > 600 ? 20 : 10,
+  }),
+  // TimerTab.js
+  pressureIntermitContent: (width) => ({
+    flexDirection: width > 600 ? "row" : "column",
+    flexWrap: width > 600 ? "wrap" : "nowrap",
+    justifyContent: width > 600 ? "space-between" : "flex-start",
+    gap: width > 600 ? 30 : 10,
+    marginHorizontal: 26,
+    marginTop: width > 600 ? 25 : 10,
+  }),
+  // TimerTab.js
+  pressureIntermitBtnContainer: {
+    marginHorizontal: 26,
+    // marginBottom: 20,
+    width: "auto",
+  },
   // Timer.js
   wrapper: (width) => ({
     padding: 12,
@@ -180,12 +245,12 @@ export const styles = {
     width: width < 600 ? "auto" : width > 1100 ? width / 3.4 : width / 2.3,
   }),
 
-  // Timer.js - statisticsTab.js
+  // Timer.js - statisticsTab.js - Valve.js
   valveTitle: {
     fontWeight: "bold",
     fontStyle: "italic",
     marginBottom: 10,
-    fontSize: width < 600 ? 20 : width > 980 ? 30 : 24,
+    fontSize: width < 600 ? 18 : width < 800 ? 18 : width < 950 ? 24 : 30,
   },
 
   // Timer.js- statisticsTab.js - SettingsTab.js
@@ -210,52 +275,40 @@ export const styles = {
     // width: "auto",
   },
   // Timer.js
-  inputTimer: {
+  inputTimer: (width) => ({
     backgroundColor: "#fff",
     textAlign: "center",
     borderWidth: 0.5,
     borderColor: "grey",
     fontWeight: "bold",
     color: "#000",
-    fontSize: width < 600 ? 15 : width > 950 ? 20 : 17,
-    width: width < 600 ? 53 : 57,
+    fontSize: width < 600 ? 15 : width < 800 ? 14 : width < 950 ? 18 : 20,
+    width: width < 600 ? 53 : width < 800 ? 50 : width < 950 ? 57 : 57,
     maxWidth: 90,
-    height: width < 600 ? 36 : 42,
+    height: width < 600 ? 36 : width < 800 ? 33 : width < 950 ? 42 : 42,
     maxHeight: 90,
-  },
+  }),
   // Timer.js
   dotTimer: {
-    fontSize: 20,
+    fontSize: width < 600 ? 20 : width < 800 ? 16 : width < 950 ? 20 : 20,
     fontWeight: width < 600 ? "normal" : "bold",
   },
   // Timer.js
   TimersbtnContainer: {
     width: width < 600 ? "auto" : width > 850 ? "30%" : "auto",
   },
-  // Timer.js
-  // TimerbtnSendText: {
-  //   paddingHorizontal: 12,
-  //   height: width < 600 ? 45 : 50,
-  //   maxHeight: 90,
-  //   width: "100%",
-  // },
-  // Timer.js
-  // TimerTextSendStyle: {
-  //   fontSize: width < 600 ? 16 : 20,
-  //   padding: 4,
-  // },
   // Timer.js - SettingsTab.js - Statistics.js
-  btnSendText: {
+  btnSendText: (width) => ({
     paddingHorizontal: 12,
-    height: width < 600 ? 36 : width > 950 ? 42 : 42,
+    height: width < 600 ? 36 : width < 800 ? 33 : width < 950 ? 42 : 42,
     maxHeight: 90,
     width: "100%",
-  },
+  }),
   // Timer.js - SettingsTab.js - Statistics.js
-  TextSendStyle: {
-    fontSize: width < 600 ? 14 : width > 950 ? 22 : 20,
+  TextSendStyle: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 22,
     padding: 2,
-  },
+  }),
   /* ------------------------------------------- */
   // SettingsTab.js
   settingsWrapper: {
@@ -267,7 +320,7 @@ export const styles = {
   },
   // SettingsTab.js
   settingsSectionContainer: (width) => ({
-    flexDirection: width > 600 ? "row" : "cloumn",
+    flexDirection: width > 600 ? "row" : "column",
     flexWrap: width > 600 ? "wrap" : "nowrap",
     justifyContent:
       width < 600
@@ -277,51 +330,73 @@ export const styles = {
         : "space-between",
     alignItems: width > 600 ? "flex-start" : "baseline",
     width: "auto",
-    gap: width < 600 ? 4 : width > 950 ? 14 : 20,
+    // gap: width < 600 ? 14 : width > 950 ? 14 : 14,
   }),
   // SettingsTab.js
   settingsSection: (width) => ({
     flexDirection: "column",
-    justifyContent: "space-between",
-    gap: width < 600 ? 8 : 0,
+    justifyContent: "flex-start",
+    gap: width < 600 ? 8 : 16,
     // height: width < 600 ? "auto" : 450,
-    height: width < 600 ? "auto" : width > 950 ? 485 : 470,
-    maxHeight: width < 600 ? "auto" : width > 950 ? 485 : 470,
-    width: width < 600 ? "100%" : width > 950 ? width / 3.4 : width / 2.3,
+    // height: width < 600 ? "auto" : width > 950 ? 590 : 550,
+    height: "auto",
+    // maxHeight: width < 600 ? "auto" : width > 950 ? 590 : 550,
+    width:
+      width < 600
+        ? "100%"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
     backgroundColor: "#ddd",
     padding: width * 0.01,
-    marginBottom: 0,
-  }),
-  // SettingsTab.js
-  emptySettingsSection: (width) => ({
-    width: width < 600 ? "100%" : width > 950 ? width / 3.4 : width / 2.3,
-    backgroundColor: "#ddd",
+    marginBottom: 20,
   }),
   // SettingsTab.js - StatisticsTab.js
-  titleSettings: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+  titleSettings: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
     fontWeight: "bold",
     marginTop: 10,
-  },
+  }),
   // SettingsTab.js
-  inputSettings: {
+  inputSettings: (width) => ({
     backgroundColor: "#fff",
     paddingHorizontal: 10,
     marginVertical: 2,
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: width < 600 ? 34 : width > 950 ? 40 : 40,
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    height: width < 600 ? 34 : width < 800 ? 32 : width < 950 ? 40 : 40,
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
     color: "#000",
+  }),
+  // SettingsTab.js
+  inputContainer: {
+    paddingHorizontal: 5,
   },
   // SettingsTab.js
   containerBtnText: {
     marginVertical: 4,
-    // marginTop: 12 ,
+    paddingHorizontal: 5,
     width: "100%",
     maxWidth: "100%",
-    height: 40,
+    height: width < 600 ? 34 : width < 800 ? 33 : width < 950 ? 40 : 40,
+  },
+  // SettingsTab.js
+  pidInputsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 30,
+  },
+  // SettingsTab.js
+  pidInputs: { flex: 1 },
+  // SettingsTab.js
+  valveContainer: {
+    flexDirection: width < 600 ? "row" : "row",
+    justifyContent: width > 600 ? "space-between" : "space-between",
+    alignItems: width > 600 ? "center" : "center",
   },
   /* ------------------------------------------- */
   // Valve.js
@@ -335,11 +410,11 @@ export const styles = {
     width: "auto",
   },
   // Valve.js
-  onOffStatus: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+  onOffStatus: (width) => ({
+    flexDirection: width < 600 ? "column" : "row",
+    justifyContent: width < 600 ? "flex-start" : "space-between",
+    alignItems: width < 600 ? "center" : "center",
+  }),
   /* ------------------------------------------- */
   // StatisticsTab.js
   statisticWrapper: {
@@ -361,26 +436,33 @@ export const styles = {
   // StatisticsTab.js
   statisticSection: (width) => ({
     // width: "100%",
-    width: width < 600 ? "100%" : width > 900 ? width / 3.4 : width / 2.3,
+    width:
+      width < 600
+        ? "100%"
+        : width < 800
+        ? width / 2.3
+        : width < 950
+        ? width / 2.3
+        : width / 3.4,
   }),
   // StatisticsTab.js
-  inputSettingsDisabled: {
+  inputSettingsDisabled: (width) => ({
     backgroundColor: "#F5F5F5",
     paddingHorizontal: 10,
     marginVertical: 2,
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: width < 600 ? 34 : width > 950 ? 40 : 40,
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    height: width < 600 ? 34 : width < 800 ? 33 : width < 950 ? 40 : 40,
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
     color: "#000",
-  },
+  }),
   // Statistics.js
   StatisticContainerBtnText: {
     marginTop: 14,
     width: "100%",
     maxWidth: "100%",
-    height: width < 600 ? 34 : width > 950 ? 40 : 40,
+    height: width < 600 ? 34 : width < 800 ? 33 : width < 950 ? 40 : 40,
   },
   /* --------------------------------------- */
   // TestTab.js
@@ -391,29 +473,51 @@ export const styles = {
   // TestTab.js
   box: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    gap: 4,
+    // justifyContent: "flex-end",
   },
   // TestTab.js
-  testTitle: {
-    fontSize: width < 600 ? 28 : width > 950 ? 32 : 28,
+  testTitle: (width) => ({
+    fontSize: width < 600 ? 20 : width < 800 ? 20 : width < 950 ? 28 : 32,
     fontWeight: "bold",
-  },
+  }),
   // TestTab.js
-  itemsList: {
+  inputTestContainer: (width) => ({
+    flexDirection: "row",
+    alignItems: "center",
+    height: width < 600 ? 45 : width < 800 ? 45 : width < 950 ? 60 : 70,
+    padding: 5,
     backgroundColor: "#fff",
-    paddingVertical: 4,
-    // marginHorizontal: 5,
-    // marginVertical: 16,
-    borderWidth: 0.5,
-  },
+    marginBottom: 10,
+  }),
+  // TestTab.js
+  testInput: (width) => ({
+    height: "100%",
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 22,
+    flex: 1,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    paddingLeft: 10,
+  }),
+  // TestTab.js
+  btnSend: (width) => ({
+    width: width < 600 ? 66 : width < 800 ? 85 : width < 950 ? 95 : 120,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    height: "100%",
+  }),
+  // TestTab.js
+  sendButtonText: (width) => ({
+    color: "#fff",
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 18 : 24,
+  }),
   // TestTab.js
   msgViewContainer: {
-    marginBottom: 10,
-    marginHorizontal: 6,
+    marginVertical: 4,
     backgroundColor: "#f7f7f7",
-    padding: 4,
+    padding: width < 600 ? 4 : width < 800 ? 4 : width < 950 ? 8 : 8,
     flexDirection: "row",
     justifyContent: "space-between",
     textAlign: "center",
@@ -423,59 +527,61 @@ export const styles = {
     justifyContent: "center",
   },
   // TestTab.js
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  // TestTab.js
-  emptyText: {
-    fontSize: width < 600 ? 22 : width > 950 ? 30 : 26,
-    fontWeight: "bold",
-    color: "#0055a4",
-  },
-  // TestTab.js
-  itemType: {
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+  itemType: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 20 : 22,
     fontWeight: "bold",
     color: "#7d7d7d",
-  },
-  // TestTab.js
-  itemData: {
-    fontSize: width < 600 ? 18 : width > 950 ? 22 : 20,
-    fontWeight: "bold",
-  },
-  // TestTab.js
-  itemDate: {
-    color: "#7d7d7d",
-    fontSize: width < 600 ? 14 : width > 950 ? 18 : 16,
-  },
-  // TestTab.js
-  testContainer: (width) => ({
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: width < 600 ? 6 : 10,
-    paddingVertical: 4,
-    height: width < 600 ? 50 : width > 900 ? 70 : 60,
-    width: "100%",
   }),
   // TestTab.js
-  testInput: {
-    backgroundColor: "#ddd",
-    paddingVertical: width < 600 ? 8 : 0,
-    paddingHorizontal: width < 600 ? 10 : 8,
-    borderWidth: 0.5,
-    flex: 1,
-    height: "100%",
-    fontSize: width < 600 ? 18 : width > 950 ? 24 : 22,
-  },
+  itemData: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 16 : width < 950 ? 22 : 24,
+    fontWeight: "bold",
+  }),
   // TestTab.js
-  btnSend: {
-    width: width < 600 ? 50 : width > 900 ? 100 : 80,
-    height: "100%",
+  itemDate: (width) => ({
+    color: "#7d7d7d",
+    fontSize: width < 600 ? 11 : width < 800 ? 14 : width < 950 ? 18 : 22,
+  }),
+  // TestTab.js
+  emptyContainer: {
+    flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  // TestTab.js
+  emptyText: (width) => ({
+    fontSize: width < 600 ? 16 : width < 800 ? 16 : width < 950 ? 26 : 30,
+    fontWeight: "bold",
+    color: "#0055a4",
+  }),
+  // TestTab.js
+  emptyImg: (width) => ({
+    width:
+      width < 600
+        ? width / 2
+        : width < 800
+        ? width / 3
+        : width < 950
+        ? width / 3
+        : width / 4,
+    height:
+      width < 600
+        ? width / 2
+        : width < 800
+        ? width / 3
+        : width < 950
+        ? width / 3
+        : width / 4,
+  }),
+
+  // TestTab.js
+  flatListContainer: {
+    padding: 10, // Make space for input area
+    backgroundColor: "#fff",
+    marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: "#ccc",
   },
   // TestTab.js
   emptyPINContainer: { justifyContent: "center", alignItems: "center" },
@@ -487,41 +593,41 @@ export const styles = {
   },
   /* ----------------------------- */
   // Home.js
-  HomeView: (scale) => ({
+  HomeView: {
     flex: 1,
     backgroundColor: "#eeeeee",
-    padding: 10 * scale,
+    padding: 12,
+  },
+  // Home.js
+  HomeBtnSendText: (width) => ({
+    paddingHorizontal: 12,
+    height: width < 600 ? 38 : width < 800 ? 35 : width < 950 ? 50 : 50,
+    maxHeight: 90,
+    width: "100%",
   }),
   // Home.js
-  HomeTitle: (scale) => ({
-    fontSize: width < 600 ? 24 * scale : 26 * scale,
+  HomeTextSendStyle: (width) => ({
+    fontSize: width < 600 ? 15 : width < 800 ? 14 : width < 950 ? 20 : 20,
+    padding: 4,
+  }),
+  // Home.js
+  HomeTitle: (width) => ({
+    fontSize: width < 600 ? 20 : width < 800 ? 18 : width < 950 ? 26 : 26,
     fontWeight: "bold",
-    marginHorizontal: 4 * scale,
-    marginBottom: 10 * scale,
+    marginBottom: 10,
   }),
   // Home.js
-  HomeCountDevices: (scale) => ({
-    fontSize: width < 600 ? 16 * scale : 20 * scale,
+  HomeCountDevices: (width) => ({
+    fontSize: width < 600 ? 13 : width < 800 ? 12 : width < 950 ? 20 : 20,
   }),
   // Home.js
-  emptyTextHome: (scale) => ({
-    fontSize: 20 * scale,
+  emptyTextHome: (width) => ({
+    fontSize: width < 600 ? 16 : width < 800 ? 14 : width < 950 ? 22 : 22,
     fontStyle: "italic",
     fontWeight: "bold",
     color: "#b5b5b5",
   }),
-  // Home.js
-  HomeBtnSendText: (scale) => ({
-    paddingHorizontal: 12 * scale,
-    height: width < 600 ? 45 * scale : 50 * scale,
-    maxHeight: 90 * scale,
-    width: "100%",
-  }),
-  // Home.js
-  HomeTextSendStyle: (scale) => ({
-    fontSize: width < 600 ? 16 * scale : 20 * scale,
-    padding: 4 * scale,
-  }),
+
   /* ----------------------------------- */
   // Item.js
   itemView: {
@@ -540,37 +646,37 @@ export const styles = {
     // maxWidth: "70%",
   },
   // Item.js
-  itemName: {
-    fontSize: width < 600 ? 20 : 24,
+  itemName: (width) => ({
+    fontSize: width < 600 ? 20 : width < 800 ? 18 : width < 950 ? 26 : 26,
     fontWeight: "bold",
-  },
+  }),
   // Item.js
-  itemID: {
-    fontSize: width < 600 ? 10 : 14,
+  itemID: (width) => ({
+    fontSize: width < 600 ? 10 : width < 800 ? 10 : width < 950 ? 14 : 14,
     color: "#9E9E9E",
-  },
+  }),
   /* --------------------------- */
   // Tab.js
-  tab: {
+  tab: (width) => ({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
+    paddingVertical: width < 600 ? 12 : width < 800 ? 8 : width < 950 ? 14 : 14,
     borderBottomWidth: 4,
     borderBottomColor: "transparent",
     backgroundColor: "#0055a4",
-  },
+  }),
   // Tab.js
   activeTab: {
     borderBottomColor: "#d7c300", // Active tab indicator color
     backgroundColor: "#0a4b87",
   },
   // Tab.js
-  tabText: {
-    fontSize: width < 600 ? 14 : width > 950 ? 22 : 18,
+  tabText: (width) => ({
+    fontSize: width < 600 ? 13 : width < 800 ? 14 : width < 950 ? 18 : 22,
     fontWeight: "bold",
     color: "#fff", // Customize tab label color
-  },
+  }),
   /* ----------------------------- */
   // PIN_modal.js
   PINContainer: {
@@ -580,13 +686,14 @@ export const styles = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   // PIN_modal.js
-  PINContent: {
-    width: "85%",
+  PINContent: (width) => ({
+    width:
+      width < 600 ? "80%" : width < 800 ? "70%" : width < 950 ? "75%" : "70%",
     padding: 24,
     backgroundColor: "white",
     alignItems: "center",
     position: "relative",
-  },
+  }),
   // PIN_modal.js
   closeIconContainer: {
     position: "absolute",
@@ -594,22 +701,22 @@ export const styles = {
     right: 10,
   },
   // PIN_modal.js
-  PINTitle: {
-    fontSize: width < 600 ? 24 : width > 950 ? 30 : 26,
+  PINTitle: (width) => ({
+    fontSize: width < 600 ? 20 : width < 800 ? 22 : width < 950 ? 28 : 30,
     fontWeight: "bold",
     marginBottom: 24,
-  },
+  }),
   // PIN_modal.js
-  PINinput: {
+  PINinput: (width) => ({
     backgroundColor: "#fff",
     paddingHorizontal: 10,
     marginBottom: 16,
     borderWidth: 0.5,
     width: "100%",
     maxWidth: "100%",
-    height: width < 600 ? 40 : 42,
-    fontSize: width < 600 ? 18 : width > 950 ? 24 : 22,
-  },
+    height: width < 600 ? 35 : width < 800 ? 35 : width < 950 ? 42 : 42,
+    fontSize: width < 600 ? 16 : width < 800 ? 16 : width < 950 ? 22 : 24,
+  }),
   /* ---------------------------- */
   // TabView.js
   deviceBloc: {
@@ -617,32 +724,32 @@ export const styles = {
     marginVertical: 10,
   },
   // TabView.js
-  nameVersionBloc: {
+  nameVersionBloc: (width) => ({
     flexDirection: width < 600 ? "column" : "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
+  }),
   // TabView.js
-  version: {
+  version: (width) => ({
     color: "#000",
     fontWeight: "bold",
-    fontSize: width < 600 ? 14 : width > 950 ? 24 : 22,
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 22 : 24,
     // textAlign: "center",
     // marginBottom: 2,
-  },
+  }),
   // TabView.js
-  wellName: {
+  wellName: (width) => ({
     color: "#000",
     fontWeight: "bold",
-    fontSize: width < 600 ? 18 : width > 950 ? 26 : 22,
+    fontSize: width < 600 ? 14 : width < 800 ? 15 : width < 950 ? 22 : 24,
     // textAlign: "center",
     marginBottom: 2,
-  },
+  }),
   // TabView.js
-  deviceInfo: {
-    fontSize: width < 600 ? 14 : width > 950 ? 22 : 18,
+  deviceInfo: (width) => ({
+    fontSize: width < 600 ? 12 : width < 800 ? 14 : width < 950 ? 18 : 22,
     color: "#7d7d7d",
-  },
+  }),
   // TabView.js
   deviceBtns: {
     paddingHorizontal: 12,
@@ -670,8 +777,8 @@ export const styles = {
   // ButtonUI.js
   buttonTextStyle: {
     color: "#fff",
-    fontSize: width < 600 ? 16 : width > 950 ? 22 : 20,
-    padding: 4,
+    fontSize: width < 600 ? 16 : width < 800 ? 16 : width < 950 ? 20 : 22,
+    // padding: 4,
   },
   /* ------------------------------- */
   // Laoding.js
@@ -704,17 +811,17 @@ export const styles = {
     paddingHorizontal: 12,
     width: "100%",
     maxWidth: "100%",
-    height: width < 600 ? 34 : width > 950 ? 40 : 40,
+    height: width < 600 ? 34 : width < 800 ? 32 : width < 950 ? 40 : 40,
     marginVertical: 2,
   },
   // Dropdown.js
   dropdownButtonTxtStyle: {
     flex: 1,
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
   },
   // Dropdown.js
   dropdownButtonArrowStyle: {
-    fontSize: width < 600 ? 18 : width > 950 ? 22 : 20,
+    fontSize: width < 600 ? 18 : width < 800 ? 18 : width < 950 ? 20 : 22,
   },
   // Dropdown.js
   dropdownItemStyle: {
@@ -728,7 +835,7 @@ export const styles = {
   // Dropdown.js
   dropdownItemTxtStyle: {
     flex: 1,
-    fontSize: width < 600 ? 16 : width > 950 ? 20 : 18,
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 18 : 20,
     fontWeight: "500",
     color: "#151E26",
   },

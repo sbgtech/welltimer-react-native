@@ -21,8 +21,6 @@ const bleManager = new BleManager();
 
 export default function Home({ navigation, route }) {
   const { width } = useWindowDimensions();
-  const scale =
-    width < 600 ? width / 420 : width > 1100 ? width / 1300 : width / 900;
   // initialize the state of bluetooth in the mobile, default Unknown
   const [bluetoothState, setBluetoothState] = useState("Unknown");
   // create scanning state of the devices, default is not scanning yet
@@ -208,10 +206,6 @@ export default function Home({ navigation, route }) {
     console.log("this is width", width);
   }, [width]);
 
-  useEffect(() => {
-    console.log("this is scale", scale);
-  }, [scale]);
-
   const renderItem = ({ item }) => (
     <Item
       name={item.name}
@@ -225,7 +219,7 @@ export default function Home({ navigation, route }) {
   const handleEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyTextHome(scale)}>
+        <Text style={styles.emptyTextHome(width)}>
           {" "}
           No available devices yet!
         </Text>
@@ -234,7 +228,7 @@ export default function Home({ navigation, route }) {
   };
 
   return (
-    <View style={styles.HomeView(scale)}>
+    <View style={styles.HomeView}>
       <ButtonUI
         onPress={() => {
           setScanning(!scanning);
@@ -243,12 +237,12 @@ export default function Home({ navigation, route }) {
         //   connectToDevice();
         // }}
         title={scanning ? "Stop Scanning" : "Scan devices"}
-        btnStyle={styles.HomeBtnSendText(scale)}
-        txtStyle={styles.HomeTextSendStyle(scale)}
+        btnStyle={styles.HomeBtnSendText(width)}
+        txtStyle={styles.HomeTextSendStyle(width)}
       />
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.HomeTitle(scale)}>Available devices :</Text>
-        <Text style={styles.HomeCountDevices(scale)}>({devices.length})</Text>
+        <Text style={styles.HomeTitle(width)}>Available devices :</Text>
+        <Text style={styles.HomeCountDevices(width)}>({devices.length})</Text>
         {scanning && <ActivityIndicator size="small" color="#0055a4" />}
       </View>
       <FlatList

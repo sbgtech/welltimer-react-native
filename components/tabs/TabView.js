@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, useWindowDimensions } from "react-native";
 import ButtonUI from "../ButtonUI";
 import Tab from "./Tab";
 import WellStatus from "./WellStatusTab";
@@ -17,10 +17,12 @@ import Toast from "react-native-toast-message";
 const bleManager = new BleManager();
 
 const TabView = ({ navigation, initialTab }) => {
+  const { width } = useWindowDimensions();
   // set the connected welltimer to this variable
   const [connectedDevice, setConnectedDevice] = useState(null);
   const [wellName, setWellName] = useState(null);
   const isFocused = useIsFocused();
+  const currentVersion = "Prod 4-19FEB2025@08:50.AM";
   // the existed pages for config welltimer after connected to it
   const tabs = [
     {
@@ -185,34 +187,36 @@ const TabView = ({ navigation, initialTab }) => {
   return (
     <View style={styles.container}>
       <View style={styles.deviceBloc}>
-        <View style={styles.nameVersionBloc}>
+        <View style={styles.nameVersionBloc(width)}>
           <View>
             {wellName ? (
-              <Text style={styles.wellName}>{wellName}</Text>
+              <Text style={styles.wellName(width)}>{wellName}</Text>
             ) : (
-              <Text style={styles.wellName}>RECON device</Text>
+              <Text style={styles.wellName(width)}>RECON device</Text>
             )}
           </View>
           <View>
-            <Text style={styles.version}>Prod 3-07FEB2025@04:40.PM</Text>
+            <Text style={styles.version(width)}>{currentVersion}</Text>
           </View>
         </View>
 
         {connectedDevice ? (
           <View key={connectedDevice.id}>
-            <Text style={styles.deviceInfo}>
+            <Text style={styles.deviceInfo(width)}>
               Device : {connectedDevice.name}
             </Text>
-            <Text style={styles.deviceInfo}>ID : {connectedDevice.id}</Text>
+            <Text style={styles.deviceInfo(width)}>
+              ID : {connectedDevice.id}
+            </Text>
             <ButtonUI
               onPress={() => handleDisconnect()}
               title={"Disconnect"}
               btnStyle={styles.deviceBtns}
-              txtStyle={styles.TextSendStyle}
+              txtStyle={styles.TextSendStyle(width)}
             />
           </View>
         ) : (
-          <Text style={styles.deviceInfo}>No connected devices</Text>
+          <Text style={styles.deviceInfo(width)}>No connected devices</Text>
         )}
       </View>
       <View style={styles.tabsContainer}>
