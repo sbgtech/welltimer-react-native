@@ -8,6 +8,7 @@ import {
   useWindowDimensions,
   Image,
   Alert,
+  Keyboard,
 } from "react-native";
 import Moment from "moment";
 import { Buffer } from "buffer";
@@ -83,6 +84,7 @@ const TestTab2 = (props) => {
       await sendData(connectedDevice, message + "\n");
       // empty the variable
       setMessage("");
+      Keyboard.dismiss();
     } else {
       Alert.alert("Warning", "Data required");
     }

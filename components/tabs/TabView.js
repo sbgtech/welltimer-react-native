@@ -22,7 +22,7 @@ const TabView = ({ navigation, initialTab }) => {
   const [connectedDevice, setConnectedDevice] = useState(null);
   const [wellName, setWellName] = useState(null);
   const isFocused = useIsFocused();
-  const currentVersion = "Prod 4-19FEB2025@08:50.AM";
+  const currentVersion = "Prod 5-21FEB2025@11:00.AM";
   // the existed pages for config welltimer after connected to it
   const tabs = [
     {
