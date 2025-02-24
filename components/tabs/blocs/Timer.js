@@ -63,12 +63,11 @@ const Timer = ({
     // Convert the float to a 32-bit integer (using Float32Array and DataView)
     let buffer = new ArrayBuffer(4);
     let view = new DataView(buffer);
-    view.setFloat32(0, floatValue, true); // true for little-endian
+    view.setFloat32(0, floatValue, true);
 
     // Get the 32-bit integer from the buffer
     let register32bit = view.getUint32(0, true);
 
-    // Extract the MSB (Most Significant Byte) and LSB (Least Significant Byte)
     let MSB = (register32bit >> 16) & 0xffff; // Top 16 bits
     let LSB = register32bit & 0xffff; // Bottom 16 bits
 

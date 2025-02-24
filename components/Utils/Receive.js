@@ -216,6 +216,7 @@ export class Receive {
       setHiLoModeIndex,
       setHiLoHigh,
       setHiLoLow,
+      setHiLoDelay,
       setPidOverrideIndex,
       setPidSP,
       setPidKP,
@@ -299,6 +300,7 @@ export class Receive {
             setHiLoModeIndex(msg[6]);
             setHiLoHigh(msg[7]);
             setHiLoLow(msg[8]);
+            setHiLoDelay(msg[39]);
             //
             setLPTypeIndex(msg[9]);
             setLPSensorMax(msg[10]);

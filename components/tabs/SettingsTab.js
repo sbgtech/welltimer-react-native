@@ -53,6 +53,7 @@ const SettingsTab2 = (props) => {
   const [hiLoModeIndex, setHiLoModeIndex] = useState(null);
   const [hiLoHigh, setHiLoHigh] = useState("");
   const [hiLoLow, setHiLoLow] = useState("");
+  const [hiLoDelay, setHiLoDelay] = useState("");
   // states of PID
   const [pidOverrideIndex, setPidOverrideIndex] = useState(null);
   const [pidSP, setPidSP] = useState("");
@@ -172,6 +173,27 @@ const SettingsTab2 = (props) => {
       }
     } else {
       setHiLoLow("");
+    }
+  };
+
+  // handle change HiLo Delay value
+  const handleChangeHiLoDelay = (text) => {
+    if (text) {
+      const validText = text.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      // Ensure the length is 3
+      if (validText.length > 3) {
+        Toast.show({
+          type: "error",
+          text1: "Warning",
+          text2: "The max value must be 3 digits",
+          visibilityTime: 3000,
+        });
+        setHiLoDelay("");
+      } else {
+        setHiLoDelay(validText);
+      }
+    } else {
+      setHiLoDelay("");
     }
   };
 
@@ -828,11 +850,11 @@ const SettingsTab2 = (props) => {
 
   // send array of HiLo values to device
   const handleSendHiLo = async () => {
-    if (hiLoHigh === "" || hiLoLow === "") {
+    if (hiLoHigh === "" || hiLoLow === "" || hiLoDelay === "") {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "All fields (HiLo high and HiLo low) must be filled",
+        text2: "All fields (HiLo high, HiLo low and HiLo Delay) must be filled",
         visibilityTime: 4000,
       });
       return; // Exit the function if validation fails
@@ -853,6 +875,8 @@ const SettingsTab2 = (props) => {
           Number(hiLoHigh),
           124,
           Number(hiLoLow),
+          155,
+          Number(hiLoDelay),
         ]);
         const buffer = Buffer.from(arr + "\n", "utf-8");
         await props.connectedDevice?.writeCharacteristicWithResponseForService(
@@ -1243,6 +1267,7 @@ const SettingsTab2 = (props) => {
         setHiLoModeIndex,
         setHiLoHigh,
         setHiLoLow,
+        setHiLoDelay,
         setPidOverrideIndex,
         setPidSP,
         setPidKP,
@@ -1305,6 +1330,7 @@ const SettingsTab2 = (props) => {
         setHiLoModeIndex,
         setHiLoHigh,
         setHiLoLow,
+        setHiLoDelay,
         setPidOverrideIndex,
         setPidSP,
         setPidKP,
@@ -1642,6 +1668,13 @@ const SettingsTab2 = (props) => {
           style={styles.inputSettings(width)}
           value={hiLoLow.toString()}
           onChangeText={handleChangeHiLoLow}
+          keyboardType="numeric"
+        />
+        <Text style={styles.titleSettings(width)}>HiLo Delay :</Text>
+        <TextInput
+          style={styles.inputSettings(width)}
+          value={hiLoDelay.toString()}
+          onChangeText={handleChangeHiLoDelay}
           keyboardType="numeric"
         />
       </View>
