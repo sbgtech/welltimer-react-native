@@ -31,21 +31,11 @@ export default function Home({ navigation, route }) {
   const discoveredDevices = new Set();
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  // const [modalVisible, setModalVisible] = useState(false);
-  // const [pin, setPin] = useState("");
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // const handleSubmitPIN = async () => {
-  //   if (pin === "7707") {
-  //     setIsAuthenticated(true);
-  //     setModalVisible(false);
-  //     await connectToDevice();
-  //     console.log("Successfully logged in");
-  //   } else {
-  //     Alert.alert("Incorrect PIN", "Please try again.");
-  //     setPin("");
-  //   }
-  // };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pin, setPin] = useState("");
+  const [isIndicatorShown, setIsIndicatorShown] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState(null); // Store selected device
+  // const [isAuthenticated, setIsAuthenticated] = useState("");
 
   // Request Bluetooth permissions
   // Ask user when he open the app to allow and activate position and bluetooth
@@ -165,18 +155,56 @@ export default function Home({ navigation, route }) {
     }
   };
 
+  // Function to handle the login process
+  const handleSubmitPIN = async (text) => {
+    setPin(text);
+    if (text.length === 6) {
+      if (text === "123456") {
+        setIsIndicatorShown(true);
+        setTimeout(async () => {
+          Toast.show({
+            type: "success",
+            text1: "Successfully OTP",
+            text2: `Your OTP is ${text}`,
+            visibilityTime: 5000,
+          });
+          setIsIndicatorShown(false);
+          setModalVisible(false);
+          if (selectedDevice) {
+            await connectToDevice(selectedDevice);
+          }
+        }, 2000);
+      } else {
+        setModalVisible(false);
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Invalid PIN",
+          visibilityTime: 3000,
+        });
+        setPin("");
+      }
+    }
+  };
+
   // function to display the modal after clicking connect
-  // const displayLoginModal = async () => {
-  //   setModalVisible(true);
+  // const verifyLogin = async () => {
+  //   if (isAuthenticated) {
+  //     navigation.navigate("DeviceSettings", { initialTab: 0 });
+  //     // await connectToDevice(item)
+  //   } else {
+  //     setModalVisible(true);
+  //   }
   // };
   // function allow user to connect to device
   const connectToDevice = async (selectedDevice) => {
-    // if (isAuthenticated) {
-    // navigation.navigate("DeviceSettings", { initialTab: 0 });
-    // }
-    if (!selectedDevice) return; // if not exist any device selected
+    if (!selectedDevice) return;
     try {
       setIsButtonDisabled(true); // Disable button before connecting
+      // if (!isAuthenticated) {
+      //   setModalVisible(true);
+      //   return;
+      // }
       // connect to selected device
       await selectedDevice
         .connect()
@@ -210,7 +238,14 @@ export default function Home({ navigation, route }) {
     <Item
       name={item.name}
       id={item.id}
-      onPress={() => connectToDevice(item)}
+      onPress={() => {
+        // if (isAuthenticated) {
+        //   connectToDevice(item); // If logged in, directly connect to the device
+        // } else {
+        setModalVisible(true); // If not logged in, show the login modal
+        setSelectedDevice(item); // Set the device to connect to after login
+        // }
+      }}
       title={"Connect"}
       disabled={isButtonDisabled}
     />
@@ -256,13 +291,14 @@ export default function Home({ navigation, route }) {
         onRefresh={scanForDevices}
         ListEmptyComponent={handleEmpty}
       />
-      {/* <Login_modal
+      <Login_modal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        pin={pin}
-        setPin={setPin}
+        // pin={pin}
+        // setPin={setPin}
         handleSubmitPIN={handleSubmitPIN}
-      /> */}
+        isIndicatorShown={isIndicatorShown}
+      />
     </View>
   );
 }

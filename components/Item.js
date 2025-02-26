@@ -8,7 +8,9 @@ const Item = ({ name, id, onPress, title, disabled }) => {
   return (
     <View style={styles.itemView}>
       <View style={styles.itemInfo}>
-        <Text style={styles.itemName(width)}>{name ? name : "Unknown"}</Text>
+        <Text style={styles.itemName(width)}>
+          {name ? `${name} ${id.substr(0, 5)}` : "Unknown"}
+        </Text>
         <Text style={styles.itemID(width)}>{id ? id : "Unknown"}</Text>
       </View>
       <View>

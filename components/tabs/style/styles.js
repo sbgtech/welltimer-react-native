@@ -647,7 +647,7 @@ export const styles = {
   },
   // Item.js
   itemName: (width) => ({
-    fontSize: width < 600 ? 20 : width < 800 ? 18 : width < 950 ? 26 : 26,
+    fontSize: width < 600 ? 18 : width < 800 ? 18 : width < 950 ? 26 : 26,
     fontWeight: "bold",
   }),
   // Item.js
@@ -842,5 +842,73 @@ export const styles = {
   // Dropdown.js
   dropdownMenuStyle: {
     backgroundColor: "#eeeeee",
+  },
+  /* -------------------------------- */
+  // Login_modal.js
+  loginContainer: (width) => ({
+    width:
+      width < 600 ? "90%" : width < 800 ? "70%" : width < 950 ? "75%" : "70%",
+    // height: "60%",
+    padding: 20,
+    backgroundColor: "white",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 8,
+    position: "relative",
+  }),
+  // Login_modal.js
+  loginImg: (width) => ({
+    height: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
+    width: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
+  }),
+  // Login_modal.js
+  otpTitle: (width) => ({
+    fontSize: width < 600 ? 20 : width < 800 ? 20 : width < 950 ? 26 : 30,
+    color: "#0055a4",
+    fontWeight: "bold",
+  }),
+  // Login_modal.js
+  loginContainerStyle: (width) => ({
+    padding: 4,
+    marginHorizontal: 2,
+    gap: width < 600 ? 1 : width < 800 ? 4 : width < 950 ? 8 : 10,
+  }),
+  // Login_modal.js
+  loginTextInputStyle: (width) => ({
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderBottomWidth: 2,
+    marginHorizontal: 3,
+    borderRadius: 10,
+    height: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
+    width: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
+  }),
+  // Login_modal.js
+  forgotBloc: { flexDirection: "row", gap: 4 },
+  // Login_modal.js
+  forgotTxt: (width) => ({
+    fontWeight: "bold",
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 26,
+  }),
+  // Login_modal.js
+  btnCloseLogin: (width) => ({
+    paddingHorizontal: 12,
+    height: width < 600 ? 36 : width < 800 ? 33 : width < 950 ? 42 : 42,
+    maxHeight: 90,
+    width: "100%",
+    backgroundColor: "white",
+    borderColor: "#0055a4",
+    borderWidth: 1,
+  }),
+  // Login_modal.js
+  TextCloseLogin: (width) => ({
+    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 22,
+    paddingHorizontal: 12,
+    color: "#0055a4",
+  }),
+  // Login_modal.js
+  loadingStyle: {
+    marginTop: 20,
   },
 };

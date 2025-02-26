@@ -13,7 +13,6 @@ import { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import Entypo from "@expo/vector-icons/Entypo";
-import Login from "./components/Login";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
@@ -63,7 +62,6 @@ export default function App() {
           headerTintColor: "#fff",
         }}
       >
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
         <Stack.Screen
