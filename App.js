@@ -54,7 +54,7 @@ export default function App() {
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <StatusBar backgroundColor={"#35374B"} />
+      <StatusBar backgroundColor={"#d7c300"} />
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{

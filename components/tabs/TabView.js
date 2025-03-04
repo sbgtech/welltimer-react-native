@@ -82,7 +82,7 @@ const TabView = ({ navigation, initialTab }) => {
       } else {
         Alert.alert(
           "Device Not Allowed",
-          "Device Type Must be WellTimer",
+          "Device Type Must be RECON Mobile",
           [
             {
               text: "Cancel",
@@ -117,10 +117,12 @@ const TabView = ({ navigation, initialTab }) => {
       if (error) {
         console.error("Disconnection error:", error);
       }
-      Alert.alert(
-        "Device Disconnected",
-        "The BLE device has been disconnected."
-      );
+      Toast.show({
+        type: "error",
+        text1: "Device Disconnected",
+        text2: "The BLE device has been disconnected.",
+        visibilityTime: 3000,
+      });
       setConnectedDevice(null); // Optionally reset device state
       navigation.removeListener();
       navigation.navigate("Home", { scanning: false });

@@ -641,9 +641,7 @@ export const styles = {
   },
   // Item.js
   itemInfo: {
-    // margin: 2 ,
-    // width: "70%",
-    // maxWidth: "70%",
+    flex: 1,
   },
   // Item.js
   itemName: (width) => ({
@@ -858,7 +856,12 @@ export const styles = {
     position: "relative",
   }),
   // Login_modal.js
-  loginImg: (width) => ({
+  loginImgDefault: (width) => ({
+    height: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
+    width: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
+  }),
+  // Login_modal.js
+  loginImgLoad: (width) => ({
     height: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
     width: width < 600 ? 100 : width < 800 ? 150 : width < 950 ? 350 : 350,
   }),
@@ -891,24 +894,24 @@ export const styles = {
     fontWeight: "bold",
     fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 26,
   }),
+  // // Login_modal.js
+  // btnCloseLogin: (width) => ({
+  //   paddingHorizontal: 12,
+  //   height: width < 600 ? 36 : width < 800 ? 33 : width < 950 ? 42 : 42,
+  //   maxHeight: 90,
+  //   width: "100%",
+  //   backgroundColor: "white",
+  //   borderColor: "#0055a4",
+  //   borderWidth: 1,
+  // }),
+  // // Login_modal.js
+  // TextCloseLogin: (width) => ({
+  //   fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 22,
+  //   paddingHorizontal: 12,
+  //   color: "#0055a4",
+  // }),
   // Login_modal.js
-  btnCloseLogin: (width) => ({
-    paddingHorizontal: 12,
-    height: width < 600 ? 36 : width < 800 ? 33 : width < 950 ? 42 : 42,
-    maxHeight: 90,
-    width: "100%",
-    backgroundColor: "white",
-    borderColor: "#0055a4",
-    borderWidth: 1,
-  }),
-  // Login_modal.js
-  TextCloseLogin: (width) => ({
-    fontSize: width < 600 ? 14 : width < 800 ? 14 : width < 950 ? 20 : 22,
-    paddingHorizontal: 12,
-    color: "#0055a4",
-  }),
-  // Login_modal.js
-  loadingStyle: {
-    marginTop: 20,
-  },
+  // loadingStyle: {
+  //   marginTop: 20,
+  // },
 };

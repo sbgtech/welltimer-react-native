@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
   Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Moment from "moment";
 import { Buffer } from "buffer";
@@ -84,9 +85,18 @@ const TestTab2 = (props) => {
       await sendData(connectedDevice, message + "\n");
       // empty the variable
       setMessage("");
-      Keyboard.dismiss();
+      setTimeout(() => {
+        Keyboard.dismiss();
+      }, 500);
     } else {
-      Alert.alert("Warning", "Data required");
+      // Alert.alert("Warning", "Data required");
+      Toast.show({
+        type: "error",
+        text1: "Warning",
+        text2: "Data required",
+        visibilityTime: 3000,
+      });
+      Keyboard.dismiss();
     }
   };
 
@@ -148,9 +158,15 @@ const TestTab2 = (props) => {
     }
   }, [isSubscribed]);
 
-  useEffect(() => {
-    flatListRef.current?.scrollToEnd({ animated: true });
-  }, [dataArray]);
+  const onContentSizeChange = () => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  };
+
+  // useEffect(() => {
+  //   flatListRef.current?.scrollToEnd({ animated: true });
+  // }, [dataArray]);
 
   const renderItem = ({ item }) => (
     <View style={styles.msgViewContainer}>
@@ -183,6 +199,7 @@ const TestTab2 = (props) => {
   };
 
   return (
+    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.containerTestTab}>
       <View>
         <PIN_modal
@@ -225,6 +242,7 @@ const TestTab2 = (props) => {
             ListEmptyComponent={handleEmpty}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={styles.flatListContainer}
+            onContentSizeChange={onContentSizeChange}
           />
         </View>
       ) : (
@@ -243,6 +261,7 @@ const TestTab2 = (props) => {
       )}
       <Loading loading={loading} title={title} />
     </View>
+    // </TouchableWithoutFeedback>
   );
 };
 

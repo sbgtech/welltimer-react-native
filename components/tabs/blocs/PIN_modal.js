@@ -51,7 +51,6 @@ const PIN_modal = ({
                   width < 600 ? 26 : width < 800 ? 28 : width < 950 ? 38 : 38
                 }
                 color="#0055a4"
-                style={styles.closeIcon}
               />
             </TouchableOpacity>
             <Text style={styles.PINTitle(width)}>Enter PIN</Text>
