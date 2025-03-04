@@ -17,7 +17,6 @@ import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
 import Login_modal from "./tabs/blocs/Login_modal";
 import Wellname_modal from "./tabs/blocs/Wellname_modal";
-import * as Notifications from "expo-notifications";
 
 // create new instance for the BleManager module
 const bleManager = new BleManager();

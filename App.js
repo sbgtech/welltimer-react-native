@@ -13,9 +13,11 @@ import { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import Entypo from "@expo/vector-icons/Entypo";
+import registerNNPushToken from "native-notify";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
+registerNNPushToken(27989, "dXLbdcjfXNBkbaDvxBmxId");
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   useEffect(() => {
