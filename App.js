@@ -13,7 +13,6 @@ import { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import Entypo from "@expo/vector-icons/Entypo";
-import Notifications from "./components/Notifications";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
@@ -57,7 +56,7 @@ export default function App() {
     <NavigationContainer onReady={onLayoutRootView}>
       <StatusBar backgroundColor={"#d7c300"} />
       <Stack.Navigator
-        initialRouteName="Notifications"
+        initialRouteName="Home"
         screenOptions={{
           headerStyle: { backgroundColor: "#d7c300" },
           headerTintColor: "#fff",
@@ -65,7 +64,6 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item" component={Item} />
-        <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen
           name="DeviceSettings"
           component={DeviceSettings}
