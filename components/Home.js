@@ -17,6 +17,7 @@ import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
 import Login_modal from "./tabs/blocs/Login_modal";
 import Wellname_modal from "./tabs/blocs/Wellname_modal";
+// import ReelNotification from "./ReelNotification";
 
 // create new instance for the BleManager module
 const bleManager = new BleManager();
@@ -44,6 +45,7 @@ export default function Home({ navigation, route }) {
   const lastSixDigits = (foundWell) => {
     return foundWell.unitid.slice(-6);
   };
+  // const [showNotification, setShowNotification] = useState(false);
 
   // Request Bluetooth permissions
   // Ask user when he open the app to allow and activate position and bluetooth
@@ -109,6 +111,9 @@ export default function Home({ navigation, route }) {
       return () => subscription.remove(); // Clean up listener on unmount
     };
     checkState();
+    // setTimeout(() => {
+    //   setShowNotification(true);
+    // }, 1000);
   }, []);
 
   useEffect(() => {
@@ -404,6 +409,12 @@ export default function Home({ navigation, route }) {
         handleSubmitWellName={handleSubmitWellName}
         isWellNameIndicatorShown={isWellNameIndicatorShown}
       />
+      {/* {showNotification && (
+        <ReelNotification
+          message="The WellName PIN is : 770725"
+          onDismiss={() => setShowNotification(false)} // Hide the notification when dismissed
+        />
+      )} */}
     </View>
   );
 }
