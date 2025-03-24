@@ -872,21 +872,32 @@ export const styles = {
     fontWeight: "bold",
   }),
   // Login_modal.js
-  loginContainerStyle: (width) => ({
-    padding: 4,
-    marginHorizontal: 2,
-    gap: width < 600 ? 1 : width < 800 ? 4 : width < 950 ? 8 : 10,
+  PINinputLogin: (width) => ({
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    marginBottom: 6,
+    borderWidth: 0.5,
+    width: "100%",
+    maxWidth: "100%",
+    height: width < 600 ? 35 : width < 800 ? 35 : width < 950 ? 42 : 42,
+    fontSize: width < 600 ? 16 : width < 800 ? 16 : width < 950 ? 22 : 24,
   }),
   // Login_modal.js
-  loginTextInputStyle: (width) => ({
-    backgroundColor: "#fff",
-    borderWidth: 2,
-    borderBottomWidth: 2,
-    marginHorizontal: 3,
-    borderRadius: 10,
-    height: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
-    width: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
-  }),
+  // loginContainerStyle: (width) => ({
+  //   padding: 4,
+  //   marginHorizontal: 2,
+  //   gap: width < 600 ? 1 : width < 800 ? 4 : width < 950 ? 8 : 10,
+  // }),
+  // // Login_modal.js
+  // loginTextInputStyle: (width) => ({
+  //   backgroundColor: "#fff",
+  //   borderWidth: 2,
+  //   borderBottomWidth: 2,
+  //   marginHorizontal: 3,
+  //   borderRadius: 10,
+  //   height: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
+  //   width: width < 600 ? 45 : width < 800 ? 50 : width < 950 ? 70 : 70,
+  // }),
   // Login_modal.js
   forgotBloc: { flexDirection: "row", gap: 4 },
   // Login_modal.js

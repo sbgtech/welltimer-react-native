@@ -10,17 +10,19 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from "react-native";
 import { styles } from "../style/styles";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import OtpTextInput from "react-native-otp-textinput";
+import ButtonUI from "../../ButtonUI";
 
 const Login_modal = ({
   loginModalVisible,
   setLoginModalVisible,
   disconnectDevice,
-  // pin,
-  // setPin,
+  pin,
+  setPin,
   loginIsIndicatorShown,
   handleSubmitPIN,
   onPress,
@@ -72,7 +74,8 @@ const Login_modal = ({
               )}
 
               <Text style={styles.otpTitle(width)}>Enter PIN</Text>
-              <OtpTextInput
+              {/* <OtpTextInput
+                value={value}
                 handleTextChange={handleSubmitPIN} // This will handle OTP input changes
                 inputCount={6}
                 tintColor={"#0055a4"}
@@ -80,6 +83,19 @@ const Login_modal = ({
                 keyboardType="numeric"
                 containerStyle={styles.loginContainerStyle(width)}
                 textInputStyle={styles.loginTextInputStyle(width)}
+              /> */}
+              <TextInput
+                style={styles.PINinputLogin(width)}
+                placeholder="Enter PIN..."
+                value={pin}
+                onChangeText={setPin}
+                autoFocus={true}
+              />
+              <ButtonUI
+                onPress={() => handleSubmitPIN()}
+                title={"Send"}
+                btnStyle={styles.btnSendText(width)}
+                txtStyle={styles.TextSendStyle(width)}
               />
               <TouchableOpacity style={styles.forgotBloc}>
                 <Text style={styles.forgotTxt(width)}>Forgot PIN?</Text>

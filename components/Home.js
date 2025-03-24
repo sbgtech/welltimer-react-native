@@ -17,7 +17,8 @@ import Toast from "react-native-toast-message";
 import { styles } from "./tabs/style/styles";
 import Login_modal from "./tabs/blocs/Login_modal";
 import Wellname_modal from "./tabs/blocs/Wellname_modal";
-// import ReelNotification from "./ReelNotification";
+import ReelNotification from "./ReelNotification";
+import { useRef } from "react";
 
 // create new instance for the BleManager module
 const bleManager = new BleManager();
@@ -45,7 +46,9 @@ export default function Home({ navigation, route }) {
   const lastSixDigits = (foundWell) => {
     return foundWell.unitid.slice(-6);
   };
-  // const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const unit = "345678";
+  const [unitid, setUnitid] = React.useState("");
 
   // Request Bluetooth permissions
   // Ask user when he open the app to allow and activate position and bluetooth
@@ -111,9 +114,6 @@ export default function Home({ navigation, route }) {
       return () => subscription.remove(); // Clean up listener on unmount
     };
     checkState();
-    // setTimeout(() => {
-    //   setShowNotification(true);
-    // }, 1000);
   }, []);
 
   useEffect(() => {
@@ -169,16 +169,15 @@ export default function Home({ navigation, route }) {
   };
 
   // Function to handle the login process
-  const handleSubmitPIN = async (text) => {
-    setPin(text);
-    if (text.length === 6) {
-      if (text === "123456") {
+  const handleSubmitPIN = async () => {
+    if (pin.length === 6) {
+      if (pin === unit) {
         setLoginIsIndicatorShown(true);
-        setTimeout(async () => {
+        setTimeout(() => {
           Toast.show({
             type: "success",
             text1: "Successfully OTP",
-            text2: `Your OTP is ${text}`,
+            text2: `Your OTP is ${pin}`,
             visibilityTime: 5000,
           });
           setLoginIsIndicatorShown(false);
@@ -186,9 +185,9 @@ export default function Home({ navigation, route }) {
           if (selectedDevice) {
             navigation.navigate("DeviceSettings", { initialTab: 0 });
           }
+          setPin("");
         }, 2000);
       } else {
-        setLoginModalVisible(false);
         Toast.show({
           type: "error",
           text1: "Error",
@@ -226,34 +225,37 @@ export default function Home({ navigation, route }) {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
         const foundWell = await data.find((well) => well.name === wellname);
         if (foundWell) {
+          const lastSix = await lastSixDigits(foundWell);
+          setUnitid(lastSix);
           setTimeout(() => {
             setIsWellNameIndicatorShown(false);
             setWellNameModalVisible(false);
+            setShowNotification(true);
           }, 2000);
           console.log(
             `device ID ${foundWell.unitid}, device name: ${foundWell.name}`
           );
-          const lastSix = lastSixDigits(foundWell);
+          // await otpInputRef.current.setValue(`${lastSix}`);
+          // setPin(lastSix);
           // Show success toast and handle the well ID
-          setTimeout(() => {
-            Toast.show({
-              type: "success",
-              text1: "Well Name found",
-              text2: `Waiting for sending ${wellname}'s PIN notification`,
-              visibilityTime: 6000,
-            });
-          }, 2000);
-          setTimeout(() => {
-            Toast.show({
-              type: "success",
-              text1: "Well Name PIN",
-              text2: `The WellName PIN is: ${lastSix}`,
-              visibilityTime: 7000,
-            });
-          }, 9000);
+          // setTimeout(() => {
+          //   Toast.show({
+          //     type: "success",
+          //     text1: "Well Name found",
+          //     text2: `Waiting for sending ${wellname}'s PIN notification`,
+          //     visibilityTime: 6000,
+          //   });
+          // }, 2000);
+          // setTimeout(() => {
+          //   Toast.show({
+          //     type: "success",
+          //     text1: "Well Name PIN",
+          //     text2: `The WellName PIN is: ${lastSix}`,
+          //     visibilityTime: 7000,
+          //   });
+          // }, 9000);
         } else {
           // If well name does not exist, show an error message
           setIsWellNameIndicatorShown(false);
@@ -296,6 +298,7 @@ export default function Home({ navigation, route }) {
         setLoginModalVisible(false);
       } else {
         console.log("No device connected");
+        setLoginModalVisible(false);
       }
     } catch (error) {
       console.error("Error disconnecting:", error);
@@ -395,8 +398,8 @@ export default function Home({ navigation, route }) {
         loginModalVisible={loginModalVisible}
         setLoginModalVisible={setLoginModalVisible}
         disconnectDevice={disconnectDevice}
-        // pin={pin}
-        // setPin={setPin}
+        pin={pin}
+        setPin={setPin}
         handleSubmitPIN={handleSubmitPIN}
         loginIsIndicatorShown={loginIsIndicatorShown}
         onPress={() => openWellnameModal()}
@@ -409,12 +412,12 @@ export default function Home({ navigation, route }) {
         handleSubmitWellName={handleSubmitWellName}
         isWellNameIndicatorShown={isWellNameIndicatorShown}
       />
-      {/* {showNotification && (
+      {showNotification && (
         <ReelNotification
-          message="The WellName PIN is : 770725"
+          message={unitid}
           onDismiss={() => setShowNotification(false)} // Hide the notification when dismissed
         />
-      )} */}
+      )}
     </View>
   );
 }
