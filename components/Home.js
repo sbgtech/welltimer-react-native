@@ -317,9 +317,10 @@ export default function Home({ navigation, route }) {
         .then((device) => {
           // success to connect to device
           console.log("Connected to", device.name);
-          setLoginModalVisible(true);
-          setSelectedDevice(selectedDevice);
-          console.log("selectedDevice", selectedDevice);
+          // setLoginModalVisible(true);
+          // setSelectedDevice(selectedDevice);
+          // console.log("selectedDevice", selectedDevice);
+          navigation.navigate("DeviceSettings", { initialTab: 0 });
         });
     } catch (error) {
       // error connecting to device
