@@ -9,16 +9,11 @@ import Loading from "./blocs/Loading";
 
 const WellStatus = (props) => {
   const { width } = useWindowDimensions();
-  // const scale =
-  //   width < 600 ? width / 420 : width > 960 ? width / 1300 : width / 900;
-  // declare initial states
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
   const [title, setTitle] = useState("");
-  // variable for the index of plungerState received from welltimer
-  // const [plungerStateIndex, setPlungerStateIndex] = useState(null);
-  // display the name of plungerState based on the received index
+
   const plungerState = [
     "POWER UP",
     "SHUTIN",
@@ -28,15 +23,6 @@ const WellStatus = (props) => {
     "HILINE",
     "LOLINE",
   ];
-  // prepare variables to set them the received data
-  // const [systemClock, setSystemClock] = useState(0);
-  // const [line, setLine] = useState();
-  // const [tubing, setTubing] = useState();
-  // const [casing, setCasing] = useState();
-  // const [arrivals, setArrivals] = useState([]);
-  // const [uniqueID, setUniqueID] = useState();
-  // const [fwVersion, setFwVersion] = useState();
-  // const [battery, setBattery] = useState();
 
   const initialWellStatusState = {
     plungerStateIndex: null,

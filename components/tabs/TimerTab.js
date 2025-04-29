@@ -9,11 +9,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 const TimerTab = (props) => {
   const { width } = useWindowDimensions();
-  // declare initial states for the 4 timers
-  // const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
-  // const [receivedShutinTimer, setReceivedShutinTimer] = useState("");
-  // const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
-  // const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal

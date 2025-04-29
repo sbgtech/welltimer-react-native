@@ -24,18 +24,7 @@ const StatisticsTab = (props) => {
   const [loading, setLoading] = useState(false);
   // title of loading modal
   const [title, setTitle] = useState("");
-  // states of arrivals statistics
-  // const [arrivalsToday, setArrivalsToday] = useState("");
-  // const [arrivalsWeek, setArrivalsWeek] = useState("");
-  // const [arrivalsTotal, setArrivalsTotal] = useState("");
-  // // states of missrun statistics
-  // const [missrunToday, setMissrunToday] = useState("");
-  // const [missrunWeek, setMissrunWeek] = useState("");
-  // const [missrunTotal, setMissrunTotal] = useState("");
-  // // states of onTime statistics
-  // const [onTimeToday, setOnTimeToday] = useState("");
-  // const [onTimeWeek, setOnTimeWeek] = useState("");
-  // const [onTimeTotal, setOnTimeTotal] = useState("");
+
   const initialStatisticsState = {
     arrivalsToday: "",
     arrivalsWeek: "",

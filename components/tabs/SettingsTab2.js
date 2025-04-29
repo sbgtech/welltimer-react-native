@@ -33,64 +33,15 @@ const SettingsTab2 = (props) => {
   const [loading, setLoading] = useState(false);
   // title of loading modal
   const [title, setTitle] = useState("");
-  // // value of valve A, default 0 (OFF)
-  // const [valveA, setValveA] = useState(0);
-  // // value of valve B, default 0 (OFF)
-  // const [valveB, setValveB] = useState(0);
-  // // display the name of the productionMethod based on the received index
-  // const [productionMethodIndex, setProductionMethodIndex] = useState(null);
+
   const productionMethod = [
     "Timer mode",
     "Timer Intermit mode",
     "Pressure Intermit mode",
   ];
-  // // prepare variables to set them the received data
-  // const [missrunMax, setMissrunMax] = useState("");
-  // const [falseArrivalsIndex, setFalseArrivalsIndex] = useState(null);
   const falseArrivals_hiLoMode = ["Disable", "Enable"];
-  // const [wellDepth, setWellDepth] = useState("");
-  // // states of HiLo mode
-  // const [hiLoModeIndex, setHiLoModeIndex] = useState(null);
-  // const [hiLoHigh, setHiLoHigh] = useState("");
-  // const [hiLoLow, setHiLoLow] = useState("");
-  // const [hiLoDelay, setHiLoDelay] = useState("");
-  // // states of PID
-  // const [pidOverrideIndex, setPidOverrideIndex] = useState(null);
-  // const [pidSP, setPidSP] = useState("");
-  // const [pidKP, setPidKP] = useState("");
-  // const [pidKI, setPidKI] = useState("");
-  // const [pidKD, setPidKD] = useState("");
-  // const [pidINIT, setPidINIT] = useState("");
-  // const [pidDB, setPidDB] = useState("");
-  // const [pidLL, setPidLL] = useState("");
-  // // states of AUTOCATCHER
-  // const [autocatcherIndex, setAutocatcherIndex] = useState(null);
-  // const [autocatcherDelay, setAutocatcherDelay] = useState("");
-  // const [BValveTwinIndex, setBValveTwinIndex] = useState(null);
-  // // declare initial states for the source, max pis and min psi for pressure intermit mode
-  // const [receivedPressureSourceIndex, setReceivedPressureSourceIndex] =
-  //   useState(null);
-  // const [receivedPressureMaxPSI, setReceivedPressureMaxPSI] = useState("");
-  // const [receivedPressureMinPSI, setReceivedPressureMinPSI] = useState("");
-  // // states of LP
+  // The dropdown select options for LP, CP and TP
   const LP_CP_TP_type = ["Voltage"];
-  // const [LPTypeIndex, setLPTypeIndex] = useState(null);
-  // const [LPSensorMax, setLPSensorMax] = useState("");
-  // const [LPSensorMin, setLPSensorMin] = useState("");
-  // const [LPVoltageMax, setLPVoltageMax] = useState("");
-  // const [LPVoltageMin, setLPVoltageMin] = useState("");
-  // // states of CP
-  // const [CPTypeIndex, setCPTypeIndex] = useState(null);
-  // const [CPSensorMax, setCPSensorMax] = useState("");
-  // const [CPSensorMin, setCPSensorMin] = useState("");
-  // const [CPVoltageMax, setCPVoltageMax] = useState("");
-  // const [CPVoltageMin, setCPVoltageMin] = useState("");
-  // // states of TP
-  // const [TPTypeIndex, setTPTypeIndex] = useState(null);
-  // const [TPSensorMax, setTPSensorMax] = useState("");
-  // const [TPSensorMin, setTPSensorMin] = useState("");
-  // const [TPVoltageMax, setTPVoltageMax] = useState("");
-  // const [TPVoltageMin, setTPVoltageMin] = useState("");
 
   const initialSettingsState = {
     valveA: 0,
