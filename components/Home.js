@@ -337,9 +337,9 @@ export default function Home({ navigation, route }) {
     }
   };
 
-  useEffect(() => {
-    console.log("this is width", width);
-  }, [width]);
+  // useEffect(() => {
+  //   console.log("this is width", width);
+  // }, [width]);
 
   const renderItem = ({ item }) => (
     <Item

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   ScrollView,
   View,
@@ -25,23 +25,44 @@ const StatisticsTab = (props) => {
   // title of loading modal
   const [title, setTitle] = useState("");
   // states of arrivals statistics
-  const [arrivalsToday, setArrivalsToday] = useState("");
-  const [arrivalsWeek, setArrivalsWeek] = useState("");
-  const [arrivalsTotal, setArrivalsTotal] = useState("");
-  // states of missrun statistics
-  const [missrunToday, setMissrunToday] = useState("");
-  const [missrunWeek, setMissrunWeek] = useState("");
-  const [missrunTotal, setMissrunTotal] = useState("");
-  // states of onTime statistics
-  const [onTimeToday, setOnTimeToday] = useState("");
-  const [onTimeWeek, setOnTimeWeek] = useState("");
-  const [onTimeTotal, setOnTimeTotal] = useState("");
+  // const [arrivalsToday, setArrivalsToday] = useState("");
+  // const [arrivalsWeek, setArrivalsWeek] = useState("");
+  // const [arrivalsTotal, setArrivalsTotal] = useState("");
+  // // states of missrun statistics
+  // const [missrunToday, setMissrunToday] = useState("");
+  // const [missrunWeek, setMissrunWeek] = useState("");
+  // const [missrunTotal, setMissrunTotal] = useState("");
+  // // states of onTime statistics
+  // const [onTimeToday, setOnTimeToday] = useState("");
+  // const [onTimeWeek, setOnTimeWeek] = useState("");
+  // const [onTimeTotal, setOnTimeTotal] = useState("");
+  const initialStatisticsState = {
+    arrivalsToday: "",
+    arrivalsWeek: "",
+    arrivalsTotal: "",
+    missrunToday: "",
+    missrunWeek: "",
+    missrunTotal: "",
+    onTimeToday: "",
+    onTimeWeek: "",
+    onTimeTotal: "",
+  };
+
+  const statisticsReducer = (state, action) => ({
+    ...state,
+    ...action, // Merge new values
+  });
+
+  const [statistics, dispatchStatistics] = useReducer(
+    statisticsReducer,
+    initialStatisticsState
+  );
 
   // send "reset" to device to reset arrivals values
   const handleResetArrivals = async () => {
     try {
       const buffer = Buffer.from("RST1 \n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
@@ -52,7 +73,7 @@ const StatisticsTab = (props) => {
         text2: "Data sent successfully",
         visibilityTime: 3000,
       });
-      await fetchDataStatistic();
+      fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -65,7 +86,7 @@ const StatisticsTab = (props) => {
   const handleResetMissrun = async () => {
     try {
       const buffer = Buffer.from("RST2 \n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
@@ -76,7 +97,7 @@ const StatisticsTab = (props) => {
         text2: "Data sent successfully",
         visibilityTime: 3000,
       });
-      await fetchDataStatistic();
+      fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -89,7 +110,7 @@ const StatisticsTab = (props) => {
   const handleResetOnTime = async () => {
     try {
       const buffer = Buffer.from("RST3 \n", "utf-8");
-      await props.connectedDevice?.writeCharacteristicWithResponseForService(
+      props.connectedDevice?.writeCharacteristicWithResponseForService(
         UART_SERVICE_UUID,
         UART_TX_CHARACTERISTIC_UUID,
         buffer.toString("base64")
@@ -100,7 +121,7 @@ const StatisticsTab = (props) => {
         text2: "Data sent successfully",
         visibilityTime: 3000,
       });
-      await fetchDataStatistic();
+      fetchDataStatistic();
     } catch (error) {
       console.log(
         "Error with writeCharacteristicWithResponseForService :",
@@ -112,21 +133,14 @@ const StatisticsTab = (props) => {
   // function called in useEffect when load component to fetch data
   const fetchDataStatistic = async () => {
     try {
-      await Receive.StatisticsReceivedData(props.connectedDevice, {
-        setArrivalsToday,
-        setArrivalsWeek,
-        setArrivalsTotal,
-        setMissrunToday,
-        setMissrunWeek,
-        setMissrunTotal,
-        setOnTimeToday,
-        setOnTimeWeek,
-        setOnTimeTotal,
+      await Receive.StatisticsReceivedData(
+        props.connectedDevice,
+        dispatchStatistics,
         setLoading,
-        setTitle,
-      });
+        setTitle
+      );
     } catch (error) {
-      console.error("Error in receiving data:", error);
+      console.error("Error in receiving data in statistic page:", error);
     }
   };
 
@@ -145,19 +159,12 @@ const StatisticsTab = (props) => {
       // call function to send request to device to get data
       Receive.sendReqToGetData(props.connectedDevice, 3);
       // start receiving data
-      await Receive.StatisticsReceivedData(props.connectedDevice, {
-        setArrivalsToday,
-        setArrivalsWeek,
-        setArrivalsTotal,
-        setMissrunToday,
-        setMissrunWeek,
-        setMissrunTotal,
-        setOnTimeToday,
-        setOnTimeWeek,
-        setOnTimeTotal,
+      await Receive.StatisticsReceivedData(
+        props.connectedDevice,
+        dispatchStatistics,
         setLoading,
-        setTitle,
-      });
+        setTitle
+      );
     } catch (error) {
       console.error("Error during refresh:", error);
     }
@@ -173,19 +180,19 @@ const StatisticsTab = (props) => {
             <Text style={styles.titleSettings(width)}>Arrivals today :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={arrivalsToday.toString()}
+              value={statistics.arrivalsToday.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>Arrivals week :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={arrivalsWeek.toString()}
+              value={statistics.arrivalsWeek.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>Arrivals total :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={arrivalsTotal.toString()}
+              value={statistics.arrivalsTotal.toString()}
               editable={false}
             />
             <View style={styles.StatisticContainerBtnText}>
@@ -201,19 +208,19 @@ const StatisticsTab = (props) => {
             <Text style={styles.titleSettings(width)}>Missrun today :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={missrunToday.toString()}
+              value={statistics.missrunToday.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>Missrun week :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={missrunWeek.toString()}
+              value={statistics.missrunWeek.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>Missrun total :</Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={missrunTotal.toString()}
+              value={statistics.missrunTotal.toString()}
               editable={false}
             />
             <View style={styles.StatisticContainerBtnText}>
@@ -231,7 +238,7 @@ const StatisticsTab = (props) => {
             </Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={onTimeToday.toString()}
+              value={statistics.onTimeToday.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>
@@ -239,7 +246,7 @@ const StatisticsTab = (props) => {
             </Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={onTimeWeek.toString()}
+              value={statistics.onTimeWeek.toString()}
               editable={false}
             />
             <Text style={styles.titleSettings(width)}>
@@ -247,7 +254,7 @@ const StatisticsTab = (props) => {
             </Text>
             <TextInput
               style={styles.inputSettingsDisabled(width)}
-              value={onTimeTotal.toString()}
+              value={statistics.onTimeTotal.toString()}
               editable={false}
             />
             <View style={styles.StatisticContainerBtnText}>

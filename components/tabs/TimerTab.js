@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import Timer from "./blocs/Timer";
 import { styles } from "./style/styles";
@@ -10,27 +10,42 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 const TimerTab = (props) => {
   const { width } = useWindowDimensions();
   // declare initial states for the 4 timers
-  const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
-  const [receivedShutinTimer, setReceivedShutinTimer] = useState("");
-  const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
-  const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
+  // const [receivedOpenTimer, setReceivedOpenTimer] = useState("");
+  // const [receivedShutinTimer, setReceivedShutinTimer] = useState("");
+  // const [receivedAfterflowTimer, setReceivedAfterflowTimer] = useState("");
+  // const [receivedMandatoryTimer, setReceivedMandatoryTimer] = useState("");
   // the loading state, default is false
   const [loading, setLoading] = useState(false);
   // title of loading modal
   const [title, setTitle] = useState("");
 
+  const initialTimersState = {
+    receivedOpenTimer: "",
+    receivedShutinTimer: "",
+    receivedAfterflowTimer: "",
+    receivedMandatoryTimer: "",
+  };
+
+  const timersReducer = (state, action) => ({
+    ...state,
+    ...action, // Merge new values
+  });
+
+  const [timers, dispatchTimers] = useReducer(
+    timersReducer,
+    initialTimersState
+  );
+
   const fetchDataTimer = async () => {
     try {
-      await Receive.TimerReceivedData(props.connectedDevice, {
-        setReceivedOpenTimer,
-        setReceivedShutinTimer,
-        setReceivedAfterflowTimer,
-        setReceivedMandatoryTimer,
+      await Receive.TimerReceivedData(
+        props.connectedDevice,
+        dispatchTimers,
         setLoading,
-        setTitle,
-      });
+        setTitle
+      );
     } catch (error) {
-      console.error("Error in useEffect:", error);
+      console.error("Error in receiving data in timer page:", error);
     }
   };
 
@@ -44,23 +59,17 @@ const TimerTab = (props) => {
   }, [props.connectedDevice]);
 
   // function run when clicking on refresh button
-  const onRefreshTimer = () => {
+  const onRefreshTimer = async () => {
     try {
-      setReceivedOpenTimer("");
-      setReceivedShutinTimer("");
-      setReceivedAfterflowTimer("");
-      setReceivedMandatoryTimer("");
       // call function to send request to device to get data
       Receive.sendReqToGetData(props.connectedDevice, 1);
       // start receiving data
-      Receive.TimerReceivedData(props.connectedDevice, {
-        setReceivedOpenTimer,
-        setReceivedShutinTimer,
-        setReceivedAfterflowTimer,
-        setReceivedMandatoryTimer,
+      await Receive.TimerReceivedData(
+        props.connectedDevice,
+        dispatchTimers,
         setLoading,
-        setTitle,
-      });
+        setTitle
+      );
     } catch (error) {
       console.error("Error during refresh:", error);
     }
@@ -81,7 +90,7 @@ const TimerTab = (props) => {
             title={"Open timer"}
             address1={200}
             address2={201}
-            totalSec={receivedOpenTimer}
+            totalSec={timers.receivedOpenTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
           />
@@ -90,7 +99,7 @@ const TimerTab = (props) => {
             title={"Shutin timer"}
             address1={202}
             address2={203}
-            totalSec={receivedShutinTimer}
+            totalSec={timers.receivedShutinTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
           />
@@ -99,7 +108,7 @@ const TimerTab = (props) => {
             title={"Afterflow timer"}
             address1={204}
             address2={205}
-            totalSec={receivedAfterflowTimer}
+            totalSec={timers.receivedAfterflowTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
           />
@@ -108,7 +117,7 @@ const TimerTab = (props) => {
             title={"Mandatory shutin timer"}
             address1={206}
             address2={207}
-            totalSec={receivedMandatoryTimer}
+            totalSec={timers.receivedMandatoryTimer}
             setTitle={setTitle}
             fetchDataTimer={fetchDataTimer}
           />

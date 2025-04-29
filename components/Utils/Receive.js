@@ -35,20 +35,12 @@ export class Receive {
   }
 
   // function listen to receive data for well status page
-  static async WellStatusReceivedData(device, setters) {
-    const {
-      setPlungerStateIndex,
-      setSystemClock,
-      setLine,
-      setTubing,
-      setCasing,
-      setArrivals,
-      setUniqueID,
-      setFwVersion,
-      setBattery,
-      setLoading,
-      setTitle,
-    } = setters;
+  static async WellStatusReceivedData(
+    device,
+    dispatchWellStatus,
+    setLoading,
+    setTitle
+  ) {
     let dataReceived = false; // Flag to track if data is received
 
     return new Promise((resolve, reject) => {
@@ -95,22 +87,24 @@ export class Receive {
             Number(pageIndex) == 1
           ) {
             const msg = JSON.parse(str);
-            setPlungerStateIndex(msg[1]); // get two bytes for plunger state
-            setSystemClock(msg[2]); // set value to system clock
-            setLine(msg[3]); // set value to line
-            setTubing(msg[4]); // set value to tubing
-            setCasing(msg[5]); // set value to casing
             const arrivals = msg.slice(6, 26).map((value, index) => ({
               name: `Arrival ${index + 1}`,
               value,
             }));
-            setArrivals(arrivals);
-            setFwVersion(parseFloat([msg[26]]) / 10 + "." + Number([msg[27]]));
-            setBattery(msg[28]);
-            dataReceived = true; // Mark data as received
-            clearTimeout(timeout); // Clear timeout once data is received
-            setLoading(false); // Set loading to false
-            resolve(true); // Resolve the promise
+            dispatchWellStatus({
+              plungerStateIndex: msg[1],
+              systemClock: msg[2],
+              line: msg[3],
+              tubing: msg[4],
+              casing: msg[5],
+              arrivals: arrivals,
+              fwVersion: parseFloat([msg[26]]) / 10 + "." + Number([msg[27]]),
+              battery: msg[28],
+            });
+            dataReceived = true;
+            clearTimeout(timeout);
+            setLoading(false);
+            resolve(true);
           }
           if (
             firstIndexValue == "[" &&
@@ -119,7 +113,13 @@ export class Receive {
           ) {
             const jsonString = str.replace(/'/g, '"');
             const msg = JSON.parse(jsonString);
-            setUniqueID(msg[1]);
+            dispatchWellStatus({
+              uniqueID: msg[1],
+            });
+            dataReceived = true;
+            clearTimeout(timeout);
+            setLoading(false);
+            resolve(true);
           }
         }
       );
@@ -135,15 +135,7 @@ export class Receive {
   }
 
   // function listen to receive data for timer page
-  static async TimerReceivedData(device, setters) {
-    const {
-      setReceivedOpenTimer,
-      setReceivedShutinTimer,
-      setReceivedAfterflowTimer,
-      setReceivedMandatoryTimer,
-      setLoading,
-      setTitle,
-    } = setters;
+  static async TimerReceivedData(device, dispatchTimers, setLoading, setTitle) {
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
@@ -183,11 +175,14 @@ export class Receive {
             Number(pageIndex) == 2
           ) {
             const msg = JSON.parse(str);
-            setReceivedOpenTimer(msg[1]);
-            setReceivedShutinTimer(msg[2]);
-            setReceivedAfterflowTimer(msg[3]);
-            setReceivedMandatoryTimer(msg[4]);
+            dispatchTimers({
+              receivedOpenTimer: msg[1],
+              receivedShutinTimer: msg[2],
+              receivedAfterflowTimer: msg[3],
+              receivedMandatoryTimer: msg[4],
+            });
             setLoading(false);
+            clearTimeout(timeout);
             received = true;
             resolve(received);
           }
@@ -205,50 +200,12 @@ export class Receive {
   }
 
   // function listen to receive data for settings page
-  static async SettingsReceivedData(device, setters) {
-    const {
-      setValveA,
-      setValveB,
-      setProductionMethodIndex,
-      setMissrunMax,
-      setFalseArrivalsIndex,
-      setWellDepth,
-      setHiLoModeIndex,
-      setHiLoHigh,
-      setHiLoLow,
-      setHiLoDelay,
-      setPidOverrideIndex,
-      setPidSP,
-      setPidKP,
-      setPidKI,
-      setPidKD,
-      setPidINIT,
-      setPidDB,
-      setPidLL,
-      setAutocatcherIndex,
-      setAutocatcherDelay,
-      setBValveTwinIndex,
-      setReceivedPressureSourceIndex,
-      setReceivedPressureMaxPSI,
-      setReceivedPressureMinPSI,
-      setLPTypeIndex,
-      setLPSensorMax,
-      setLPSensorMin,
-      setLPVoltageMax,
-      setLPVoltageMin,
-      setCPTypeIndex,
-      setCPSensorMax,
-      setCPSensorMin,
-      setCPVoltageMax,
-      setCPVoltageMin,
-      setTPTypeIndex,
-      setTPSensorMax,
-      setTPSensorMin,
-      setTPVoltageMax,
-      setTPVoltageMin,
-      setLoading,
-      setTitle,
-    } = setters;
+  static async SettingsReceivedData(
+    device,
+    dispatchSettings,
+    setLoading,
+    setTitle
+  ) {
     let received = false;
     return new Promise(async (resolve, reject) => {
       setLoading(true);
@@ -289,57 +246,51 @@ export class Receive {
           ) {
             const msg = JSON.parse(str);
             //
-            setValveA(msg[1]);
-            setValveB(msg[35]);
+            dispatchSettings({
+              valveA: msg[1],
+              valveB: msg[35],
+              productionMethodIndex: msg[2],
+              missrunMax: msg[3],
+              falseArrivalsIndex: msg[4],
+              wellDepth: msg[5],
+              hiLoModeIndex: msg[6],
+              hiLoHigh: msg[7],
+              hiLoLow: msg[8],
+              hiLoDelay: msg[39],
+              LPTypeIndex: msg[9],
+              LPSensorMax: msg[10],
+              LPSensorMin: msg[11],
+              LPVoltageMax: msg[12] / 10,
+              LPVoltageMin: msg[13] / 10,
+              CPTypeIndex: msg[14],
+              CPSensorMax: msg[15],
+              CPSensorMin: msg[16],
+              CPVoltageMax: msg[17] / 10,
+              CPVoltageMin: msg[18] / 10,
+              TPTypeIndex: msg[19],
+              TPSensorMax: msg[20],
+              TPSensorMin: msg[21],
+              TPVoltageMax: msg[22] / 10,
+              TPVoltageMin: msg[23] / 10,
+              pidOverrideIndex: msg[24],
+              pidSP: msg[25],
+              pidKP: msg[26],
+              pidKI: msg[27],
+              pidKD: msg[28],
+              pidINIT: msg[29],
+              pidDB: msg[30],
+              pidLL: msg[31],
+              autocatcherIndex: msg[32],
+              autocatcherDelay: msg[33],
+              BValveTwinIndex: msg[34],
+              receivedPressureSourceIndex: msg[36],
+              receivedPressureMaxPSI: msg[37],
+              receivedPressureMinPSI: msg[38],
+            });
             //
-            setProductionMethodIndex(msg[2]);
-            setMissrunMax(msg[3]);
-            setFalseArrivalsIndex(msg[4]);
-            setWellDepth(msg[5]);
-            //
-            setHiLoModeIndex(msg[6]);
-            setHiLoHigh(msg[7]);
-            setHiLoLow(msg[8]);
-            setHiLoDelay(msg[39]);
-            //
-            setLPTypeIndex(msg[9]);
-            setLPSensorMax(msg[10]);
-            setLPSensorMin(msg[11]);
-            setLPVoltageMax(msg[12] / 10);
-            setLPVoltageMin(msg[13] / 10);
-            //
-            setCPTypeIndex(msg[14]);
-            setCPSensorMax(msg[15]);
-            setCPSensorMin(msg[16]);
-            setCPVoltageMax(msg[17] / 10);
-            setCPVoltageMin(msg[18] / 10);
-            //
-            setTPTypeIndex(msg[19]);
-            setTPSensorMax(msg[20]);
-            setTPSensorMin(msg[21]);
-            setTPVoltageMax(msg[22] / 10);
-            setTPVoltageMin(msg[23] / 10);
-            //
-            setPidOverrideIndex(msg[24]);
-            setPidSP(msg[25]);
-            setPidKP(msg[26]);
-            setPidKI(msg[27]);
-            setPidKD(msg[28]);
-            setPidINIT(msg[29]);
-            setPidDB(msg[30]);
-            setPidLL(msg[31]);
-            //
-            setAutocatcherIndex(msg[32]);
-            setAutocatcherDelay(msg[33]);
-            //
-            setBValveTwinIndex(msg[34]);
-            //
-            setReceivedPressureSourceIndex(msg[36]);
-            setReceivedPressureMaxPSI(msg[37]);
-            setReceivedPressureMinPSI(msg[38]);
-            //
-            setLoading(false);
             received = true;
+            clearTimeout(timeout);
+            setLoading(false);
             resolve(received);
           }
         }
@@ -356,20 +307,12 @@ export class Receive {
   }
 
   // function listen to receive data for settings page
-  static async StatisticsReceivedData(device, setters) {
-    const {
-      setArrivalsToday,
-      setArrivalsWeek,
-      setArrivalsTotal,
-      setMissrunToday,
-      setMissrunWeek,
-      setMissrunTotal,
-      setOnTimeToday,
-      setOnTimeWeek,
-      setOnTimeTotal,
-      setLoading,
-      setTitle,
-    } = setters;
+  static async StatisticsReceivedData(
+    device,
+    dispatchStatistics,
+    setLoading,
+    setTitle
+  ) {
     let received = false;
     return new Promise((resolve, reject) => {
       setLoading(true);
@@ -409,17 +352,20 @@ export class Receive {
             Number(pageIndex) == 4
           ) {
             const msg = JSON.parse(str);
-            setArrivalsToday(msg[1]);
-            setArrivalsWeek(msg[2]);
-            setArrivalsTotal(msg[3]);
-            setMissrunToday(msg[4]);
-            setMissrunWeek(msg[5]);
-            setMissrunTotal(msg[6]);
-            setOnTimeToday(msg[7]);
-            setOnTimeWeek(msg[8]);
-            setOnTimeTotal(msg[9]);
+            dispatchStatistics({
+              arrivalsToday: msg[1],
+              arrivalsWeek: msg[2],
+              arrivalsTotal: msg[3],
+              missrunToday: msg[4],
+              missrunWeek: msg[5],
+              missrunTotal: msg[6],
+              onTimeToday: msg[7],
+              onTimeWeek: msg[8],
+              onTimeTotal: msg[9],
+            });
             //
             setLoading(false);
+            clearTimeout(timeout);
             received = true;
             resolve(received);
           }

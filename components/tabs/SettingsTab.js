@@ -22,7 +22,7 @@ import {
 } from "../Utils/Constants";
 import Toast from "react-native-toast-message";
 
-const SettingsTab2 = (props) => {
+const SettingsTab = (props) => {
   // declare initial states
   const { height } = Dimensions.get("window");
   const { width } = useWindowDimensions();
@@ -1894,4 +1894,4 @@ const styless = StyleSheet.create({
   },
 });
 
-export default SettingsTab2;
+export default SettingsTab;

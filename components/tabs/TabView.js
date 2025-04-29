@@ -6,6 +6,7 @@ import Tab from "./Tab";
 import WellStatus from "./WellStatusTab";
 import TimerTab from "./TimerTab";
 import SettingsTab from "./SettingsTab";
+import SettingsTab2 from "./SettingsTab2";
 import StatisticsTab from "./StatisticsTab";
 import TestTab from "./TestTab";
 import { BleManager } from "react-native-ble-plx";
@@ -22,7 +23,7 @@ const TabView = ({ navigation, initialTab }) => {
   const [connectedDevice, setConnectedDevice] = useState(null);
   const [wellName, setWellName] = useState(null);
   const isFocused = useIsFocused();
-  const currentVersion = "Prod 6-24FEB2025@10:00.AM";
+  const currentVersion = "Prod 7-29APR2025@12:00.AM";
   // the existed pages for config welltimer after connected to it
   const tabs = [
     {
@@ -35,7 +36,7 @@ const TabView = ({ navigation, initialTab }) => {
     },
     {
       label: "Settings",
-      content: <SettingsTab connectedDevice={connectedDevice} />,
+      content: <SettingsTab2 connectedDevice={connectedDevice} />,
     },
     {
       label: "Statistics",
@@ -74,7 +75,7 @@ const TabView = ({ navigation, initialTab }) => {
           visibilityTime: 3000,
         });
         setConnectedDevice(connectedDevices[0]);
-        await Receive.sendReqToGetData(connectedDevice, activeTab);
+        // await Receive.sendReqToGetData(connectedDevice, activeTab);
         setTimeout(async () => {
           await Receive.sendIden(connectedDevices[0], connectedDevices[0].id);
         }, 500);
@@ -147,7 +148,6 @@ const TabView = ({ navigation, initialTab }) => {
   useEffect(() => {
     if (!isFocused) {
       // Code to run when the screen is focused
-      console.log("Device screen is not focused");
       disconnectFromDevice();
     }
   }, [isFocused]);
@@ -177,7 +177,6 @@ const TabView = ({ navigation, initialTab }) => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel disconnect"),
           style: "cancel",
         },
         { text: "Disconnect", onPress: () => disconnectFromDevice() }, // call disconnectFromDevice function
