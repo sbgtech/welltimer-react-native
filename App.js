@@ -18,6 +18,7 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  console.log("hi")
   useEffect(() => {
     async function prepare() {
       try {
