@@ -22,7 +22,7 @@
     },
     "label": "RECON Mobile",
     "ios": {
-      "bundleIdentifier": "com.reconmobile",
+      "bundleIdentifier": "com.app.welltimer",
       "supportsTablet": true,
       "infoPlist": {
         "CFBundleName": "RECONmobile",
